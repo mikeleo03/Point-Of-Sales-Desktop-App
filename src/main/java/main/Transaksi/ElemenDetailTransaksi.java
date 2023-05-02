@@ -8,10 +8,10 @@ public class ElemenDetailTransaksi {
     // ATTRIBUTES
     private Integer idBarang;
     private Integer jumlahBarang;
-    private Float subTotal;
+    private Double subTotal;
 
     // CONSTRUCTOR
-    public ElemenDetailTransaksi(Integer idBarang, Integer jumlahBarang, Float subTotal) {
+    public ElemenDetailTransaksi(Integer idBarang, Integer jumlahBarang, Double subTotal) {
         this.idBarang = idBarang;
         this.jumlahBarang = jumlahBarang;
         this.subTotal = subTotal;
@@ -26,7 +26,7 @@ public class ElemenDetailTransaksi {
         return this.jumlahBarang;
     }
 
-    public Float getSubTotal() {
+    public Double getSubTotal() {
         return this.subTotal;
     }
 
@@ -38,7 +38,7 @@ public class ElemenDetailTransaksi {
         this.jumlahBarang = jumlahBarang;
     }
 
-    public void setSubTotal(Float subTotal) {
+    public void setSubTotal(Double subTotal) {
         this.subTotal = subTotal;
     }
 }

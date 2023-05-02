@@ -26,7 +26,7 @@ public class Barang implements Priceable {
         this.picturePath = "";
     }
 
-    public Barang(Integer ID, String name, Integer stock, Double price, Double buyPrice, String category, String picturePath) {
+    public Barang(String name, Integer stock, Double price, Double buyPrice, String category, String picturePath) {
         this.ID = 0;
         this.name = name;
         this.stock = stock;
