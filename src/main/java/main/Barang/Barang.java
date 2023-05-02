@@ -7,7 +7,7 @@ package main.Barang;
 
 public class Barang implements Priceable {
     // ATTRIBUTES
-    private int id;
+    private int ID;
     private String nama;
     private int stok;
     private float hargaJual,hargaBeli;
@@ -15,8 +15,18 @@ public class Barang implements Priceable {
     private String pathGambar;
 
     // CONSTRUCTOR
-    public Barang(int id, String nama, int stok, float hargaJual, float hargaBeli, String kategori, String pathGambar) {
-        this.id = id;
+    public Barang() {
+        this.ID = 0;
+        this.nama = "";
+        this.stok = 0;
+        this.hargaJual = 0;
+        this.hargaBeli = 0;
+        this.kategori = "";
+        this.pathGambar = "";
+    }
+
+    public Barang(String nama, int stok, float hargaJual, float hargaBeli, String kategori, String pathGambar) {
+        this.ID = 0;
         this.nama = nama;
         this.stok = stok;
         this.hargaJual = hargaJual;
@@ -27,7 +37,7 @@ public class Barang implements Priceable {
 
     // GETTER
     public int getID() {
-        return this.id;
+        return this.ID;
     }
     public String getName() {
         return this.nama;
@@ -47,7 +57,7 @@ public class Barang implements Priceable {
 
     // SETTER
     public void setID(int ID) {
-        this.id = ID;
+        this.ID = ID;
     }
     public void setName(String nama) {
         this.nama = nama;
