@@ -5,7 +5,11 @@
 
 package main.Barang;
 
-public class Barang implements Priceable {
+import javax.xml.bind.annotation.*;
+import java.io.Serializable;
+
+@XmlRootElement
+public class Barang implements Priceable, Serializable {
     // ATTRIBUTES
     private Integer ID;
     private String name;
@@ -36,51 +40,61 @@ public class Barang implements Priceable {
         this.picturePath = picturePath;
     }
 
-    // GETTER
+    // GETTER-SETTER
+    @XmlAttribute
     public Integer getID() {
         return this.ID;
     }
-    public String getName() {
-        return this.name;
-    }
-    public Integer getStock() {
-        return this.stock;
-    }
-    public Double getBuyPrice() {
-        return this.buyPrice;
-    }
-    public String getCategory() {
-        return this.category;
-    }
-    public String getPicturePath() {
-        return this.picturePath;
-    }
-
-    // SETTER
     public void setID(Integer ID) {
         this.ID = ID;
+    }
+
+    @XmlElement
+    public String getName() {
+        return this.name;
     }
     public void setName(String nama) {
         this.name = nama;
     }
+
+    @XmlElement
+    public Integer getStock() {
+        return this.stock;
+    }
     public void setStock(Integer stock) {
         this.stock = stock;
     }
-    public void setPrice(Double price) {
-        this.price = price;
+
+    @XmlElement
+    public Double getBuyPrice() {
+        return this.buyPrice;
     }
     public void setBuyPrice(Double buyPrice) {
         this.buyPrice = buyPrice;
     }
+
+    @XmlElement
+    public String getCategory() {
+        return this.category;
+    }
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @XmlElement
+    public String getPicturePath() {
+        return this.picturePath;
     }
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
 
     // Interface
+    @XmlElement
     public Double getPrice() {
         return this.price;
+    }
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
