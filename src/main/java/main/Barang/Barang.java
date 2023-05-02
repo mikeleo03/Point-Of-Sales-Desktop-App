@@ -7,79 +7,80 @@ package main.Barang;
 
 public class Barang implements Priceable {
     // ATTRIBUTES
-    private int ID;
-    private String nama;
-    private int stok;
-    private float hargaJual,hargaBeli;
-    private String kategori;
-    private String pathGambar;
+    private Integer ID;
+    private String name;
+    private Integer stock;
+    private Double price;
+    private Double buyPrice;
+    private String category;
+    private String picturePath;
 
     // CONSTRUCTOR
     public Barang() {
         this.ID = 0;
-        this.nama = "";
-        this.stok = 0;
-        this.hargaJual = 0;
-        this.hargaBeli = 0;
-        this.kategori = "";
-        this.pathGambar = "";
+        this.name = "";
+        this.stock = 0;
+        this.price = 0.0;
+        this.buyPrice = 0.0;
+        this.category = "";
+        this.picturePath = "";
     }
 
-    public Barang(String nama, int stok, float hargaJual, float hargaBeli, String kategori, String pathGambar) {
+    public Barang(Integer ID, String name, Integer stock, Double price, Double buyPrice, String category, String picturePath) {
         this.ID = 0;
-        this.nama = nama;
-        this.stok = stok;
-        this.hargaJual = hargaJual;
-        this.hargaBeli = hargaBeli;
-        this.kategori = kategori;
-        this.pathGambar = pathGambar;
+        this.name = name;
+        this.stock = stock;
+        this.price = price;
+        this.buyPrice = buyPrice;
+        this.category = category;
+        this.picturePath = picturePath;
     }
 
     // GETTER
-    public int getID() {
+    public Integer getID() {
         return this.ID;
     }
     public String getName() {
-        return this.nama;
+        return this.name;
     }
-    public int getStock() {
-        return this.stok;
+    public Integer getStock() {
+        return this.stock;
     }
-    public float getBuyPrice() {
-        return this.hargaBeli;
+    public Double getBuyPrice() {
+        return this.buyPrice;
     }
     public String getCategory() {
-        return this.kategori;
+        return this.category;
     }
     public String getPicturePath() {
-        return this.pathGambar;
+        return this.picturePath;
     }
 
     // SETTER
-    public void setID(int ID) {
+    public void setID(Integer ID) {
         this.ID = ID;
     }
     public void setName(String nama) {
-        this.nama = nama;
+        this.name = nama;
     }
-    public void setStock(int stok) {
-        this.stok = stok;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
-    public void setSellPrice(int hargaJual) {
-        this.hargaJual = hargaJual;
+    public void setPrice(Double price) {
+        this.price = price;
     }
-    public void setBuyPrice(int hargaBeli) {
-        this.hargaBeli = hargaBeli;
+    public void setBuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
     }
-    public void setCategory(String kategori) {
-        this.kategori = kategori;
+    public void setCategory(String category) {
+        this.category = category;
     }
-    public void setPicturePath(String pathGambar) {
-        this.pathGambar = pathGambar;
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 
     // Interface
-    public float getPrice() {
-        return this.hargaJual;
+    public Double getPrice() {
+        return this.price;
     }
 }
