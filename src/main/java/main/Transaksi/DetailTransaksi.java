@@ -33,7 +33,7 @@ public class DetailTransaksi {
     public void addBarang(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
         Integer id = getID(idBarang);
         Barang barang = inventory.getBarangByID(id);
-        Float harga = barang.getPrice();
+        Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id == -1) {
             this.detailTransaksi.add(new ElemenDetailTransaksi(barang.getID(), jumlahBarang, harga * jumlahBarang));

@@ -5,71 +5,96 @@
 
 package main.Barang;
 
-public class Barang implements Priceable {
+import javax.xml.bind.annotation.*;
+import java.io.Serializable;
+
+@XmlRootElement
+public class Barang implements Priceable, Serializable {
     // ATTRIBUTES
-    private int id;
-    private String nama;
-    private int stok;
-    private float hargaJual,hargaBeli;
-    private String kategori;
-    private String pathGambar;
+    private Integer ID;
+    private String name;
+    private Integer stock;
+    private Double price;
+    private Double buyPrice;
+    private String category;
+    private String picturePath;
 
     // CONSTRUCTOR
-    public Barang(int id, String nama, int stok, float hargaJual, float hargaBeli, String kategori, String pathGambar) {
-        this.id = id;
-        this.nama = nama;
-        this.stok = stok;
-        this.hargaJual = hargaJual;
-        this.hargaBeli = hargaBeli;
-        this.kategori = kategori;
-        this.pathGambar = pathGambar;
+    public Barang() {
+        this.ID = 0;
+        this.name = "";
+        this.stock = 0;
+        this.price = 0.0;
+        this.buyPrice = 0.0;
+        this.category = "";
+        this.picturePath = "";
     }
 
-    // GETTER
-    public int getID() {
-        return this.id;
+    public Barang(String name, Integer stock, Double price, Double buyPrice, String category, String picturePath) {
+        this.ID = 0;
+        this.name = name;
+        this.stock = stock;
+        this.price = price;
+        this.buyPrice = buyPrice;
+        this.category = category;
+        this.picturePath = picturePath;
     }
+
+    // GETTER-SETTER
+    @XmlAttribute
+    public Integer getID() {
+        return this.ID;
+    }
+    public void setID(Integer ID) {
+        this.ID = ID;
+    }
+
+    @XmlElement
     public String getName() {
-        return this.nama;
-    }
-    public int getStock() {
-        return this.stok;
-    }
-    public float getBuyPrice() {
-        return this.hargaBeli;
-    }
-    public String getCategory() {
-        return this.kategori;
-    }
-    public String getPicturePath() {
-        return this.pathGambar;
-    }
-
-    // SETTER
-    public void setID(int ID) {
-        this.id = ID;
+        return this.name;
     }
     public void setName(String nama) {
-        this.nama = nama;
+        this.name = nama;
     }
-    public void setStock(int stok) {
-        this.stok = stok;
+
+    @XmlElement
+    public Integer getStock() {
+        return this.stock;
     }
-    public void setSellPrice(int hargaJual) {
-        this.hargaJual = hargaJual;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
-    public void setBuyPrice(int hargaBeli) {
-        this.hargaBeli = hargaBeli;
+
+    @XmlElement
+    public Double getBuyPrice() {
+        return this.buyPrice;
     }
-    public void setCategory(String kategori) {
-        this.kategori = kategori;
+    public void setBuyPrice(Double buyPrice) {
+        this.buyPrice = buyPrice;
     }
-    public void setPicturePath(String pathGambar) {
-        this.pathGambar = pathGambar;
+
+    @XmlElement
+    public String getCategory() {
+        return this.category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @XmlElement
+    public String getPicturePath() {
+        return this.picturePath;
+    }
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 
     // Interface
-    public float getPrice() {
-        return this.hargaJual;
+    @XmlElement
+    public Double getPrice() {
+        return this.price;
+    }
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

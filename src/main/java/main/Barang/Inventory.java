@@ -5,34 +5,62 @@ package main.Barang;
  */
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.io.Serializable;
+import javax.xml.bind.annotation.*;
 
-public class Inventory {
-    private HashMap<Integer,Barang> listBarang;
+@XmlRootElement
+public class Inventory implements Serializable {
+    private Integer lastID;
+    private ArrayList<Barang> listBarang;
 
     // CONSTRUCTOR
     public Inventory() {
-        this.listBarang = new HashMap<Integer,Barang>();
+        this.listBarang = new ArrayList<Barang>();
+        this.lastID = 0;
+    }
+
+    public Inventory(ArrayList<Barang> list) {
+        this.listBarang = list;
     }
 
     // GETTER
-    public List<Barang> getListBarang() {
-        List<Barang> temp = new ArrayList<Barang>();
-        for (Barang b : this.listBarang.values()) {
-            temp.add(b);
-        }
-        return temp;
+    @XmlAttribute
+    public Integer getLastID() {
+        return this.lastID;
     }
+    public void setLastID(Integer lastID) {
+        this.lastID = lastID;
+    }
+
+    @XmlElement
+    public ArrayList<Barang> getListBarang() {
+        return this.listBarang;
+    }
+    public void setListBarang(ArrayList<Barang> listBarang) {
+        this.listBarang = listBarang;
+    }
+
     public Barang getBarangByID(int ID) {
-        return this.listBarang.get(ID);
+        for (Barang b : this.listBarang) {
+            if (b.getID() == ID) {
+                return b;
+            }
+        }
+        return null;
     }
 
     // PENAMBAHAN/PENGURANGAN BARANG
     public void addBarang(Barang b) {
-        this.listBarang.put(b.getID(), b);
+        b.setID(this.lastID);
+        this.listBarang.add(b);
+        this.lastID++;
     }
+
     public void deleteBarang(int ID) {
-        this.listBarang.remove(ID);
+        for (Barang b : this.listBarang) {
+            if (b.getID() == ID) {
+                this.listBarang.remove(b);
+            }
+        }
     }
 }

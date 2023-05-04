@@ -12,9 +12,9 @@ public abstract class Recap {
     private Integer waktu;
     private Integer tanggal;
     private DetailTransaksi detailTransaksi;
-    private Float nominal;
+    private Double nominal;
 
-    public Recap(Integer idCustomer, Integer waktu, Integer tanggal, DetailTransaksi detailTransaksi, Float nominal) {
+    public Recap(Integer idCustomer, Integer waktu, Integer tanggal, DetailTransaksi detailTransaksi, Double nominal) {
         this.idCustomer = idCustomer;
         this.waktu = waktu;
         this.tanggal = tanggal;
@@ -38,7 +38,7 @@ public abstract class Recap {
         return this.detailTransaksi;
     }
 
-    public Float getNominal() {
+    public Double getNominal() {
         return this.nominal;
     }
 }
