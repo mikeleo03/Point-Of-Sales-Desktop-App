@@ -9,10 +9,12 @@ public class ElemenDetailTransaksi {
     private Integer idBarang;
     private Integer jumlahBarang;
     private Double subTotal;
+    private String namaBarang;
 
     // CONSTRUCTOR
-    public ElemenDetailTransaksi(Integer idBarang, Integer jumlahBarang, Double subTotal) {
+    public ElemenDetailTransaksi(Integer idBarang, String namaBarang, Integer jumlahBarang, Double subTotal) {
         this.idBarang = idBarang;
+        this.namaBarang = namaBarang;
         this.jumlahBarang = jumlahBarang;
         this.subTotal = subTotal;
     }
@@ -30,6 +32,10 @@ public class ElemenDetailTransaksi {
         return this.subTotal;
     }
 
+    public String getNamaBarang() {
+        return this.namaBarang;
+    }
+
     public void setIdBarang(Integer idBarang) {
         this.idBarang = idBarang;
     }
@@ -40,5 +46,9 @@ public class ElemenDetailTransaksi {
 
     public void setSubTotal(Double subTotal) {
         this.subTotal = subTotal;
+    }
+
+    public void setNamaBarang(String nama) {
+        this.namaBarang = nama;
     }
 }

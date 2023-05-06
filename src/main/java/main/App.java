@@ -41,7 +41,7 @@ public final class App {
         FixedBill fixedbill = new FixedBill(2000, "12:08:23", "22/03/2022", detail, 200000.00);
         System.out.println(fixedbill);
         for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
-            System.out.println(elemen.getIdBarang() + " " + elemen.getJumlahBarang() + " " + elemen.getSubTotal());
+            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
         }
 
         detail.editQuantity(mie, 2);
@@ -49,7 +49,7 @@ public final class App {
         detail.editQuantity(eskrim, 5);
         detail.addBarang(eskrim, 7, inv);
         for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
-            System.out.println(elemen.getIdBarang() + " " + elemen.getJumlahBarang() + " " + elemen.getSubTotal());
+            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
         }
         // PaymentPage payment = new PaymentPage(bill);
     }

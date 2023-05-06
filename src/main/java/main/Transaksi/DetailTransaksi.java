@@ -39,10 +39,10 @@ public class DetailTransaksi {
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id == -1) {
-            this.detailTransaksi.add(new ElemenDetailTransaksi(barang.getID(), jumlahBarang, harga * jumlahBarang));
+            this.detailTransaksi.add(new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahBarang, harga * jumlahBarang));
         } else {
             Integer jumlahSebelumnya = this.detailTransaksi.get(id).getJumlahBarang();
-            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
         }
     }
 
@@ -51,7 +51,7 @@ public class DetailTransaksi {
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id != -1) {
-            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), quantity, harga * quantity));
+            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), quantity, harga * quantity));
         }
     }
 
