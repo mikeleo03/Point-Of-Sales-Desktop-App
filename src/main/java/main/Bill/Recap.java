@@ -1,5 +1,8 @@
 package main.Bill;
 
+import java.io.Serializable;
+import javax.xml.bind.annotation.*;
+
 import main.Transaksi.DetailTransaksi;
 
 /**
@@ -7,7 +10,8 @@ import main.Transaksi.DetailTransaksi;
  * Class abstrak untuk menyimpan data bill
  */
 
-public abstract class Recap {
+@XmlRootElement
+public abstract class Recap implements Serializable {
     private Integer idCustomer;
     private String waktu;
     private String tanggal;
@@ -29,27 +33,48 @@ public abstract class Recap {
         }
     }
 
+    @XmlAttribute
     public Integer getIdCustomer() {
         return this.idCustomer;
     }
 
+    public void setIdCustomer(Integer idCustomer) {
+        this.idCustomer = idCustomer;
+    }
+
+    @XmlElement
     public String getWaktu() {
         return this.waktu;
     }
 
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
+
+    @XmlElement
     public String getTanggal() {
         return this.tanggal;
     }
 
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    @XmlElement
     public DetailTransaksi getDetailTransaksi() {
         return this.detailTransaksi;
     }
 
+    public void setDetailTransaksi(DetailTransaksi detailTransaksi) {
+        this.detailTransaksi = detailTransaksi;
+    }
+
+    @XmlElement
     public Double getNominal() {
         return this.nominal;
     }
 
-    public void setDetailTransaksi(DetailTransaksi detailTransaksi) {
-        this.detailTransaksi = detailTransaksi;
+    public void setNominal(Double nominal) {
+        this.nominal = nominal;
     }
 }

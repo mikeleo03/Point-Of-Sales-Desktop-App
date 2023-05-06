@@ -4,28 +4,36 @@
  */
 
 package main.Transaksi;
+import java.io.Serializable;
 import java.util.ArrayList;
+import javax.xml.bind.annotation.*;
 
 import main.Barang.Barang;
 import main.Barang.Inventory;
 
-public class DetailTransaksi {
+@XmlRootElement
+public class DetailTransaksi implements Serializable {
     // ATTRIBUTES
-    private ArrayList<ElemenDetailTransaksi> detailTransaksi;
+    private ArrayList<ElemenDetailTransaksi> element;
 
     // CONSTRUCTORS
     public DetailTransaksi() {
-        this.detailTransaksi = new ArrayList<ElemenDetailTransaksi>();
+        this.element = new ArrayList<ElemenDetailTransaksi>();
     }
 
+    @XmlElement
     public ArrayList<ElemenDetailTransaksi> getElement() {
-        return this.detailTransaksi;
+        return this.element;
+    }
+
+    public void setElement(ArrayList<ElemenDetailTransaksi> element) {
+        this.element = element;
     }
 
     // METHOD
     public Integer getID (Integer idBarang) {
         int id = 0;
-        for (ElemenDetailTransaksi detail : this.detailTransaksi) {
+        for (ElemenDetailTransaksi detail : this.element) {
             if (detail.getIdBarang() == idBarang) {
                 return id;
             }
@@ -34,23 +42,23 @@ public class DetailTransaksi {
         return -1;
     }
 
-    public void addBarang (Barang barang, Integer jumlahBarang, Inventory inventory) {
+    public void editBarang (Barang barang, Integer jumlahBarang, Inventory inventory) {
         Integer id = getID(barang.getID());
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id == -1) {
-            this.detailTransaksi.add(new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahBarang, harga * jumlahBarang));
+            this.element.add(new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahBarang, harga * jumlahBarang));
         } else {
-            Integer jumlahSebelumnya = this.detailTransaksi.get(id).getJumlahBarang();
+            Integer jumlahSebelumnya = this.element.get(id).getJumlahBarang();
             if (jumlahBarang + jumlahSebelumnya > barang.getStock()) {
                 System.out.println("Stok tidak mencukupi.");
             } else {
-                this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+                this.element.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
             }
         }
     }
 
-    public void editQuantity(Barang barang, Integer quantity) {
+    public void setQuantity(Barang barang, Integer quantity) {
         Integer id = getID(barang.getID());
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
@@ -58,7 +66,7 @@ public class DetailTransaksi {
             if (quantity > barang.getStock() || quantity < 0) {
                 System.out.println("Nilai kuantitas tidak valid.");
             } else {
-                this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), quantity, harga * quantity));
+                this.element.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), quantity, harga * quantity));
             }
         } else {
             System.out.println("Barang belum ada pada detail transaksi.");
@@ -69,8 +77,8 @@ public class DetailTransaksi {
         Integer id = getID(barang.getID());
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id != -1) {
-            ElemenDetailTransaksi element = this.detailTransaksi.get(id);
-            this.detailTransaksi.remove(element);
+            ElemenDetailTransaksi element = this.element.get(id);
+            this.element.remove(element);
         } else {
             System.out.println("Barang belum ada pada detail transaksi.");
         }
