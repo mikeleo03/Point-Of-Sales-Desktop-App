@@ -5,7 +5,6 @@ import main.Barang.*;
 
 import java.lang.reflect.Array;
 import main.Bill.*;
-import java.util.ArrayList;
 
 /**
  * Hello world!
@@ -22,25 +21,36 @@ public final class App {
         // ArrayList<Barang> listBarang = new ArrayList<>();
         Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
         Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
-        /* listBarang.add(nasgor);
-        listBarang.add(mie);
-        for (Barang barang : listBarang) {
-            System.out.println(barang.getName() + " " + barang.getID());
-        } */
+        Barang eskrim = new Barang("Ice Cream", 12, 5000.00, 7000.00, "Makanan", "../");
+        
         Inventory inv = new Inventory();
         inv.addBarang(mie);
         inv.addBarang(nasgor);
+        inv.addBarang(eskrim);
         for (Barang barang : inv.getListBarang()) {
             System.out.println(barang.getName() + " " + barang.getID());
         }
 
         DetailTransaksi detail = new DetailTransaksi();
-        detail.addBarang(0, 3, inv);
-        detail.addBarang(1, 5, inv);
-        detail.addBarang(0, 5, inv);
+        detail.addBarang(nasgor, 3, inv);
+        detail.addBarang(mie, 5, inv);
+        detail.addBarang(nasgor, 5, inv);
+        detail.addBarang(mie, 5, inv);
+        detail.deleteDetail(eskrim);
 
-        Bill bill = new Bill(2000, "12:08:23", "22/03/2022", detail, 200000.00);
-        System.out.println(bill);
+        FixedBill fixedbill = new FixedBill(2000, "12:08:23", "22/03/2022", detail, 200000.00);
+        System.out.println(fixedbill);
+        for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
+            System.out.println(elemen.getIdBarang() + " " + elemen.getJumlahBarang() + " " + elemen.getSubTotal());
+        }
+
+        detail.editQuantity(mie, 2);
+        detail.deleteDetail(nasgor);
+        detail.editQuantity(eskrim, 5);
+        detail.addBarang(eskrim, 7, inv);
+        for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
+            System.out.println(elemen.getIdBarang() + " " + elemen.getJumlahBarang() + " " + elemen.getSubTotal());
+        }
         // PaymentPage payment = new PaymentPage(bill);
     }
 }

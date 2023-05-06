@@ -18,6 +18,10 @@ public class DetailTransaksi {
         this.detailTransaksi = new ArrayList<ElemenDetailTransaksi>();
     }
 
+    public ArrayList<ElemenDetailTransaksi> getElement() {
+        return this.detailTransaksi;
+    }
+
     // METHOD
     public Integer getID (Integer idBarang) {
         int id = 0;
@@ -30,10 +34,8 @@ public class DetailTransaksi {
         return -1;
     }
 
-    public void addBarang(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
-        Integer id = getID(idBarang);
-        System.out.println(id);
-        Barang barang = inventory.getBarangByID(idBarang);
+    public void addBarang (Barang barang, Integer jumlahBarang, Inventory inventory) {
+        Integer id = getID(barang.getID());
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id == -1) {
@@ -41,6 +43,24 @@ public class DetailTransaksi {
         } else {
             Integer jumlahSebelumnya = this.detailTransaksi.get(id).getJumlahBarang();
             this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+        }
+    }
+
+    public void editQuantity(Barang barang, Integer quantity) {
+        Integer id = getID(barang.getID());
+        Double harga = barang.getPrice();
+        // Jika barang tidak ada, maka tambahkan nilainya ke list
+        if (id != -1) {
+            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), quantity, harga * quantity));
+        }
+    }
+
+    public void deleteDetail (Barang barang) {
+        Integer id = getID(barang.getID());
+        // Jika barang tidak ada, maka tambahkan nilainya ke list
+        if (id != -1) {
+            ElemenDetailTransaksi element = this.detailTransaksi.get(id);
+            this.detailTransaksi.remove(element);
         }
     }
 }
