@@ -19,7 +19,7 @@ public class Bill extends Recap {
     }
 
     public void editItemQuantity(Integer idBarang, Integer jumlahPerubahanBarang, Inventory inventory) {
-        // mengubah jumlah barang di detail transaksim
+        // mengubah jumlah barang di detail transaksi
         // jumlahPerubahanBarang bisa negatif dan positif
         DetailTransaksi dT = this.getDetailTransaksi();
         Barang barang = inventory.getBarangByID(idBarang);
