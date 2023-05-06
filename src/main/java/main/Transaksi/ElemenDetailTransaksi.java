@@ -17,6 +17,8 @@ public class ElemenDetailTransaksi implements Serializable {
     private String namaBarang;
 
     // CONSTRUCTOR
+    public ElemenDetailTransaksi() {}
+    
     public ElemenDetailTransaksi(Integer idBarang, String namaBarang, Integer jumlahBarang, Double subTotal) {
         this.idBarang = idBarang;
         this.namaBarang = namaBarang;

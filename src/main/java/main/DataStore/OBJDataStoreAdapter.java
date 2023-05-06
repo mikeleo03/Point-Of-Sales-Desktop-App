@@ -10,6 +10,7 @@ import java.io.*;
 
 import main.Barang.*;
 import main.Client.*;
+import main.Bill.*;
 
 public class OBJDataStoreAdapter implements DataStoreAdapter {
     /* ===================================== ATTRIBUTES =====================================*/
@@ -18,6 +19,7 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
     private ObjectOutputStream objectOutput;
     private String inventoryFilePath;
     private String clientsFilePath;
+    private String billsFilePath;
     
     /* ====================================== METHODS ====================================== */
 
@@ -27,12 +29,14 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
     public OBJDataStoreAdapter() {
         this.inventoryFilePath = "../data/inventory.obj";
         this.clientsFilePath = "../data/clients.obj";
+        this.billsFilePath = "../data/bills.obj";
     }
 
     // User-defined constructor, set files path to the chosen datastore location
     public OBJDataStoreAdapter(String folderPath) {
         this.inventoryFilePath = folderPath + "/inventory.obj";
         this.clientsFilePath = folderPath + "/clients.obj";
+        this.billsFilePath =  folderPath + "/bills.obj";
     } 
 
     /* ------------------------------------ READER-WRITER -----------------------------------*/
@@ -81,11 +85,34 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
         catch (Exception e) {}
     }
 
+    // Read and return the list of bill defined in the OBJ datastore file
+    public BillManager readBillManager() {
+        try {
+            this.objectInput = new ObjectInputStream(new FileInputStream(billsFilePath));
+            BillManager billManager = (BillManager) this.objectInput.readObject();
+            this.objectInput.close();
+            return billManager;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of bill into the OBJ datastore file
+    public void writeBillManager(BillManager billManager) {
+        try {
+            this.objectOutput = new ObjectOutputStream(new FileOutputStream(billsFilePath));
+            this.objectOutput.writeObject(billManager);
+            this.objectOutput.flush();
+            this.objectOutput.close();
+        }
+        catch (Exception e) {}
+    }
+
     /* --------------------------------------- DELETER -------------------------------------*/ 
     
     // Delete all datastore stored in the location
     public void deleteFiles() {
         new File(inventoryFilePath).delete();
         new File(clientsFilePath).delete();
+        new File(billsFilePath).delete();
     }
 }

@@ -11,12 +11,14 @@ import javax.xml.bind.*;
 
 import main.Barang.*;
 import main.Client.*;
+import main.Bill.*;
 
 public class XMLDataStoreAdapter implements DataStoreAdapter {
     /* ===================================== ATTRIBUTES =====================================*/
 
     private String inventoryFilePath;
     private String clientsFilePath;
+    private String billsFilePath;
     
     /* ====================================== METHODS ====================================== */
 
@@ -26,12 +28,14 @@ public class XMLDataStoreAdapter implements DataStoreAdapter {
     public XMLDataStoreAdapter() {
         this.inventoryFilePath = "../data/inventory.xml";
         this.clientsFilePath = "../data/clients.xml";
+        this.billsFilePath = "../data/bills.xml";
     }
 
     // User-defined constructor, set files path to the chosen datastore location
     public XMLDataStoreAdapter(String folderPath) {
         this.inventoryFilePath = folderPath + "/inventory.xml";
         this.clientsFilePath = folderPath + "/clients.xml";
+        this.billsFilePath = folderPath + "/bills.xml";
     } 
 
     /* ------------------------------------ READER-WRITER -----------------------------------*/
@@ -70,11 +74,29 @@ public class XMLDataStoreAdapter implements DataStoreAdapter {
         catch (Exception e) {}
     }
 
+    // Read and return the list of bill defined in the XML datastore file
+    public BillManager readBillManager() {
+        try {
+            BillManager billManager = JAXB.unmarshal(new File(billsFilePath), BillManager.class);
+            return billManager;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of bill into the XML datastore file
+    public void writeBillManager(BillManager billManager) {
+        try {
+            JAXB.marshal(billManager, new File(billsFilePath));
+        }
+        catch (Exception e) {e.printStackTrace();}
+    }
+
     /* --------------------------------------- DELETER -------------------------------------*/ 
     
     // Delete all datastore stored in the location
     public void deleteFiles() {
         new File(inventoryFilePath).delete();
         new File(clientsFilePath).delete();
+        new File(billsFilePath).delete();
     }
 }

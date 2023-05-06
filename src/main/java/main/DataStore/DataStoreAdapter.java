@@ -6,8 +6,9 @@
 
 package main.DataStore;
 
-import main.Barang.*;
 import main.Client.*;
+import main.Barang.*;
+import main.Bill.*;
 
 interface DataStoreAdapter {
     /* ------------------------------------ READER-WRITER -----------------------------------*/
@@ -16,6 +17,8 @@ interface DataStoreAdapter {
     public void writeClientManager(ClientManager clientManager);
     public Inventory readInventory();
     public void writeInventory(Inventory inventory);
+    public BillManager readBillManager();
+    public void writeBillManager(BillManager billManager);
 
     /* --------------------------------------- DELETER -------------------------------------*/ 
 
