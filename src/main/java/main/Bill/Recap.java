@@ -2,6 +2,8 @@ package main.Bill;
 
 import java.io.Serializable;
 import javax.xml.bind.annotation.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import main.Transaksi.DetailTransaksi;
 
@@ -22,10 +24,13 @@ public abstract class Recap implements Serializable {
         
     }
 
-    public Recap(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi) {
+    public Recap(Integer idCustomer, DetailTransaksi detailTransaksi) {
         this.idCustomer = idCustomer;
-        this.waktu = waktu;
-        this.tanggal = tanggal;
+        SimpleDateFormat formattime = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatdate = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        this.waktu = formattime.format(date);
+        this.tanggal = formatdate.format(date);
         this.detailTransaksi = detailTransaksi;
         this.nominal = 0.00;
         for (int i = 0; i < detailTransaksi.getElement().size(); i++) {

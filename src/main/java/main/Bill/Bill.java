@@ -14,8 +14,8 @@ public class Bill extends Recap {
 
     }
     
-    public Bill(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi) {
-        super(idCustomer, waktu, tanggal, detailTransaksi);
+    public Bill(Integer idCustomer, DetailTransaksi detailTransaksi) {
+        super(idCustomer, detailTransaksi);
     }
 
     public void editItemQuantity(Integer idBarang, Integer jumlahPerubahanBarang, Inventory inventory) {
