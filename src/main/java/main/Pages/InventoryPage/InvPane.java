@@ -101,13 +101,13 @@ class InvPane extends JPanel implements ActionListener{
                     try {
                         Barang b = this.itemPanel.getBarang();
                         this.inv.updateBarang(this.selectedID, b.getName(), b.getStock(), b.getPrice(), b.getBuyPrice(), b.getCategory(), b.getPicturePath());
-                        this.itemDisplay.updateDisplay(this.inv);
+                        this.itemDisplay.updateButton(this.selectedID, b);
                     } catch (Exception err) {
                         System.out.println(err);
                     }
                 } else if (input == 1) { //Remove
                     this.inv.deleteBarang(this.selectedID);
-                    this.itemDisplay.updateDisplay(this.inv);
+                    this.itemDisplay.deleteButton(this.selectedID);
                 }
                 this.itemPanel.resetFields();
             }
