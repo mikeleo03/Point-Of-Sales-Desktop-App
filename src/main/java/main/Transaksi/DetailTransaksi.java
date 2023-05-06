@@ -32,7 +32,8 @@ public class DetailTransaksi {
 
     public void addBarang(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
         Integer id = getID(idBarang);
-        Barang barang = inventory.getBarangByID(id);
+        System.out.println(id);
+        Barang barang = inventory.getBarangByID(idBarang);
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id == -1) {

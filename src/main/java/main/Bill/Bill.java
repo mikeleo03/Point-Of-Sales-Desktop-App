@@ -9,7 +9,11 @@ import main.Barang.Inventory;
  */
 
 public class Bill extends Recap {
-    public Bill(Integer idCustomer, Integer waktu, Integer tanggal, DetailTransaksi detailTransaksi, Double nominal) {
+    public Bill() {
+
+    }
+    
+    public Bill(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi, Double nominal) {
         super(idCustomer, waktu, tanggal, detailTransaksi, nominal);
     }
 
