@@ -41,4 +41,8 @@ public abstract class Recap {
     public Double getNominal() {
         return this.nominal;
     }
+
+    public void setDetailTransaksi(DetailTransaksi detailTransaksi) {
+        this.detailTransaksi = detailTransaksi;
+    }
 }

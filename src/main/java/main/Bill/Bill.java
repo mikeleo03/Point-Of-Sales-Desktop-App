@@ -16,7 +16,7 @@ public class Bill extends Recap {
     public void addItem(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
         DetailTransaksi dT = this.getDetailTransaksi();
         dT.addBarang(idBarang, jumlahBarang, inventory);
-        // this.setDetailTransaksi(dT);
+        this.setDetailTransaksi(dT);
     }
 
     // public void removeItem(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
