@@ -16,6 +16,5 @@ public class InventoryPage extends JFrame {
         setSize(WIDTH, HEIGHT);
         this.p = new InvPane(inv);
         add(this.p);
-        setVisible(true);
     }
 } 

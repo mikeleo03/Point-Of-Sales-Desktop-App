@@ -2,35 +2,38 @@ package main.Pages.InventoryPage;
 import main.Barang.Barang;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 
-import javax.swing.*;  
+import javax.swing.*;
 
-class AddItemPane extends JPanel {
-    private final int TEXTBOXWIDTH = 100;
-    private final int TEXTBOXHEIGHT = 30;
-    private JLabel newItemNameLbl;
+class ItemPane extends JPanel {
+    private JLabel itemIDLabel;
+    private JLabel itemNameLbl;
     private JLabel priceLbl, buyPriceLbl;
     private JLabel stockLbl;
     private JLabel categLbl;
     private JLabel imgPathLbl;
+    private JLabel image;
     private JTextField newItemNameBox;
     private JTextField priceBox, buyPriceBox;
     private JTextField stockBox;
     private JTextField categBox;
     private JTextField imgPathBox;
-    private JButton submitBtn;
 
-    public AddItemPane(ActionListener a) {
+    ItemPane() {
         setLayout(new GridBagLayout());
-        
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(2, 2, 2, 2);
-        
-        this.newItemNameLbl = new JLabel("Item name :");
-        add(this.newItemNameLbl, gbc);
+
+        gbc.gridwidth = 2;
+        this.itemIDLabel = new JLabel();
+        add(this.itemIDLabel, gbc);
+        gbc.gridy++;
+        gbc.gridwidth = 1;
+        this.itemNameLbl = new JLabel("Item name :");
+        add(this.itemNameLbl, gbc);
         gbc.gridy++;
         this.priceLbl = new JLabel("Item sell price :");
         add(this.priceLbl, gbc);
@@ -47,50 +50,65 @@ class AddItemPane extends JPanel {
         this.imgPathLbl = new JLabel("Item image path :");
         add(this.imgPathLbl, gbc);
 
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.gridx++;
-        this.newItemNameBox = new JTextField(20);
-        this.newItemNameBox.requestFocus();
-        this.newItemNameBox.setPreferredSize(new Dimension(TEXTBOXWIDTH,TEXTBOXHEIGHT));
+        this.newItemNameBox = new JTextField(30);
         add(this.newItemNameBox, gbc);
         gbc.gridy++;
-        this.priceBox = new JTextField(20);
-        this.priceBox.requestFocus();
-        this.priceBox.setPreferredSize(new Dimension(TEXTBOXWIDTH,TEXTBOXHEIGHT));
+        this.priceBox = new JTextField(30);
         add(this.priceBox, gbc);
         gbc.gridy++;
-        this.buyPriceBox = new JTextField(20);
-        this.buyPriceBox.requestFocus();
-        this.buyPriceBox.setPreferredSize(new Dimension(TEXTBOXWIDTH,TEXTBOXHEIGHT));
+        this.buyPriceBox = new JTextField(30);
         add(this.buyPriceBox, gbc);
         gbc.gridy++;
-        this.stockBox = new JTextField(20);
-        this.stockBox.setFocusable(true);
-        this.stockBox.setPreferredSize(new Dimension(TEXTBOXWIDTH,TEXTBOXHEIGHT));
+        this.stockBox = new JTextField(30);
         add(this.stockBox, gbc);
         gbc.gridy++;
-        this.categBox = new JTextField(20);
-        this.categBox.setFocusable(true);
-        this.categBox.setPreferredSize(new Dimension(TEXTBOXWIDTH,TEXTBOXHEIGHT));
+        this.categBox = new JTextField(30);
         add(this.categBox, gbc);
         gbc.gridy++;
-        this.imgPathBox = new JTextField(20);
-        this.imgPathBox.setFocusable(true);
-        this.imgPathBox.setPreferredSize(new Dimension(TEXTBOXWIDTH,TEXTBOXHEIGHT));
+        this.imgPathBox = new JTextField(30);
         add(this.imgPathBox, gbc);
         gbc.gridy++;
+        
+        gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        this.image = new JLabel();
+        add(this.image);
+    }
+
+    public void insertItemInfo(Barang b) {
+        this.itemIDLabel.setText("ID : "+ b.getID().toString());
+        this.newItemNameBox.setText(b.getName());
+        this.priceBox.setText(b.getPrice().toString());
+        this.buyPriceBox.setText(b.getBuyPrice().toString());
+        this.stockBox.setText(b.getStock().toString());
+        this.categBox.setText(b.getCategory());
+        this.imgPathBox.setText(b.getPicturePath());
+        ImageIcon icon = new ImageIcon(b.getPicturePath());
+        Image img = icon.getImage();
+        img = img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+        icon.setImage(img);
+        this.image.setIcon(icon);
+        revalidate();
+        repaint();
     }
 
     public Barang getBarang() {
         Barang b = new Barang(this.newItemNameBox.getText(), Integer.parseInt(this.stockBox.getText()), 
                     Double.parseDouble(this.priceBox.getText()),Double.parseDouble(this.buyPriceBox.getText()),
                     this.categBox.getText(), this.imgPathBox.getText());
+        return b;
+    }
+
+    public void resetFields() {
+        this.itemIDLabel.setText("");
         this.newItemNameBox.setText("");
         this.stockBox.setText("");
         this.priceBox.setText("");
         this.buyPriceBox.setText("");
         this.categBox.setText("");
         this.imgPathBox.setText("");
-        return b;
-    }
+        this.image.setIcon(null);
+    }   
 }
