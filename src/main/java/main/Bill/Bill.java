@@ -14,18 +14,23 @@ public class Bill extends Recap {
 
     }
     
-    public Bill(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi, Double nominal) {
-        super(idCustomer, waktu, tanggal, detailTransaksi, nominal);
+    public Bill(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi) {
+        super(idCustomer, waktu, tanggal, detailTransaksi);
     }
 
-    public void addItem(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
+    public void editItemQuantity(Integer idBarang, Integer jumlahPerubahanBarang, Inventory inventory) {
+        // mengubah jumlah barang di detail transaksim
+        // jumlahPerubahanBarang bisa negatif dan positif
         DetailTransaksi dT = this.getDetailTransaksi();
         Barang barang = inventory.getBarangByID(idBarang);
-        dT.addBarang(barang, jumlahBarang, inventory);
+        dT.editBarang(barang, jumlahPerubahanBarang, inventory);
         this.setDetailTransaksi(dT);
     }
 
-    // public void removeItem(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
-    //     detailTransaksi.addBarang(idBarang, jumlahBarang, inventory);
-    // }
+    public void deleteItem(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
+        DetailTransaksi dT = this.getDetailTransaksi();
+        Barang barang = inventory.getBarangByID(idBarang);
+        dT.deleteDetail(barang);
+        this.setDetailTransaksi(dT);
+    }
 }
