@@ -42,7 +42,11 @@ public class DetailTransaksi {
             this.detailTransaksi.add(new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahBarang, harga * jumlahBarang));
         } else {
             Integer jumlahSebelumnya = this.detailTransaksi.get(id).getJumlahBarang();
-            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+            if (jumlahBarang + jumlahSebelumnya > barang.getStock()) {
+                System.out.println("Stok tidak mencukupi.");
+            } else {
+                this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+            }
         }
     }
 
@@ -51,7 +55,13 @@ public class DetailTransaksi {
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id != -1) {
-            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), quantity, harga * quantity));
+            if (quantity > barang.getStock() || quantity < 0) {
+                System.out.println("Nilai kuantitas tidak valid.");
+            } else {
+                this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), quantity, harga * quantity));
+            }
+        } else {
+            System.out.println("Barang belum ada pada detail transaksi.");
         }
     }
 
@@ -61,6 +71,8 @@ public class DetailTransaksi {
         if (id != -1) {
             ElemenDetailTransaksi element = this.detailTransaksi.get(id);
             this.detailTransaksi.remove(element);
+        } else {
+            System.out.println("Barang belum ada pada detail transaksi.");
         }
     }
 }

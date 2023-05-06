@@ -51,6 +51,12 @@ public final class App {
         for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
             System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
         }
+
+        detail.addBarang(eskrim, 7, inv);
+        detail.deleteDetail(nasgor);
+        for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
+            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
+        }
         // PaymentPage payment = new PaymentPage(bill);
     }
 }
