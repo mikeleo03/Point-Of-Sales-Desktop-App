@@ -9,12 +9,16 @@ import main.Transaksi.DetailTransaksi;
 
 public abstract class Recap {
     private Integer idCustomer;
-    private Integer waktu;
-    private Integer tanggal;
+    private String waktu;
+    private String tanggal;
     private DetailTransaksi detailTransaksi;
     private Double nominal;
 
-    public Recap(Integer idCustomer, Integer waktu, Integer tanggal, DetailTransaksi detailTransaksi, Double nominal) {
+    public Recap() {
+        
+    }
+
+    public Recap(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi, Double nominal) {
         this.idCustomer = idCustomer;
         this.waktu = waktu;
         this.tanggal = tanggal;
@@ -26,11 +30,11 @@ public abstract class Recap {
         return this.idCustomer;
     }
 
-    public Integer getWaktu() {
+    public String getWaktu() {
         return this.waktu;
     }
 
-    public Integer getTanggal() {
+    public String getTanggal() {
         return this.tanggal;
     }
 

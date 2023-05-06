@@ -21,6 +21,12 @@ public class Inventory implements Serializable {
 
     public Inventory(ArrayList<Barang> list) {
         this.listBarang = list;
+        this.lastID = 0;
+        for (Barang b : list) {
+            if (b.getID() > this.lastID) {
+                this.lastID = b.getID();
+            }
+        }
     }
 
     // GETTER

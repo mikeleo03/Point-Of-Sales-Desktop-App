@@ -18,6 +18,10 @@ public class DetailTransaksi {
         this.detailTransaksi = new ArrayList<ElemenDetailTransaksi>();
     }
 
+    public ArrayList<ElemenDetailTransaksi> getElement() {
+        return this.detailTransaksi;
+    }
+
     // METHOD
     public Integer getID (Integer idBarang) {
         int id = 0;
@@ -30,16 +34,45 @@ public class DetailTransaksi {
         return -1;
     }
 
-    public void addBarang(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
-        Integer id = getID(idBarang);
-        Barang barang = inventory.getBarangByID(id);
+    public void addBarang (Barang barang, Integer jumlahBarang, Inventory inventory) {
+        Integer id = getID(barang.getID());
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
         if (id == -1) {
-            this.detailTransaksi.add(new ElemenDetailTransaksi(barang.getID(), jumlahBarang, harga * jumlahBarang));
+            this.detailTransaksi.add(new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahBarang, harga * jumlahBarang));
         } else {
             Integer jumlahSebelumnya = this.detailTransaksi.get(id).getJumlahBarang();
-            this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+            if (jumlahBarang + jumlahSebelumnya > barang.getStock()) {
+                System.out.println("Stok tidak mencukupi.");
+            } else {
+                this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+            }
+        }
+    }
+
+    public void editQuantity(Barang barang, Integer quantity) {
+        Integer id = getID(barang.getID());
+        Double harga = barang.getPrice();
+        // Jika barang tidak ada, maka tambahkan nilainya ke list
+        if (id != -1) {
+            if (quantity > barang.getStock() || quantity < 0) {
+                System.out.println("Nilai kuantitas tidak valid.");
+            } else {
+                this.detailTransaksi.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), quantity, harga * quantity));
+            }
+        } else {
+            System.out.println("Barang belum ada pada detail transaksi.");
+        }
+    }
+
+    public void deleteDetail (Barang barang) {
+        Integer id = getID(barang.getID());
+        // Jika barang tidak ada, maka tambahkan nilainya ke list
+        if (id != -1) {
+            ElemenDetailTransaksi element = this.detailTransaksi.get(id);
+            this.detailTransaksi.remove(element);
+        } else {
+            System.out.println("Barang belum ada pada detail transaksi.");
         }
     }
 }

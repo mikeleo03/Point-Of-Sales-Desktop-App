@@ -2,6 +2,7 @@ package main.Bill;
 
 import main.Transaksi.DetailTransaksi;
 import main.Barang.Inventory;
+import main.Barang.Barang;
 
 /**
  * File : Bill.java
@@ -9,13 +10,18 @@ import main.Barang.Inventory;
  */
 
 public class Bill extends Recap {
-    public Bill(Integer idCustomer, Integer waktu, Integer tanggal, DetailTransaksi detailTransaksi, Double nominal) {
+    public Bill() {
+
+    }
+    
+    public Bill(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi, Double nominal) {
         super(idCustomer, waktu, tanggal, detailTransaksi, nominal);
     }
 
     public void addItem(Integer idBarang, Integer jumlahBarang, Inventory inventory) {
         DetailTransaksi dT = this.getDetailTransaksi();
-        dT.addBarang(idBarang, jumlahBarang, inventory);
+        Barang barang = inventory.getBarangByID(idBarang);
+        dT.addBarang(barang, jumlahBarang, inventory);
         this.setDetailTransaksi(dT);
     }
 
