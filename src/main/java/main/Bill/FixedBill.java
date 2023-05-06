@@ -8,8 +8,8 @@ import main.Transaksi.DetailTransaksi;
  */
 
 public class FixedBill extends Recap {
-    public FixedBill(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi, Double nominal) {
-        super(idCustomer, waktu, tanggal, detailTransaksi, nominal);
+    public FixedBill(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi) {
+        super(idCustomer, waktu, tanggal, detailTransaksi);
     }
 
     public void save() {

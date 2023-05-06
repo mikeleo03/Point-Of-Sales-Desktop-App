@@ -18,12 +18,15 @@ public abstract class Recap {
         
     }
 
-    public Recap(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi, Double nominal) {
+    public Recap(Integer idCustomer, String waktu, String tanggal, DetailTransaksi detailTransaksi) {
         this.idCustomer = idCustomer;
         this.waktu = waktu;
         this.tanggal = tanggal;
         this.detailTransaksi = detailTransaksi;
-        this.nominal = nominal;
+        this.nominal = 0.00;
+        for (int i = 0; i < detailTransaksi.getElement().size(); i++) {
+            this.nominal += detailTransaksi.getElement().get(i).getSubTotal();
+        }
     }
 
     public Integer getIdCustomer() {

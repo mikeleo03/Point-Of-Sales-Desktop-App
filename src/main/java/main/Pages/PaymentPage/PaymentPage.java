@@ -1,25 +1,34 @@
 package main.Pages.PaymentPage;
 import java.awt.*;
-
+import java.util.ArrayList;
 import javax.swing.*;
 
-import main.Bill.*;  
+import main.Bill.*;
+import main.Transaksi.DetailTransaksi;  
 
 public class PaymentPage extends JFrame {
     private JButton cancelButton = new JButton("Cancel");
     private JButton saveButton = new JButton("Save");
+    private JLabel pengantar;
+    private JLabel total;
     
     final int WIDTH = 700, HEIGHT = 400;
 
-    public PaymentPage(Bill bill) {
+    public PaymentPage(FixedBill fixedbill) {
         
         // Create the table with some sample data
-        Object[][] data = {
-            {"Item 1", "$10.00"},
-            {"Item 2", "$20.00"},
-            {"Item 3", "$30.00"}
-        };
-        JTable table = new JTable(data, new String[] {"Item", "Price"});
+        ArrayList<Object[]> data = new ArrayList<>();
+        DetailTransaksi details = fixedbill.getDetailTransaksi();
+        for (int i = 0; i < details.getElement().size(); i++) {
+            Object[] row = new Object[4];
+            row[0] = details.getElement().get(i).getJumlahBarang();
+            row[1] = details.getElement().get(i).getIdBarang();
+            row[2] = details.getElement().get(i).getNamaBarang();
+            row[3] = details.getElement().get(i).getSubTotal();
+            data.add(row);
+        }
+
+        JTable table = new JTable(data.toArray(new Object[data.size()][]), new String[] {"Qty", "ID Barang", "Nama Barang", "Sub Total"});
 
         // Create a panel to hold the buttons
         JPanel buttonPanel = new JPanel();
@@ -38,8 +47,20 @@ public class PaymentPage extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         mainPanel.add(buttonPanel, gbc);
         
-        gbc.gridy = 1;
+        gbc.gridy++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.pengantar = new JLabel("Daftar Barang");
+        this.pengantar.setFont(new Font("Arial", ALLBITS, 18));
+        mainPanel.add(this.pengantar, gbc);
+
+        gbc.gridy++;
         mainPanel.add(tablePanel, gbc);
+
+        gbc.gridy++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.total = new JLabel("Total :" + fixedbill.getNominal().toString());
+        this.total.setFont(new Font("Arial", ALLBITS, 20));
+        mainPanel.add(this.total, gbc);
         
         // Set up the frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
