@@ -9,6 +9,7 @@ import main.Transaksi.DetailTransaksi;
 public class PaymentPage extends JFrame {
     private JButton cancelButton = new JButton("Cancel");
     private JButton saveButton = new JButton("Save");
+    private JButton process = new JButton("Process");
     private JLabel pengantar;
     private JLabel total;
     
@@ -44,7 +45,7 @@ public class PaymentPage extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.EAST;
         mainPanel.add(buttonPanel, gbc);
         
         gbc.gridy++;
@@ -61,6 +62,9 @@ public class PaymentPage extends JFrame {
         this.total = new JLabel("Total :" + fixedbill.getNominal().toString());
         this.total.setFont(new Font("Arial", ALLBITS, 20));
         mainPanel.add(this.total, gbc);
+
+        gbc.gridy++;
+        mainPanel.add(this.process, gbc);
         
         // Set up the frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -32,10 +32,10 @@ public final class App {
         }
 
         DetailTransaksi detail = new DetailTransaksi();
-        detail.addBarang(nasgor, 3, inv);
-        detail.addBarang(mie, 5, inv);
-        detail.addBarang(nasgor, 5, inv);
-        detail.addBarang(mie, 5, inv);
+        detail.editBarang(nasgor, 3, inv);
+        detail.editBarang(mie, 5, inv);
+        detail.editBarang(nasgor, 5, inv);
+        detail.editBarang(mie, 5, inv);
         detail.deleteDetail(eskrim);
 
         FixedBill fixedbill = new FixedBill(2000, "12:08:23", "22/03/2022", detail);
