@@ -75,6 +75,16 @@ public class ClientManager implements Serializable {
 
     /* ----------------------------------- ADDITIONAL METHOD ----------------------------------*/
 
+    // Return all ID of customer in descending order
+    public Integer[] getAllCustomerID() {
+        Integer listID[] = new Integer[this.listCustomer.size()];
+
+        for (Integer i = this.listCustomer.size() - 1; i > -1; i--) {
+            listID[this.listCustomer.size() - 1 - i] = this.listCustomer.get(i).getCustomerID();
+        }
+
+        return listID;
+    }
     // Get the index of the customer in listCustomer with the same ID as customerID
     private Integer findCustomerIndex(Integer customerID) {
         for (Integer i = 0; i < this.listCustomer.size(); i++) {
@@ -91,20 +101,15 @@ public class ClientManager implements Serializable {
     }
 
     // Promote the last customer into a member or vip
-    public void promoteMembership(Integer membership, Integer customerID, String customerName, String noOfPhone) throws Exception {
+    public void promoteMembership(Integer membership, Integer customerID, String customerName, String noOfPhone) {
         int index = this.findCustomerIndex(customerID);
-        
-        if (index != -1) {
-            if (membership == 1) {
-                this.listMember.add(new Member(customerID, customerName, noOfPhone, 0, true));
-            }
-            else {
-                this.listVIP.add(new VIP(customerID, customerName, noOfPhone, 0, true));
-            }
-            this.listCustomer.remove(index);
+
+        if (membership == 1) {
+            this.listMember.add(new Member(customerID, customerName, noOfPhone, 0, true));
         }
         else {
-            throw new Exception("Can't promote already promoted client");
+            this.listVIP.add(new VIP(customerID, customerName, noOfPhone, 0, true));
         }
+        this.listCustomer.remove(index);
     }
 }
