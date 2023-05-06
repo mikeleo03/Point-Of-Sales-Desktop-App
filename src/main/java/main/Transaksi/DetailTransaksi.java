@@ -34,7 +34,7 @@ public class DetailTransaksi {
         return -1;
     }
 
-    public void addBarang (Barang barang, Integer jumlahBarang, Inventory inventory) {
+    public void editBarang (Barang barang, Integer jumlahBarang, Inventory inventory) {
         Integer id = getID(barang.getID());
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
@@ -50,7 +50,7 @@ public class DetailTransaksi {
         }
     }
 
-    public void editQuantity(Barang barang, Integer quantity) {
+    public void setQuantity(Barang barang, Integer quantity) {
         Integer id = getID(barang.getID());
         Double harga = barang.getPrice();
         // Jika barang tidak ada, maka tambahkan nilainya ke list
