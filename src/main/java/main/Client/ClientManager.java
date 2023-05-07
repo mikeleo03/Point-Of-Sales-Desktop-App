@@ -6,9 +6,14 @@
 
 package main.Client;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.io.Serializable;
 import javax.xml.bind.annotation.*;
+
+import main.Observer.*;
 
 @XmlRootElement
 public class ClientManager implements Serializable {
@@ -18,6 +23,7 @@ public class ClientManager implements Serializable {
     private List<Customer> listCustomer;
     private List<Member> listMember;
     private List<VIP> listVIP;
+    public Observer observer; 
 
     /* ====================================== METHODS ====================================== */
 
@@ -29,6 +35,7 @@ public class ClientManager implements Serializable {
         this.listCustomer = new ArrayList<>();
         this.listMember = new ArrayList<>();
         this.listVIP = new ArrayList<>();
+        this.observer = new Observer();
     }
 
     /* ----------------------------------- GETTER-SETTER ------------------------------------*/
@@ -41,6 +48,7 @@ public class ClientManager implements Serializable {
 
     public void setLastClientID(Integer lastClientID) {
         this.lastClientID = lastClientID;
+        this.observer.notifySubscriber();
     }
 
     // Getter-setter for listCustomer attribute
@@ -51,6 +59,7 @@ public class ClientManager implements Serializable {
 
     public void setListCustomer(List<Customer> listCustomer) {
         this.listCustomer = listCustomer;
+        this.observer.notifySubscriber();
     }
 
     // Getter-setter for listMember attribute
@@ -61,6 +70,7 @@ public class ClientManager implements Serializable {
 
     public void setListMember(List<Member> listMember) {
         this.listMember = listMember;
+        this.observer.notifySubscriber();
     }
 
     // Getter-set for listVIP attribute
@@ -71,6 +81,7 @@ public class ClientManager implements Serializable {
 
     public void setListVIP(List<VIP> listVIP) {
         this.listVIP = listVIP;
+        this.observer.notifySubscriber();
     }
 
     /* ----------------------------------- ADDITIONAL METHOD ----------------------------------*/
@@ -191,6 +202,7 @@ public class ClientManager implements Serializable {
     public void generateCustomer() {
         this.lastClientID++;
         this.listCustomer.add(new Customer(this.lastClientID));
+        this.observer.notifySubscriber();
     }
 
     // Promote the last customer into a member or vip
@@ -204,6 +216,7 @@ public class ClientManager implements Serializable {
             this.listVIP.add(new VIP(customerID, customerName, noOfPhone, 0, true));
         }
         this.listCustomer.remove(index);
+        this.observer.notifySubscriber();
     }
 
     // Change status or attributes of non customer
@@ -261,5 +274,6 @@ public class ClientManager implements Serializable {
                 this.listVIP.remove(oldVIP);
             }
         }
+        this.observer.notifySubscriber();
     }
 }
