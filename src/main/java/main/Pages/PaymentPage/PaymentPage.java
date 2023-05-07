@@ -99,7 +99,7 @@ public class PaymentPage extends JPanel implements ActionListener {
             this.fixedbillmanager.addFixedBill(fixed);
             // Mengurangi nilai barang dari inventory
             for (ElemenDetailTransaksi elemen : this.bill.getDetailTransaksi().getElement()) {
-                this.inventory.changeStock(elemen.getIdBarang(), elemen.getJumlahBarang());
+                this.inventory.changeStock(elemen.getIdBarang(), -1 * elemen.getJumlahBarang());
             }
         }
     }
