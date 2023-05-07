@@ -44,28 +44,6 @@ public class PelangganPanel extends JPanel implements ActionListener {
 
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // Membuat button untuk menutup panel
-        closeButton = new JButton("Tutup");
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.weightx = 1.0;
-        gbc.insets = new Insets(5, 5, 5, 5);
-        closeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                // Menghapus panel dan state terkait dari stateMap
-                String panelName = kasirPage.getPanelMap().get(PelangganPanel.this);
-                kasirPage.getStateMap().remove(panelName);
-                kasirPage.getPanelMap().remove(PelangganPanel.this);
-                kasirPage.getBillMap().remove(panelName);
-                kasirPage.getTabbedPane().remove(PelangganPanel.this);
-            }
-        });
-        add(closeButton);
-
-        gbc = new GridBagConstraints();
-
         // Menambahkan BillPane ke panel
         DetailTransaksi details = new DetailTransaksi();
         this.billPane = new BillPane(details, this.bill, this.customerTuple);

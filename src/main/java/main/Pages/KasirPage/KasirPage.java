@@ -77,14 +77,35 @@ public class KasirPage extends JFrame {
         
         // Membuat panel baru untuk menangani pelanggan baru
         JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple);
-        
+
+        JButton closeButton = new JButton("X");
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String panelName = panelMap.get(panel);
+
+                stateMap.remove(panelName);
+                panelMap.remove(panel);
+                billMap.remove(panelName);
+                tabbedPane.remove(panel);
+
+                // remove the tab
+                tabbedPane.removeTabAt(tabbedPane.indexOfComponent(panel));
+            }
+        });
+        // closeButton.setPreferredSize(new Dimension(30,20));
+        JPanel tabPanel = new JPanel(new BorderLayout(3,3));
+        JLabel tabTitle = new JLabel("Pelanggan " + (panelMap.size() + 1));
+        tabPanel.add(tabTitle, BorderLayout.WEST);
+        tabPanel.add(closeButton, BorderLayout.EAST);
+
         panelMap.put(panel, "Pelanggan " + (panelMap.size() + 1));
         stateMap.put(panelMap.get(panel), new HashMap<>());
         billMap.put(panelMap.get(panel), bill);
 
         // Menambahkan panel ke dalam tabbedPane
         tabbedPane.addTab(panelMap.get(panel), panel);
-        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+        tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, tabPanel);
     }
 
     public Map<String, Map<String, Integer>> getStateMap() {
