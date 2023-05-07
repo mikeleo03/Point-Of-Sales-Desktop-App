@@ -21,32 +21,34 @@ import javax.swing.*;
 import main.Transaksi.DetailTransaksi;
 import main.Barang.*;
 import main.Bill.*;
+import main.Client.ClientManager;
 
-public class KasirPage extends JFrame {
+public class KasirPage extends JPanel {
     private JTabbedPane tabbedPane;
     private Map<JPanel, String> panelMap;
     private Map<String, Map<String, Integer>> stateMap;
     private Map<String, Bill> billMap;
     private CustomerTuple customerTuple;
     private BillManager billManager;
+    private ClientManager clientManager;
 
-    public KasirPage(BillManager billManager) {
+    public KasirPage(BillManager billManager, ClientManager clientManager) {
         this.panelMap = new HashMap<>();
         this.stateMap = new HashMap<>();
         this.billMap = new HashMap<>();
         this.customerTuple = new CustomerTuple("", -1);
         this.billManager = billManager;
+        this.clientManager = clientManager;
         initUI();
     }
 
     private void initUI() {
-        setTitle("Halaman Kasir");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
-        
+        // Mengatur layout dari panel
+        setLayout(new BorderLayout());
+
         // Membuat tabbedPane
         tabbedPane = new JTabbedPane();
-        getContentPane().add(tabbedPane, BorderLayout.CENTER);
+        add(tabbedPane, BorderLayout.CENTER);
         
         // Membuat tombol untuk menambah tab baru
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -62,7 +64,7 @@ public class KasirPage extends JFrame {
             }
         });
         buttonPanel.add(addButton);
-        getContentPane().add(buttonPanel, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.NORTH);
     }
 
     private void addTab(Bill inputBill) {
@@ -76,7 +78,7 @@ public class KasirPage extends JFrame {
         }
         
         // Membuat panel baru untuk menangani pelanggan baru
-        JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple);
+        JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple, this.clientManager);
 
         JButton closeButton = new JButton("X");
         closeButton.addActionListener(new ActionListener() {

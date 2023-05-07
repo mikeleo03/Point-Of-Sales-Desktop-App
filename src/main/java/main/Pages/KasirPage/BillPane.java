@@ -30,9 +30,9 @@ public class BillPane extends JPanel {
     private JComboBox<String> clientComboBox;
     private ClientManager clientManager;
 
-    public BillPane(DetailTransaksi details, Bill bill, CustomerTuple customerTuple) {
+    public BillPane(DetailTransaksi details, Bill bill, CustomerTuple customerTuple, ClientManager clientManager) {
         details = bill.getDetailTransaksi();
-        clientManager = new ClientManager();
+        this.clientManager = clientManager;
         setLayout(new GridBagLayout());
 
         // create table and add to scroll pane

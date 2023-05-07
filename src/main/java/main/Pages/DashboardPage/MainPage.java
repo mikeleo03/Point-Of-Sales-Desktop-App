@@ -31,11 +31,12 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
     private ClientManager clientManager;
     private Inventory inv;
     private FixedBillManager fixedbillmanager;
-    private BillManager billmanager;
+    private BillManager billManager;
 
     public MainPage() {
         this.dataStoreAdapter = new JSONDataStoreAdapter();
         this.clientManager = this.dataStoreAdapter.readClientManager();
+        this.billManager = new BillManager();
 
         this.clientManager.observer.subscribe(this);
 
@@ -120,7 +121,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                     } else if (buttonNames[index].equals("Inventory")) {
                         newPanel = new InvPane(inv);
                     } else if (buttonNames[index].equals("Payment")) {
-                        newPanel = new PaymentPage(billmanager, inv, fixedbillmanager);
+                        newPanel = new PaymentPage(billManager, inv, fixedbillmanager);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientManager);
                     } else if (buttonNames[index].equals("Customers")) {
@@ -131,9 +132,9 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                         newPanel = new HistoryPage(fixedbillmanager);
                     } else if (buttonNames[index].equals("Plugin")) {
                         newPanel = new PluginPanel();
-                    } /* else if (buttonNames[index].equals("Sales")) {
-                        // newPanel = new KasirPage(billmanager);
-                    } */ else {
+                    } else if (buttonNames[index].equals("Sales")) {
+                        newPanel = new KasirPage(billManager, clientManager);
+                    } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
                         JLabel label = new JLabel("AAAAAA");
