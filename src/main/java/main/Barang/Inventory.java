@@ -152,4 +152,11 @@ public class Inventory implements Serializable {
             }
         }
     }
+
+    public void changeStock(int ID, int amount) {
+        // Apabila amount positif, menambah stok. Apabila negatif, mengurangi stok
+        // Diasumsikan apabila amount negatif, abs(amount) <= stok barang yang tersisa
+        Barang b = getBarangByID(ID);
+        b.setStock(b.getStock()+amount);
+    }
 }

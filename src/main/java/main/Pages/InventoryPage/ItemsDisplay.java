@@ -44,6 +44,7 @@ class ItemsDisplay extends JPanel {
     }
 
     public void updateDisplay(Inventory inv) {
+        reshowAll(inv);
         for (int i=0; i<this.itemButtons.size(); i++) {
             int currID = this.itemButtons.get(i).getItemID();
             Barang b = inv.getBarangByID(currID);
