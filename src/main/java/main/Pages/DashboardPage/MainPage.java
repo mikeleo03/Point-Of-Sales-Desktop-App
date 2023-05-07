@@ -45,8 +45,6 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
 
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
-
-        clientManager = new ClientManager();
         pluginPane = new PluginPanel();
 
         Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
@@ -82,7 +80,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
 
         // create the buttons with icons
         String[] buttonNames = {"Dashboard", "Registration", "Customers", "History",
-                                "Inventory", "Sales", "Stocks", "Settings", "Plugin"};
+                                "Inventory", "Sales", "Settings", "Plugin"};
         ImageIcon[] buttonIcons = {
             new ImageIcon(new ImageIcon("../img/icon/home.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/registration.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
@@ -90,7 +88,6 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
             new ImageIcon(new ImageIcon("../img/icon/history.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/inventory.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/sales.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
-            new ImageIcon(new ImageIcon("../img/icon/stock.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/settings.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/plugin.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH))
         };
@@ -136,7 +133,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                     } else if (buttonNames[index].equals("Plugin")) {
                         newPanel = pluginPane;
                     } else if (buttonNames[index].equals("Sales")) {
-                        newPanel = new KasirPage(billManager, fixedBillManager, clientManager, inv, tabbedPane);
+                        newPanel = new KasirPage(billManager, fixedBillManager, clientManager, inv);
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;

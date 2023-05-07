@@ -82,4 +82,11 @@ public abstract class Recap implements Serializable {
     public void setNominal(Double nominal) {
         this.nominal = nominal;
     }
+
+    public void recalculateNominal() {
+        this.nominal = 0.00;
+        for (int i = 0; i < detailTransaksi.getElement().size(); i++) {
+            this.nominal += detailTransaksi.getElement().get(i).getSubTotal();
+        }
+    }
 }

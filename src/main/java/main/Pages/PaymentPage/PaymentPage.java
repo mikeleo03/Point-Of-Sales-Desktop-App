@@ -8,12 +8,12 @@ import java.awt.event.ActionListener;
 
 import main.Bill.*;
 import main.Barang.*;
+import main.Client.*;
 import main.Observer.*;
 import main.Transaksi.DetailTransaksi;
 import main.Transaksi.ElemenDetailTransaksi;  
 
 public class PaymentPage extends JPanel implements ActionListener, Subscriber {
-    private JButton cancelButton;
     private JButton saveButton;
     private JButton process;
     private JLabel pengantar;
@@ -21,13 +21,15 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
     final int WIDTH = 700, HEIGHT = 400;
 
     private BillManager billmanager;
+    private ClientManager clientManager;
     private Inventory inventory;
     private FixedBillManager fixedbillmanager;
     private Bill currentbill;
 
-    public PaymentPage (BillManager billmanager, Bill currentbill, Inventory inventory, FixedBillManager fixedbillmanager) {
+    public PaymentPage (BillManager billmanager, Bill currentbill, Inventory inventory, FixedBillManager fixedbillmanager, ClientManager clientManager) {
         // Pass the bill object to the attributes
         this.billmanager = billmanager;
+        this.clientManager = clientManager;
         this.inventory = inventory;
         this.fixedbillmanager = fixedbillmanager;
         this.currentbill = currentbill;
@@ -38,6 +40,11 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
         List<Bill> listbill = this.billmanager.getListBill();
         int index = listbill.indexOf(currentbill);
         if (index != -1) {
+            if (this.currentbill.getIdCustomer() == null) {
+                clientManager.generateCustomer();
+                this.currentbill.setIdCustomer(clientManager.getLastClientID());
+            }
+            this.currentbill.recalculateNominal();
             ArrayList<Object[]> data = new ArrayList<>();
 
             DetailTransaksi details = this.currentbill.getDetailTransaksi();
@@ -54,11 +61,8 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
 
             // Create a panel to hold the buttons
             JPanel buttonPanel = new JPanel();
-            cancelButton = new JButton("Cancel");
             saveButton = new JButton("Save");
-            buttonPanel.add(this.cancelButton);
             buttonPanel.add(this.saveButton);
-            cancelButton.addActionListener(this);
             saveButton.addActionListener(this);
 
             // Create a panel to hold the table
@@ -84,7 +88,7 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
 
             gbc.gridy++;
             gbc.fill = GridBagConstraints.HORIZONTAL;
-            this.total = new JLabel("Total :" + this.currentbill.getNominal().toString());
+            this.total = new JLabel("Total : " + this.currentbill.getNominal().toString());
             this.total.setFont(new Font("Arial", ALLBITS, 20));
             mainPanel.add(this.total, gbc);
 
@@ -103,10 +107,7 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
     }
 
     public void actionPerformed (ActionEvent e) {
-        if (e.getSource() == this.cancelButton) {
-            // Code to perform when button 1 is clicked
-            System.out.println("Button 1 clicked!");
-        } else if (e.getSource() == this.saveButton) {
+        if (e.getSource() == this.saveButton) {
             System.out.println("Button 2 clicked!");
         } else if (e.getSource() == this.process) {
             int index = this.billmanager.getListBill().indexOf(currentbill);
@@ -119,7 +120,7 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
                     this.inventory.changeStock(elemen.getIdBarang(), -1 * elemen.getJumlahBarang());
                 }
                 // Delete dari bill
-                this.billmanager.deleteBill(currentbill);
+                this.billmanager.deleteBill(this.currentbill);
                 JOptionPane.showMessageDialog(null, "Transaksi berhasil diproses.");
             } else {
                 JOptionPane.showMessageDialog(null, "Transaksi ini sudah pernah diproses sebelumnya.");

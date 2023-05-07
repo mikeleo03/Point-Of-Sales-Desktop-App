@@ -34,7 +34,7 @@ public class KasirPage extends JPanel {
     private ClientManager clientManager;
     private Inventory inventory;
 
-    public KasirPage(BillManager billManager, FixedBillManager fixedBillManager, ClientManager clientManager, Inventory inventory, JTabbedPane tabbedPane) {
+    public KasirPage(BillManager billManager, FixedBillManager fixedBillManager, ClientManager clientManager, Inventory inventory) {
         this.panelMap = new HashMap<>();
         this.stateMap = new HashMap<>();
         this.billMap = new HashMap<>();
@@ -43,7 +43,6 @@ public class KasirPage extends JPanel {
         this.fixedBillManager = fixedBillManager;
         this.clientManager = clientManager;
         this.inventory = inventory;
-        this.tabbedPane = tabbedPane;
         initUI();
     }
 
@@ -113,6 +112,7 @@ public class KasirPage extends JPanel {
         // Menambahkan panel ke dalam tabbedPane
         tabbedPane.addTab(panelMap.get(panel), panel);
         tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, tabPanel);
+        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
     }
 
     public Map<String, Map<String, Integer>> getStateMap() {

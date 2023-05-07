@@ -35,6 +35,7 @@ public class BillPane extends JPanel {
     private BillManager billManager;
     private FixedBillManager fixedBillManager;
     private JTabbedPane tabbedPane;
+    private Integer id;
 
     public BillPane(DetailTransaksi details, Bill bill, Inventory inventory, CustomerTuple customerTuple, ClientManager clientManager, BillManager billManager, FixedBillManager fixedBillManager, JTabbedPane tabbedPane) {
         details = bill.getDetailTransaksi();
@@ -128,7 +129,7 @@ public class BillPane extends JPanel {
                         Matcher matcher = pattern.matcher(selectedClient);
                         if (matcher.find()) {
                             String name = matcher.group(1);
-                            int id = Integer.parseInt(matcher.group(2));
+                            id = Integer.parseInt(matcher.group(2));
                             // do something with name and id
                             System.out.println("Name: " + name);
                             System.out.println("ID: " + id);
@@ -191,7 +192,8 @@ public class BillPane extends JPanel {
                     if (button.getText().equals("Save Bill")) {
                         System.out.println("Save");
                     } else if (button.getText().equals("Bayar")) {
-                        JPanel newPanel = new PaymentPage(billManager, bill, inventory, fixedBillManager);
+                        bill.setIdCustomer(id);
+                        JPanel newPanel = new PaymentPage(billManager, bill, inventory, fixedBillManager, clientManager);
                         GridBagConstraints gbc = new GridBagConstraints();
                         gbc.gridx = 0;
                         gbc.gridy = 0;
