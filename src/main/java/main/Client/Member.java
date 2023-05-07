@@ -25,7 +25,7 @@ public class Member extends Customer {
     // Default constructor, initialize all attributes with some undefined value
     public Member() {
         super();
-        this.customerName = "aaaaaaaaaaaaaaaa";
+        this.customerName = "";
         this.noOfPhone = "";
         this.point = 0.0;
         this.active = false;

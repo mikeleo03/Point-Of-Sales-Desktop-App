@@ -137,6 +137,22 @@ public class ClientManager implements Serializable {
         return "";
     }
 
+    // Return the point of customerID
+    @JsonIgnore
+    public Double getClientPoint(Integer customerID) {
+        for (Member member : this.listMember) {
+            if (member.getCustomerID() == customerID) {
+                return member.getPoint();
+            }
+        }
+        for (VIP vip : this.listVIP) {
+            if (vip.getCustomerID() == customerID) {
+                return vip.getPoint();
+            }
+        }
+        return 0.0;
+    }
+
     // Return the activity of customerID
     @JsonIgnore
     public Boolean getClientActivity(Integer customerID) {
@@ -285,5 +301,34 @@ public class ClientManager implements Serializable {
             }
         }
         this.observer.notifySubscriber();
+    }
+
+    public void changeClientPoint(Integer customerID, Double point) {
+        Integer clientType = this.getClientType(customerID);
+        
+        Integer i = 0;
+        Boolean found = false;
+        if (clientType == 0) {
+            while (i < this.listMember.size() && !found) {
+                if (this.listMember.get(i).getCustomerID() == customerID) {
+                    this.listMember.get(i).setPoint(point);
+                    found = true;
+                }
+                else {
+                    i++;
+                }
+            }
+        }
+        else {
+            while (i < this.listVIP.size() && !found) {
+                if (this.listVIP.get(i).getCustomerID() == customerID) {
+                    this.listVIP.get(i).setPoint(point);
+                    found = true;
+                }
+                else {
+                    i++;
+                }
+            }
+        }
     }
 }
