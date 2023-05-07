@@ -11,7 +11,7 @@ import javax.swing.*;
 
 import java.util.ArrayList;
 
-class InvPane extends JPanel implements ActionListener{
+public class InvPane extends JPanel implements ActionListener{
     static final int MAXCOLUMN=6;
     private Observer<Barang> obs;
 
@@ -26,7 +26,7 @@ class InvPane extends JPanel implements ActionListener{
 
     private Integer selectedID;
 
-    InvPane(Inventory inv) {
+    public InvPane(Inventory inv) {
         this.selectedID = null;
 
         setLayout(new GridBagLayout());
@@ -128,6 +128,7 @@ class InvPane extends JPanel implements ActionListener{
                         System.out.println(err);
                     }
                 } else if (input == 1) { //Remove
+                    this.itemDisplay.reshowAll(this.inv);
                     this.inv.deleteBarang(this.selectedID);
                     this.itemDisplay.deleteButton(this.selectedID);
                 }

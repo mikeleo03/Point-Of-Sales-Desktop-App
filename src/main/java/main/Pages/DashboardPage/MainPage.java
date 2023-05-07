@@ -1,16 +1,10 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+package main.Pages.DashboardPage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import java.awt.*;
+import javax.swing.*;
+import main.Barang.*;
+import main.Pages.InventoryPage.*;
 
 public class MainPage extends JFrame {
 
@@ -19,6 +13,15 @@ public class MainPage extends JFrame {
     public MainPage() {
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
+
+        Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
+        Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
+        Barang eskrim = new Barang("Ice Cream", 12, 5000.00, 7000.00, "Makanan", "../");
+        
+        Inventory inv = new Inventory();
+        inv.addBarang(mie);
+        inv.addBarang(nasgor);
+        inv.addBarang(eskrim);
 
         // create the LeftPanel
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -45,12 +48,27 @@ public class MainPage extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // create a new panel and add it to the tabbedPane
-                    JPanel newPanel = new JPanel(new BorderLayout());
+                    /* JPanel newPanel = new JPanel(new BorderLayout());
                     JLabel label = new JLabel("AAAAAA", JLabel.CENTER);
-                    newPanel.add(label, BorderLayout.CENTER);
-                    
+                    newPanel.add(label, BorderLayout.CENTER); */
+                    JPanel newPanel;
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridx = 0;
+                    gbc.gridy = 0;
+                    gbc.fill = GridBagConstraints.HORIZONTAL;
+                    if (buttonNames[index].equals("Dashboard")) {
+                        newPanel = new MainPanel();
+                    } else if (buttonNames[index].equals("Inventory")) {
+                        newPanel = new InvPane(inv);
+                    } else {
+                        newPanel = new JPanel(new GridBagLayout());
+                        gbc.anchor = GridBagConstraints.CENTER;
+                        JLabel label = new JLabel("AAAAAA");
+                        newPanel.add(label, gbc);
+                    }
                     // create a close button and add it to the tab
-                    JButton closeButton = new JButton("Close Tab");
+                    JButton closeButton = new JButton("X");
+                    closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
                     closeButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -58,10 +76,15 @@ public class MainPage extends JFrame {
                             tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
                         }
                     });
-                    newPanel.add(closeButton, BorderLayout.SOUTH);
-                    
+                    closeButton.setPreferredSize(new Dimension(30,20));
+                    JPanel tabPanel = new JPanel(new BorderLayout(3,3));
+                    JLabel tabTitle = new JLabel(buttonNames[index]);
+                    tabPanel.add(tabTitle, BorderLayout.WEST);
+                    tabPanel.add(closeButton, BorderLayout.EAST);
+
                     // add the panel to the tabbedPane
                     tabbedPane.addTab(buttonNames[index], newPanel);
+                    tabbedPane.setTabComponentAt(tabbedPane.getTabCount()-1, tabPanel);
                 }
             });
             leftPanel.add(buttons[i]);
@@ -79,10 +102,5 @@ public class MainPage extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    public static void main(String[] args) {
-        MainPage frame = new MainPage();
-        frame.setVisible(true);
     }
 }

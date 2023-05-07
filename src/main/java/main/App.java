@@ -1,5 +1,6 @@
 package main;
 import main.Pages.PaymentPage.*;
+import main.Pages.DashboardPage.*;
 import main.Transaksi.*;
 import main.Barang.*;
 import main.Plugin.*;
@@ -19,6 +20,8 @@ public final class App {
      * @param args The arguments of the program.
      */
     public static void main(String[] args) {
+        MainPage mp = new MainPage();
+        mp.setVisible(true);
         /* PluginLoader pl = new PluginLoader();
         try {
             pl.loadPlugin("C:/Users/axioo/Documents/ITB - Informatika/Semester 4/IF2210 Pemrograman Berbasis Objek/Tugas Besar 2/Tubes-2-OOP-CPK/src/main/java/main/Plugin/test.jar");
@@ -35,9 +38,7 @@ public final class App {
         inv.addBarang(mie);
         inv.addBarang(nasgor);
         inv.addBarang(eskrim);
-        for (Barang barang : inv.getListBarang()) {
-            System.out.println(barang.getName() + " " + barang.getID());
-        }
+        /*
 
         DetailTransaksi detail = new DetailTransaksi();
         detail.editBarang(nasgor, 3, inv);
@@ -74,6 +75,6 @@ public final class App {
         }
         System.out.println(bill.getNominal());
 
-        PaymentPage payment = new PaymentPage(bill);
+        PaymentPage payment = new PaymentPage(bill); */
     }
 }
