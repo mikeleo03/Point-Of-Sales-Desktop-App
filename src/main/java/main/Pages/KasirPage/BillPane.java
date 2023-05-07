@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -192,33 +193,37 @@ public class BillPane extends JPanel {
                     if (button.getText().equals("Save Bill")) {
                         System.out.println("Save");
                     } else if (button.getText().equals("Bayar")) {
-                        bill.setIdCustomer(id);
-                        JPanel newPanel = new PaymentPage(billManager, bill, inventory, fixedBillManager, clientManager);
-                        GridBagConstraints gbc = new GridBagConstraints();
-                        gbc.gridx = 0;
-                        gbc.gridy = 0;
-                        gbc.fill = GridBagConstraints.HORIZONTAL;
-                        // create a close button and add it to the tab
-                        JButton closeButton = new JButton("X");
-                        // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
-                        // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
-                        closeButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // remove the tab
-                                tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
-                            }
-                        });
-                        // closeButton.setPreferredSize(new Dimension(30,20));
-                        JPanel tabPanel = new JPanel(new BorderLayout(3,3));
-                        JLabel tabTitle = new JLabel("Payment");
-                        tabPanel.add(tabTitle, BorderLayout.WEST);
-                        tabPanel.add(closeButton, BorderLayout.EAST);
-
-                        // add the panel to the tabbedPane
-                        tabbedPane.addTab("Payment", newPanel);
-                        tabbedPane.setTabComponentAt(tabbedPane.getTabCount()-1, tabPanel);
-                        tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
+                        if (!isStockAvailable(bill, inventory)) {
+                            JOptionPane.showMessageDialog(null, "Jumlah stok di inventory berubah, Jumlah stok kini tidak mencukupi jumlah pembelian.");
+                        } else {
+                            bill.setIdCustomer(id);
+                            JPanel newPanel = new PaymentPage(billManager, bill, inventory, fixedBillManager, clientManager);
+                            GridBagConstraints gbc = new GridBagConstraints();
+                            gbc.gridx = 0;
+                            gbc.gridy = 0;
+                            gbc.fill = GridBagConstraints.HORIZONTAL;
+                            // create a close button and add it to the tab
+                            JButton closeButton = new JButton("X");
+                            // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
+                            // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
+                            closeButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    // remove the tab
+                                    tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
+                                }
+                            });
+                            // closeButton.setPreferredSize(new Dimension(30,20));
+                            JPanel tabPanel = new JPanel(new BorderLayout(3,3));
+                            JLabel tabTitle = new JLabel("Payment");
+                            tabPanel.add(tabTitle, BorderLayout.WEST);
+                            tabPanel.add(closeButton, BorderLayout.EAST);
+    
+                            // add the panel to the tabbedPane
+                            tabbedPane.addTab("Payment", newPanel);
+                            tabbedPane.setTabComponentAt(tabbedPane.getTabCount()-1, tabPanel);
+                            tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);    
+                        }
                     }
                 }
             }
@@ -253,6 +258,21 @@ public class BillPane extends JPanel {
             total += Double.parseDouble(tableModel.getValueAt(i, 3).toString());
         }
         totalLabel.setText("Total harga: " + total);
+    }
+
+    private boolean isStockAvailable (Bill bill, Inventory inventory) {
+        ArrayList<ElemenDetailTransaksi> arrElemenDT = bill.getDetailTransaksi().getElement();
+
+        for (ElemenDetailTransaksi elemenDT : arrElemenDT) {
+            Integer idBarang = elemenDT.getIdBarang();
+            Integer paymentQty = elemenDT.getJumlahBarang();
+            Integer stock = inventory.getBarangByID(idBarang).getStock();
+            if (paymentQty > stock) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

@@ -89,14 +89,14 @@ public class KasirPage extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String panelName = panelMap.get(panel);
+                // remove the tab
+                tabbedPane.removeTabAt(tabbedPane.indexOfComponent(panel));
 
                 stateMap.remove(panelName);
                 panelMap.remove(panel);
                 billMap.remove(panelName);
                 tabbedPane.remove(panel);
 
-                // remove the tab
-                tabbedPane.removeTabAt(tabbedPane.indexOfComponent(panel));
             }
         });
         // closeButton.setPreferredSize(new Dimension(30,20));
