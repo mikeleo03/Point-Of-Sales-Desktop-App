@@ -1,5 +1,12 @@
 package main.Plugin;
 
-public interface BasePlugin {
-    public String start (String filename);
+import javax.swing.*;
+
+public abstract class BasePlugin {
+    static JPanel pluginPage;
+
+    public void makeEmptyPage (JComponent c) {
+        BasePlugin.pluginPage = new JPanel();
+        c.add(BasePlugin.pluginPage);
+    }
 }
