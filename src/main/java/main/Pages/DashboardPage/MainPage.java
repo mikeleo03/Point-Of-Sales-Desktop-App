@@ -10,7 +10,7 @@ import main.Client.ClientManager;
 import main.Pages.InventoryPage.*;
 import main.Pages.PaymentPage.*;
 import main.Pages.RegistrationPage.*;
-import main.Pages.RegistrationPage.RegistrationPage;
+import main.Pages.UpdateInformationPage.*;
 
 public class MainPage extends JFrame {
 
@@ -80,6 +80,8 @@ public class MainPage extends JFrame {
                         newPanel = new PaymentPage(bill);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientmanager);
+                    } else if (buttonNames[index].equals("Customers")) {
+                        newPanel = new UpdateInformationPane(clientmanager);
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
@@ -118,7 +120,7 @@ public class MainPage extends JFrame {
         add(tabbedPane, BorderLayout.CENTER);
 
         // set JFrame properties
-        setTitle("Split JFrame Example");
+        setTitle("CPKBOS - Point of Sales");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

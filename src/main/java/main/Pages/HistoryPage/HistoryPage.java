@@ -9,13 +9,11 @@ import java.util.List;
 import main.Barang.*;
 import main.Transaksi.*;
 
-public class HistoryPage extends JFrame {
+public class HistoryPage extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
 
-    public HistoryPage(FixedBillManager fixedBillManager) {
-        super("History Page");
-    
+    public HistoryPage(FixedBillManager fixedBillManager) {    
         // create main panel with GridBagLayout
         JPanel mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -74,8 +72,6 @@ public class HistoryPage extends JFrame {
         
         // set JFrame properties
         setSize(800, 600);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     public static void main(String[] args) {
