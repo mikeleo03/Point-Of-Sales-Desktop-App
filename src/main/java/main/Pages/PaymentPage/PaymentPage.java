@@ -1,6 +1,7 @@
 package main.Pages.PaymentPage;
 import java.awt.*;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,18 +19,20 @@ public class PaymentPage extends JPanel implements ActionListener {
     private JLabel total;
     final int WIDTH = 700, HEIGHT = 400;
 
-    private Bill bill;
+    private BillManager billmanager;
     private Inventory inventory;
     private FixedBillManager fixedbillmanager;
 
-    public PaymentPage (Bill bill, Inventory inventory, FixedBillManager fixedbillmanager) {
+    public PaymentPage (BillManager billmanager, Inventory inventory, FixedBillManager fixedbillmanager) {
         // Pass the bill object to the attributes
-        this.bill = bill;
+        this.billmanager = billmanager;
         this.inventory = inventory;
         this.fixedbillmanager = fixedbillmanager;
         
         // Create the table with some sample data
+        List<Bill> listbill = this.billmanager.getListBill();
         ArrayList<Object[]> data = new ArrayList<>();
+        for ()
         DetailTransaksi details = bill.getDetailTransaksi();
         for (int i = 0; i < details.getElement().size(); i++) {
             Object[] row = new Object[4];

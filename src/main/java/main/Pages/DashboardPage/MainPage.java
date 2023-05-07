@@ -24,6 +24,8 @@ public class MainPage extends JFrame implements InterfacePage {
     private JPanel leftPanel;
     private Inventory inv;
     private ClientManager clientmanager;
+    private FixedBillManager fixedbillmanager;
+    private BillManager billmanager;
 
     public MainPage() {
         // set the layout of the JFrame to BorderLayout
@@ -46,8 +48,7 @@ public class MainPage extends JFrame implements InterfacePage {
         detail.editBarang(nasgor, 5, inv);
         detail.editBarang(mie, 5, inv);
         detail.deleteDetail(eskrim);
-        Bill bill = new Bill(2000, detail);
-        FixedBillManager fixedbillmanager = new FixedBillManager();
+        // Bill bill = new Bill(2000, detail);
 
         // create the LeftPanel
         leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -110,7 +111,7 @@ public class MainPage extends JFrame implements InterfacePage {
                     } else if (buttonNames[index].equals("Inventory")) {
                         newPanel = new InvPane(inv);
                     } else if (buttonNames[index].equals("Payment")) {
-                        newPanel = new PaymentPage(bill, inv, fixedbillmanager);
+                        newPanel = new PaymentPage(this.billmanager, this.inv, this.fixedbillmanager);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientmanager);
                     } else if (buttonNames[index].equals("Customers")) {
