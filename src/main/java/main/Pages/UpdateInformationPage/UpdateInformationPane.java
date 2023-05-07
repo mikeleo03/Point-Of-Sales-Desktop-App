@@ -1,23 +1,23 @@
-package main.Pages.RegistrationPage;
+package main.Pages.UpdateInformationPage;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 import main.Client.*;
 
-class RegistrationPane extends JPanel implements ActionListener {
+class UpdateInformationPane extends JPanel implements ActionListener {
 
     private static final String memberType[] = {"1 - Member", "2 - VIP"};
+    private static final String activeType[] = {"Active", "Not Active"};
     private ClientManager clientManager;
-    private JLabel title, idLabel, nameLabel, phoneLabel, typeLabel;
+    private JLabel title, idLabel, nameLabel, phoneLabel, typeLabel, activeLabel;
     private JTextField nameField, phoneField;
-    private JComboBox<String> regTypeOption;
+    private JComboBox<String> regTypeOption, activeOption;
     private JComboBox<Integer> idOption;
-    private JButton submitButton;
+    private JButton updateButton;
 
-    public RegistrationPane(ClientManager clientManager) {
+    public UpdateInformationPane(ClientManager clientManager) {
         this.clientManager = clientManager;
 
         this.setLayout(new GridBagLayout());
@@ -27,7 +27,7 @@ class RegistrationPane extends JPanel implements ActionListener {
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 10, 10);
         
-        this.title = new JLabel("Registration");
+        this.title = new JLabel("Update Information");
         this.title.setFont(new Font("Serif", Font.BOLD, 30));
 
         this.idLabel = new JLabel("ID                  : ");
@@ -42,6 +42,9 @@ class RegistrationPane extends JPanel implements ActionListener {
         this.typeLabel = new JLabel("Membership : ");
         this.typeLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
+        this.activeLabel = new JLabel("Activity  : ");
+        this.activeLabel.setFont(new Font("Serif", Font.BOLD, 20));
+
         this.nameField = new JTextField();
         this.nameField.setPreferredSize(new Dimension(1000, 25));
         this.nameField.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -54,13 +57,19 @@ class RegistrationPane extends JPanel implements ActionListener {
         this.regTypeOption.setPreferredSize(new Dimension(1000, 25));
         this.regTypeOption.setFont(new Font("Serif", Font.BOLD, 17));
 
-        this.idOption = new JComboBox<>(this.clientManager.getAllCustomerID());
+        this.idOption = new JComboBox<>(this.clientManager.getAllNonCustomerID());
+        this.idOption.setActionCommand("ID Change");
         this.idOption.setPreferredSize(new Dimension(1000, 25));
         this.idOption.setFont(new Font("Serif", Font.BOLD, 17));
+        this.idOption.addActionListener(this);
 
-        this.submitButton = new JButton("Submit");
-        this.submitButton.setFont(new Font("Serif", Font.BOLD, 17));
-        this.submitButton.addActionListener(this);
+        this.activeOption = new JComboBox<>(activeType);
+        this.activeOption.setPreferredSize(new Dimension(1000, 25));
+        this.activeOption.setFont(new Font("Serif", Font.BOLD, 17));
+
+        this.updateButton = new JButton("Update");
+        this.updateButton.setFont(new Font("Serif", Font.BOLD, 17));
+        this.updateButton.addActionListener(this);
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets.left = gbc.insets.right = 500;
@@ -77,6 +86,8 @@ class RegistrationPane extends JPanel implements ActionListener {
         this.add(this.phoneLabel, gbc);
         gbc.gridy++;
         this.add(this.typeLabel, gbc);
+        gbc.gridy++;
+        this.add(this.activeLabel, gbc);
 
         gbc.gridx++;
         gbc.gridy = 1;
@@ -87,33 +98,42 @@ class RegistrationPane extends JPanel implements ActionListener {
         this.add(this.phoneField, gbc);
         gbc.gridy++;
         this.add(this.regTypeOption, gbc);
+        gbc.gridy++;
+        this.add(this.activeOption, gbc);
         
         gbc.gridx = 0;
         gbc.gridy++;
         gbc.gridwidth = 2;
         gbc.insets.left = 400;
         gbc.insets.right = 400;
-        this.add(this.submitButton, gbc);
-    }
-
-    public void reloadComponent() {
-        this.idOption.removeItem(this.idOption.getSelectedItem());
-        this.nameField.setText("");
-        this.phoneField.setText("");
-        this.idOption.revalidate();
-        this.idOption.repaint();
-        this.revalidate();
-        this.repaint();
-    }
-
-    public void addNewMember() {
-        Integer membership = Character.getNumericValue(((String) this.regTypeOption.getSelectedItem()).charAt(0));
-        this.clientManager.promoteMembership(membership, ((Integer) this.idOption.getSelectedItem()), this.nameField.getText().trim(), this.phoneField.getText().trim());
+        this.add(this.updateButton, gbc);
         this.reloadComponent();
     }
 
-    public void actionPerformed(ActionEvent event) {
-        if (event.getActionCommand().equals("Submit")) {
+    public void reloadComponent() {
+        Integer idSelected = (Integer) this.idOption.getSelectedItem();
+        if (idSelected != null) {
+            this.nameField.setText(this.clientManager.getClientName(idSelected));
+            this.phoneField.setText(this.clientManager.getClientPhone(idSelected));
+            Integer clientType = this.clientManager.getClientType(idSelected);
+            Boolean active = this.clientManager.getClientActivity(idSelected);
+            this.regTypeOption.setSelectedIndex(clientType);
+            this.activeOption.setSelectedIndex(active ? 0 : 1);
+        }
+    }
+
+    public void updateMember() {
+        Integer membership = Character.getNumericValue(((String) this.activeOption.getSelectedItem()).charAt(0));
+        Integer idSelected = (Integer) this.idOption.getSelectedItem();
+        Boolean isActive = ((String) this.activeOption.getSelectedItem()).equals("Active");
+        this.clientManager.changeClientStatus(idSelected, this.nameField.getText().trim(), this.phoneField.getText().trim(), isActive, membership);
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("ID Change")) {
+            this.reloadComponent();
+        }
+        else if (e.getActionCommand().equals("Update")) {
             if (this.nameField.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Mohon masukkan nama yang valid");
             }
@@ -121,10 +141,10 @@ class RegistrationPane extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Mohon masukkan nomor telepon yang valid");
             }
             else if (this.idOption.getItemCount() == 0) {
-                JOptionPane.showMessageDialog(null, "Tidak ada pelanggan lagi untuk dijadikan member atau VIP");
+                JOptionPane.showMessageDialog(null, "Belum ada member atau VIP yang terdaftar");
             }
             else {
-                this.addNewMember();
+                this.updateMember();
             }
         }
     }
