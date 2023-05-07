@@ -220,10 +220,10 @@ public class ClientManager implements Serializable {
         int index = this.findCustomerIndex(customerID);
 
         if (membership == 1) {
-            this.listMember.add(new Member(customerID, customerName, noOfPhone, 0, true));
+            this.listMember.add(new Member(customerID, customerName, noOfPhone, 0.0, true));
         }
         else {
-            this.listVIP.add(new VIP(customerID, customerName, noOfPhone, 0, true));
+            this.listVIP.add(new VIP(customerID, customerName, noOfPhone, 0.0, true));
         }
         this.listCustomer.remove(index);
         this.observer.notifySubscriber();

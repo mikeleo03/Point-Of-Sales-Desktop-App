@@ -14,7 +14,7 @@ public class Member extends Customer {
 
     private String customerName;
     private String noOfPhone;
-    private Integer point;
+    private Double point;
     private Boolean active ;
     private final Double pointConversionRate = 0.01;
 
@@ -27,12 +27,12 @@ public class Member extends Customer {
         super();
         this.customerName = "aaaaaaaaaaaaaaaa";
         this.noOfPhone = "";
-        this.point = 0;
+        this.point = 0.0;
         this.active = false;
     }
 
     // User-defined constructor, initialize all attributes with its corresponding parameter
-    public Member(Integer customerID, String customerName, String noOfPhone, Integer point, Boolean active) {
+    public Member(Integer customerID, String customerName, String noOfPhone, Double point, Boolean active) {
         super(customerID);
         this.customerName = customerName;
         this.noOfPhone = noOfPhone;
@@ -64,11 +64,11 @@ public class Member extends Customer {
 
     // Getter-setter for customerID attribute
     @XmlElement
-    public Integer getPoint() {
+    public Double getPoint() {
         return this.point;
     }
 
-    public void setPoint(Integer point) {
+    public void setPoint(Double point) {
         this.point = point;
     }
 

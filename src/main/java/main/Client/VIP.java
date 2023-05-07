@@ -25,7 +25,7 @@ public class VIP extends Member {
     }
 
     // User-defined constructor, initialize all attributes with its corresponding parameter
-    public VIP(Integer customerID, String customerName, String noOfPhone, Integer point, Boolean isActive) {
+    public VIP(Integer customerID, String customerName, String noOfPhone, Double point, Boolean isActive) {
         super(customerID, customerName, noOfPhone, point, isActive);
     }    
 }  
