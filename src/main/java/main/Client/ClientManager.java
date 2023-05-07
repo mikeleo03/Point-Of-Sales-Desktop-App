@@ -75,6 +75,21 @@ public class ClientManager implements Serializable {
 
     /* ----------------------------------- ADDITIONAL METHOD ----------------------------------*/
 
+    // Return the type of customerID
+    public Integer getClientType(Integer customerID) {
+        for (Member member : this.listMember) {
+            if (member.getCustomerID() == customerID) {
+                return 0;
+            }
+        }
+        for (VIP vip : this.listVIP) {
+            if (vip.getCustomerID() == customerID) {
+                return 1;
+            }
+        }
+        return -1;
+    }
+
     // Return the name of customerID
     public String getClientName(Integer customerID) {
         for (Member member : this.listMember) {
@@ -120,20 +135,21 @@ public class ClientManager implements Serializable {
         return false;
     }
 
-    // Return the type of customerID
-    public Integer getClientType(Integer customerID) {
-        for (Member member : this.listMember) {
-            if (member.getCustomerID() == customerID) {
-                return 0;
-            }
+    // Return the name of all clientID
+    public String[] getNonCustomerName() {
+        String[] listName = new String[this.listMember.size() + this.listVIP.size() + 1];
+        
+        listName[0] = "";
+        for (Integer i = 0; i < this.listMember.size(); i++) {
+            listName[1 + i] = this.listMember.get(i).getCustomerName() + " - (" + this.listMember.get(i).getCustomerID() + ")";
         }
-        for (VIP vip : this.listVIP) {
-            if (vip.getCustomerID() == customerID) {
-                return 1;
-            }
+        for (Integer i = 0; i < this.listVIP.size(); i++) {
+            listName[1 + this.listMember.size() + i] = this.listVIP.get(i).getCustomerName() + " - (" + this.listVIP.get(i).getCustomerID() + ")";
         }
-        return -1;
-    }
+
+        Arrays.sort(listName);
+        return listName;
+    }   
 
     // Return all ID of customer in descending order
     public Integer[] getAllCustomerID() {
