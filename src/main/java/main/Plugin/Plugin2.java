@@ -1,6 +1,7 @@
 package main.Plugin;
 
 import main.Barang.*;
+import main.Client.*;
 
 import javax.swing.*;
 import org.jfree.chart.*;
@@ -37,6 +38,31 @@ public class Plugin2 extends BasePlugin implements PluginInterface, Runnable {
         ChartPanel cp = new ChartPanel(pieChart);
         cp.setSize(560,400);
         File out = new File("Category Count.png");
+        try {
+            ChartUtils.saveChartAsPNG(out, pieChart, cp.getWidth(), cp.getHeight());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void makeMembershipChart(ClientManager cm) {
+        DefaultPieDataset pds = new DefaultPieDataset();
+        HashMap<String,Integer> membershipSum = new HashMap<>();
+        membershipSum.put("Customer", cm.getListCustomer().size());
+        membershipSum.put("Member", cm.getListMember().size());
+        membershipSum.put("VIP", cm.getListVIP().size());
+        for (String k : membershipSum.keySet()) {
+            pds.setValue(k, membershipSum.get(k));
+        }
+        JFreeChart pieChart = ChartFactory.createPieChart(      
+          "Number of people in each membership category",   // chart title 
+          pds,          // data    
+          true,             // include legend   
+          true, 
+          false);
+        ChartPanel cp = new ChartPanel(pieChart);
+        cp.setSize(560,400);
+        File out = new File("Membership Count.png");
         try {
             ChartUtils.saveChartAsPNG(out, pieChart, cp.getWidth(), cp.getHeight());
         } catch (Exception e) {
