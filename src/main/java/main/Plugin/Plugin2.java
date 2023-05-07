@@ -43,9 +43,8 @@ public class Plugin2 extends BasePlugin implements PluginInterface, Runnable {
             makeMembershipChart();
             ip.getPluginPage().revalidate();
             ip.getPluginPage().repaint();
-            System.out.println("renewed");
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
