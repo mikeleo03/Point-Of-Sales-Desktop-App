@@ -13,5 +13,5 @@ public interface InterfacePage {
     public ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> getInventoryData();
 
     // Function to get data from client manager
-    public HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> getClientManagerData();
+    public HashMap<String,ArrayList<Quintet<Integer, String, String, Double, Boolean>>> getClientManagerData();
 }

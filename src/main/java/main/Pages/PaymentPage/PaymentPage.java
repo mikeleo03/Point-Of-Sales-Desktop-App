@@ -8,10 +8,11 @@ import java.awt.event.ActionListener;
 
 import main.Bill.*;
 import main.Barang.*;
+import main.Observer.*;
 import main.Transaksi.DetailTransaksi;
 import main.Transaksi.ElemenDetailTransaksi;  
 
-public class PaymentPage extends JPanel implements ActionListener {
+public class PaymentPage extends JPanel implements ActionListener, Subscriber {
     private JButton cancelButton;
     private JButton saveButton;
     private JButton process;
@@ -24,18 +25,22 @@ public class PaymentPage extends JPanel implements ActionListener {
     private FixedBillManager fixedbillmanager;
     private Bill currentbill;
 
-    public PaymentPage (BillManager billmanager, Inventory inventory, FixedBillManager fixedbillmanager) {
+    public PaymentPage (BillManager billmanager, Bill currentbill, Inventory inventory, FixedBillManager fixedbillmanager) {
         // Pass the bill object to the attributes
         this.billmanager = billmanager;
         this.inventory = inventory;
         this.fixedbillmanager = fixedbillmanager;
+        this.currentbill = currentbill;
+        this.billmanager.observer.subscribe(this);
+        this.fixedbillmanager.observer.subscribe(this);
         
         // Create the table with some sample data
         List<Bill> listbill = this.billmanager.getListBill();
-        ArrayList<Object[]> data = new ArrayList<>();
-        for (Bill bill : listbill) {
-            this.currentbill = bill;
-            DetailTransaksi details = bill.getDetailTransaksi();
+        int index = listbill.indexOf(currentbill);
+        if (index != -1) {
+            ArrayList<Object[]> data = new ArrayList<>();
+
+            DetailTransaksi details = this.currentbill.getDetailTransaksi();
             for (int i = 0; i < details.getElement().size(); i++) {
                 Object[] row = new Object[4];
                 row[0] = details.getElement().get(i).getJumlahBarang();
@@ -67,7 +72,7 @@ public class PaymentPage extends JPanel implements ActionListener {
             gbc.gridy = 0;
             gbc.anchor = GridBagConstraints.EAST;
             mainPanel.add(buttonPanel, gbc);
-            
+        
             gbc.gridy++;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             this.pengantar = new JLabel("Daftar Barang");
@@ -79,7 +84,7 @@ public class PaymentPage extends JPanel implements ActionListener {
 
             gbc.gridy++;
             gbc.fill = GridBagConstraints.HORIZONTAL;
-            this.total = new JLabel("Total :" + bill.getNominal().toString());
+            this.total = new JLabel("Total :" + this.currentbill.getNominal().toString());
             this.total.setFont(new Font("Arial", ALLBITS, 20));
             mainPanel.add(this.total, gbc);
 
@@ -104,13 +109,25 @@ public class PaymentPage extends JPanel implements ActionListener {
         } else if (e.getSource() == this.saveButton) {
             System.out.println("Button 2 clicked!");
         } else if (e.getSource() == this.process) {
-            // Membuat fixed bill
-            FixedBill fixed = new FixedBill(this.currentbill.getIdCustomer(), this.currentbill.getDetailTransaksi());
-            this.fixedbillmanager.addFixedBill(fixed);
-            // Mengurangi nilai barang dari inventory
-            for (ElemenDetailTransaksi elemen : this.currentbill.getDetailTransaksi().getElement()) {
-                this.inventory.changeStock(elemen.getIdBarang(), -1 * elemen.getJumlahBarang());
+            int index = this.billmanager.getListBill().indexOf(currentbill);
+            if (index != -1) {
+                // Membuat fixed bill
+                FixedBill fixed = new FixedBill(this.currentbill.getIdCustomer(), this.currentbill.getDetailTransaksi());
+                this.fixedbillmanager.addFixedBill(fixed);
+                // Mengurangi nilai barang dari inventory
+                for (ElemenDetailTransaksi elemen : this.currentbill.getDetailTransaksi().getElement()) {
+                    this.inventory.changeStock(elemen.getIdBarang(), -1 * elemen.getJumlahBarang());
+                }
+                // Delete dari bill
+                this.billmanager.deleteBill(currentbill);
+                JOptionPane.showMessageDialog(null, "Transaksi berhasil diproses.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Transaksi ini sudah pernah diproses sebelumnya.");
             }
         }
+    }
+
+    public void update() {
+        //
     }
 }

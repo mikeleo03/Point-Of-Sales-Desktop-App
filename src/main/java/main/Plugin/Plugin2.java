@@ -71,7 +71,7 @@ public class Plugin2 extends BasePlugin implements PluginInterface, Runnable {
 
     public void makeMembershipChart() {
         DefaultPieDataset pds = new DefaultPieDataset();
-        HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> data = ip.getClientManagerData();
+        HashMap<String,ArrayList<Quintet<Integer, String, String, Double, Boolean>>> data = ip.getClientManagerData();
         HashMap<String,Integer> membershipSum = new HashMap<>();
         membershipSum.put("Customer", data.get("Customer").size());
         membershipSum.put("Member", data.get("Member").size());

@@ -31,15 +31,21 @@ public class PelangganPanel extends JPanel implements ActionListener {
     private Bill bill;
     private CustomerTuple customerTuple;
     private ClientManager clientManager;
-    private Inventory inventory;    
+    private BillManager billManager;
+    private FixedBillManager fixedBillManager;
+    private Inventory inventory;
+    private JTabbedPane tabbedPane;    
 
-    public PelangganPanel(int pelangganId, KasirPage kasirPage, Bill bill, CustomerTuple customerTuple, ClientManager clientManager, Inventory inventory) {
+    public PelangganPanel(int pelangganId, KasirPage kasirPage, Bill bill, CustomerTuple customerTuple, ClientManager clientManager, Inventory inventory, BillManager billManager, FixedBillManager fixedBillManager, JTabbedPane tabbedPane) {
         this.pelangganId = pelangganId;
         this.kasirPage = kasirPage;
         this.customerTuple = customerTuple;
         this.bill = bill;
         this.clientManager = clientManager;
+        this.billManager = billManager;
+        this.fixedBillManager = fixedBillManager;
         this.inventory = inventory;
+        this.tabbedPane = tabbedPane;
         initUI();
     }
 
@@ -50,7 +56,7 @@ public class PelangganPanel extends JPanel implements ActionListener {
 
         // Menambahkan BillPane ke panel
         DetailTransaksi details = new DetailTransaksi();
-        this.billPane = new BillPane(details, this.bill, this.customerTuple, this.clientManager);
+        this.billPane = new BillPane(details, this.bill, this.inventory, this.customerTuple, this.clientManager, this.billManager, this.fixedBillManager, this.tabbedPane);
         gbc.anchor = GridBagConstraints.NORTHEAST;
         gbc.gridx = 1;
         gbc.gridy = 1;

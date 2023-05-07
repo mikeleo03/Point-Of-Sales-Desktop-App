@@ -16,7 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import main.Pages.KasirPage.ButtonActionListener;
+import main.Pages.PaymentPage.*;
 import main.Bill.*;
+import main.Barang.*;
 import main.Client.ClientManager;
 import main.Transaksi.*;
 
@@ -29,10 +31,18 @@ public class BillPane extends JPanel {
     private DetailTransaksi details;
     private JComboBox<String> clientComboBox;
     private ClientManager clientManager;
+    private Inventory inventory;
+    private BillManager billManager;
+    private FixedBillManager fixedBillManager;
+    private JTabbedPane tabbedPane;
 
-    public BillPane(DetailTransaksi details, Bill bill, CustomerTuple customerTuple, ClientManager clientManager) {
+    public BillPane(DetailTransaksi details, Bill bill, Inventory inventory, CustomerTuple customerTuple, ClientManager clientManager, BillManager billManager, FixedBillManager fixedBillManager, JTabbedPane tabbedPane) {
         details = bill.getDetailTransaksi();
+        this.inventory = inventory;
         this.clientManager = clientManager;
+        this.billManager = billManager;
+        this.fixedBillManager = fixedBillManager;
+        this.tabbedPane = tabbedPane;
         setLayout(new GridBagLayout());
 
         // create table and add to scroll pane
@@ -172,7 +182,45 @@ public class BillPane extends JPanel {
         add(payButton, gbc);
 
         // add action listener to buttons
-        payButton.addActionListener(new ButtonActionListener ());
+        payButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() instanceof JButton) {
+                    JButton button = (JButton) e.getSource();
+                    if (button.getText().equals("Save Bill")) {
+                        System.out.println("Save");
+                    } else if (button.getText().equals("Bayar")) {
+                        JPanel newPanel = new PaymentPage(billManager, bill, inventory, fixedBillManager);
+                        GridBagConstraints gbc = new GridBagConstraints();
+                        gbc.gridx = 0;
+                        gbc.gridy = 0;
+                        gbc.fill = GridBagConstraints.HORIZONTAL;
+                        // create a close button and add it to the tab
+                        JButton closeButton = new JButton("X");
+                        // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
+                        // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
+                        closeButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // remove the tab
+                                tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
+                            }
+                        });
+                        // closeButton.setPreferredSize(new Dimension(30,20));
+                        JPanel tabPanel = new JPanel(new BorderLayout(3,3));
+                        JLabel tabTitle = new JLabel("Payment");
+                        tabPanel.add(tabTitle, BorderLayout.WEST);
+                        tabPanel.add(closeButton, BorderLayout.EAST);
+
+                        // add the panel to the tabbedPane
+                        tabbedPane.addTab("Payment", newPanel);
+                        tabbedPane.setTabComponentAt(tabbedPane.getTabCount()-1, tabPanel);
+                        tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
+                    }
+                }
+            }
+        });
     }
 
     public void updateBill(Bill bill) {

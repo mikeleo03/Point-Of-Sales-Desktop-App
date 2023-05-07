@@ -31,7 +31,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
     private DataStoreAdapter dataStoreAdapter;
     private ClientManager clientManager;
     private Inventory inv;
-    private FixedBillManager fixedbillmanager;
+    private FixedBillManager fixedBillManager;
     private BillManager billManager;
     private PluginPanel pluginPane;
 
@@ -39,6 +39,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
         this.dataStoreAdapter = new JSONDataStoreAdapter();
         this.clientManager = this.dataStoreAdapter.readClientManager();
         this.billManager = new BillManager();
+        this.fixedBillManager = new FixedBillManager();
 
         this.clientManager.observer.subscribe(this);
 
@@ -80,14 +81,13 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
         leftPanel.add(POS);
 
         // create the buttons with icons
-        String[] buttonNames = {"Dashboard", "Registration", "Customers", "History", "Payment", 
+        String[] buttonNames = {"Dashboard", "Registration", "Customers", "History",
                                 "Inventory", "Sales", "Stocks", "Settings", "Plugin"};
         ImageIcon[] buttonIcons = {
             new ImageIcon(new ImageIcon("../img/icon/home.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/registration.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/customer.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/history.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
-            new ImageIcon(new ImageIcon("../img/icon/payment.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/inventory.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/sales.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/stock.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
@@ -125,8 +125,6 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                         newPanel = new MainPanel();
                     } else if (buttonNames[index].equals("Inventory")) {
                         newPanel = new InvPane(inv);
-                    } else if (buttonNames[index].equals("Payment")) {
-                        newPanel = new PaymentPage(billManager, inv, fixedbillmanager);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientManager);
                     } else if (buttonNames[index].equals("Customers")) {
@@ -134,11 +132,11 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                     } else if (buttonNames[index].equals("Settings")) {
                         newPanel = new SettingPage(MainPage.this);
                     } else if (buttonNames[index].equals("History")) {
-                        newPanel = new HistoryPage(fixedbillmanager);
+                        newPanel = new HistoryPage(fixedBillManager);
                     } else if (buttonNames[index].equals("Plugin")) {
                         newPanel = pluginPane;
                     } else if (buttonNames[index].equals("Sales")) {
-                        newPanel = new KasirPage(billManager, clientManager, inv);
+                        newPanel = new KasirPage(billManager, fixedBillManager, clientManager, inv, tabbedPane);
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
@@ -204,25 +202,25 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
         return data;
     }
 
-    public HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> getClientManagerData() {
-        HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> data = new HashMap<>();
-        ArrayList<Quintet<Integer, String, String, Integer, Boolean>> customers = new ArrayList<>();
+    public HashMap<String,ArrayList<Quintet<Integer, String, String, Double, Boolean>>> getClientManagerData() {
+        HashMap<String,ArrayList<Quintet<Integer, String, String, Double, Boolean>>> data = new HashMap<>();
+        ArrayList<Quintet<Integer, String, String, Double, Boolean>> customers = new ArrayList<>();
         for (Customer c : clientManager.getListCustomer()) {
-            Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
+            Quintet<Integer, String, String, Double, Boolean> currData = new Quintet<Integer, String, String, Double, Boolean>
                 (c.getCustomerID(), null, null, null, null);
             customers.add(currData);
         }
         data.put("Customer", customers);
         customers.clear();
         for (Member m : clientManager.getListMember()) {
-            Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
+            Quintet<Integer, String, String, Double, Boolean> currData = new Quintet<Integer, String, String, Double, Boolean>
                 (m.getCustomerID(), m.getCustomerName(), m.getNoOfPhone(), m.getPoint(), m.getActive());
             customers.add(currData);
         }
         data.put("Member", customers);
         customers.clear();
         for (VIP v : clientManager.getListVIP()) {
-            Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
+            Quintet<Integer, String, String, Double, Boolean> currData = new Quintet<Integer, String, String, Double, Boolean>
                 (v.getCustomerID(), v.getCustomerName(), v.getNoOfPhone(), v.getPoint(), v.getActive());
             customers.add(currData);
         }

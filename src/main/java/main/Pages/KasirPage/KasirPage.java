@@ -30,17 +30,20 @@ public class KasirPage extends JPanel {
     private Map<String, Bill> billMap;
     private CustomerTuple customerTuple;
     private BillManager billManager;
+    private FixedBillManager fixedBillManager;
     private ClientManager clientManager;
     private Inventory inventory;
 
-    public KasirPage(BillManager billManager, ClientManager clientManager, Inventory inventory) {
+    public KasirPage(BillManager billManager, FixedBillManager fixedBillManager, ClientManager clientManager, Inventory inventory, JTabbedPane tabbedPane) {
         this.panelMap = new HashMap<>();
         this.stateMap = new HashMap<>();
         this.billMap = new HashMap<>();
         this.customerTuple = new CustomerTuple("", -1);
         this.billManager = billManager;
+        this.fixedBillManager = fixedBillManager;
         this.clientManager = clientManager;
         this.inventory = inventory;
+        this.tabbedPane = tabbedPane;
         initUI();
     }
 
@@ -80,7 +83,7 @@ public class KasirPage extends JPanel {
         }
         
         // Membuat panel baru untuk menangani pelanggan baru
-        JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple, this.clientManager, this.inventory);
+        JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple, this.clientManager, this.inventory, this.billManager, this.fixedBillManager, this.tabbedPane);
 
         JButton closeButton = new JButton("X");
         closeButton.addActionListener(new ActionListener() {
@@ -127,11 +130,4 @@ public class KasirPage extends JPanel {
     public JTabbedPane getTabbedPane() {
         return tabbedPane;
     }
-
-    /* public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            KasirPage kasirPage = new KasirPage(new BillManager());
-            kasirPage.setVisible(true);
-        });
-    } */
 }

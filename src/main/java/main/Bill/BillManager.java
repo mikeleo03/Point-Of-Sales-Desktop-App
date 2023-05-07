@@ -39,4 +39,15 @@ public class BillManager implements Serializable {
     public Boolean isEmpty() {
         return this.listBill.isEmpty();
     }
+
+    public void deleteBill(Bill bill) {
+        int index = this.listBill.indexOf(bill);
+        if (index != -1) {
+            this.listBill.remove(index);
+            System.out.println("Bill removed successfully.");
+            this.observer.notifySubscriber();
+        } else {
+            System.out.println("Bill not found.");
+        }
+    }
 }   
