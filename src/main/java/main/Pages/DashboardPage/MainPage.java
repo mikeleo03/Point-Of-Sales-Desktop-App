@@ -12,6 +12,7 @@ import main.Pages.PaymentPage.*;
 import main.Pages.RegistrationPage.*;
 import main.Pages.UpdateInformationPage.*;
 import main.Pages.SettingPage.*;
+import main.Pages.HistoryPage.*;
 
 public class MainPage extends JFrame {
 
@@ -39,6 +40,7 @@ public class MainPage extends JFrame {
         detail.editBarang(mie, 5, inv);
         detail.deleteDetail(eskrim);
         Bill bill = new Bill(2000, detail);
+        FixedBillManager fixedbillmanager = new FixedBillManager();
 
         // create the LeftPanel
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -85,6 +87,8 @@ public class MainPage extends JFrame {
                         newPanel = new UpdateInformationPane(clientmanager);
                     } else if (buttonNames[index].equals("Settings")) {
                         newPanel = new SettingPage();
+                    } else if (buttonNames[index].equals("History")) {
+                        newPanel = new HistoryPage(fixedbillmanager);
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
@@ -93,7 +97,7 @@ public class MainPage extends JFrame {
                     }
                     // create a close button and add it to the tab
                     JButton closeButton = new JButton("X");
-                    closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
+                    // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
                     closeButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -101,7 +105,7 @@ public class MainPage extends JFrame {
                             tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
                         }
                     });
-                    closeButton.setPreferredSize(new Dimension(30,20));
+                    // closeButton.setPreferredSize(new Dimension(30,20));
                     JPanel tabPanel = new JPanel(new BorderLayout(3,3));
                     JLabel tabTitle = new JLabel(buttonNames[index]);
                     tabPanel.add(tabTitle, BorderLayout.WEST);

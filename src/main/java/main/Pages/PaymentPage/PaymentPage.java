@@ -14,10 +14,13 @@ public class PaymentPage extends JPanel implements ActionListener {
     private JButton process = new JButton("Process");
     private JLabel pengantar;
     private JLabel total;
-    
     final int WIDTH = 700, HEIGHT = 400;
 
+    private Bill bill;
+
     public PaymentPage (Bill bill) {
+        // Pass the bill object to the attributes
+        this.bill = bill;
         
         // Create the table with some sample data
         ArrayList<Object[]> data = new ArrayList<>();
