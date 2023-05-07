@@ -1,0 +1,88 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+public class MainPage extends JFrame {
+
+    private JTabbedPane tabbedPane;
+
+    public MainPage() {
+        // set the layout of the JFrame to BorderLayout
+        setLayout(new BorderLayout());
+
+        // create the LeftPanel
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftPanel.setPreferredSize(new Dimension(200, getHeight()));
+        leftPanel.setBackground(new Color(0x1a1e3b));
+
+        // create the buttons with icons
+        String[] buttonNames = {"Dashboard", "Registration", "Customers", "History", "Payment", 
+                                "Inventory", "Sales", "Stocks", "Settings", "Plugin"};
+        ImageIcon[] buttonIcons = {
+                new ImageIcon("images.png"), new ImageIcon("registration.png"), new ImageIcon("customers.png"),
+                new ImageIcon("history.png"), new ImageIcon("payment.png"), new ImageIcon("inventory.png"),
+                new ImageIcon("sales.png"), new ImageIcon("stocks.png"), new ImageIcon("settings.png"), new ImageIcon("plugin.png")
+        };
+        JButton[] buttons = new JButton[buttonNames.length];
+        for (int i = 0; i < buttonNames.length; i++) {
+            final int index = i;
+            buttons[i] = new JButton(buttonNames[i], buttonIcons[i]);
+            buttons[i].setPreferredSize(new Dimension(180, 50));
+            buttons[i].setBorder(BorderFactory.createEmptyBorder());
+            buttons[i].setContentAreaFilled(false);
+            buttons[i].setForeground(Color.WHITE);
+            buttons[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // create a new panel and add it to the tabbedPane
+                    JPanel newPanel = new JPanel(new BorderLayout());
+                    JLabel label = new JLabel("AAAAAA", JLabel.CENTER);
+                    newPanel.add(label, BorderLayout.CENTER);
+                    
+                    // create a close button and add it to the tab
+                    JButton closeButton = new JButton("Close Tab");
+                    closeButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // remove the tab
+                            tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
+                        }
+                    });
+                    newPanel.add(closeButton, BorderLayout.SOUTH);
+                    
+                    // add the panel to the tabbedPane
+                    tabbedPane.addTab(buttonNames[index], newPanel);
+                }
+            });
+            leftPanel.add(buttons[i]);
+        }
+
+        // create the JTabbedPane
+        tabbedPane = new JTabbedPane();
+
+        // add the LeftPanel and JTabbedPane to the JFrame
+        add(leftPanel, BorderLayout.WEST);
+        add(tabbedPane, BorderLayout.CENTER);
+
+        // set JFrame properties
+        setTitle("Split JFrame Example");
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public static void main(String[] args) {
+        MainPage frame = new MainPage();
+        frame.setVisible(true);
+    }
+}
