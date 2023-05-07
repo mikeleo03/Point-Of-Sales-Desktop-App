@@ -1,7 +1,6 @@
 package main.Pages.InventoryPage;
 import main.Barang.Barang;
 import main.Barang.Inventory;
-import main.Pages.Observer;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 
 public class InvPane extends JPanel implements ActionListener{
     static final int MAXCOLUMN=6;
-    private Observer<Barang> obs;
 
     private JLabel title;
     private JButton searchItem;

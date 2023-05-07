@@ -124,10 +124,10 @@ public class KasirPage extends JFrame {
         return tabbedPane;
     }
 
-    public static void main(String[] args) {
+    /* public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             KasirPage kasirPage = new KasirPage(new BillManager());
             kasirPage.setVisible(true);
         });
-    }
+    } */
 }

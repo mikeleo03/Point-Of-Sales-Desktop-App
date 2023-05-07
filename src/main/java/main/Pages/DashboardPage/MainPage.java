@@ -18,6 +18,7 @@ import main.Pages.UpdateInformationPage.*;
 import main.Pages.SettingPage.*;
 import main.Pages.HistoryPage.*;
 import main.Pages.PluginPage.*;
+import main.Pages.KasirPage.*;
 
 public class MainPage extends JFrame implements InterfacePage {
     private JTabbedPane tabbedPane;
@@ -31,7 +32,7 @@ public class MainPage extends JFrame implements InterfacePage {
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
 
-        clientmanager = new ClientManager();
+        //clientmanager = new ClientManager();
 
         Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
         Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
@@ -111,7 +112,7 @@ public class MainPage extends JFrame implements InterfacePage {
                     } else if (buttonNames[index].equals("Inventory")) {
                         newPanel = new InvPane(inv);
                     } else if (buttonNames[index].equals("Payment")) {
-                        newPanel = new PaymentPage(this.billmanager, this.inv, this.fixedbillmanager);
+                        newPanel = new PaymentPage(billmanager, inv, fixedbillmanager);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientmanager);
                     } else if (buttonNames[index].equals("Customers")) {
@@ -122,7 +123,9 @@ public class MainPage extends JFrame implements InterfacePage {
                         newPanel = new HistoryPage(fixedbillmanager);
                     } else if (buttonNames[index].equals("Plugin")) {
                         newPanel = new PluginPanel();
-                    } else {
+                    } /* else if (buttonNames[index].equals("Sales")) {
+                        // newPanel = new KasirPage(billmanager);
+                    } */ else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
                         JLabel label = new JLabel("AAAAAA");
