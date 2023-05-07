@@ -1,13 +1,14 @@
-package main.Pages.DashboardPage;
+package main.Plugin;
 
 import javax.swing.JPanel;
 import java.util.HashMap;
-import javax.swing.ImageIcon;
 import java.util.ArrayList;
-import javax.swing.JButton;
 import org.javatuples.*;
 
 public interface InterfacePage {
+    // Function to edit plugin page
+    public JPanel getPluginPage();
+
     // Function to get data from inventory
     public ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> getInventoryData();
 

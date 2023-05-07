@@ -22,12 +22,6 @@ public final class App {
     public static void main(String[] args) {
         MainPage mp = new MainPage();
         mp.setVisible(true);
-        /* PluginLoader pl = new PluginLoader();
-        try {
-            pl.loadPlugin("C:/Users/axioo/Documents/ITB - Informatika/Semester 4/IF2210 Pemrograman Berbasis Objek/Tugas Besar 2/Tubes-2-OOP-CPK/src/main/java/main/Plugin/test.jar");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } */
 
         // ArrayList<Barang> listBarang = new ArrayList<>();
         /* Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
