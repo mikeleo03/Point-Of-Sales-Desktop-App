@@ -45,30 +45,35 @@ public final class App {
         detail.editBarang(nasgor, 5, inv);
         detail.editBarang(mie, 5, inv);
         detail.deleteDetail(eskrim);
-
         Bill bill = new Bill(2000, detail);
+
         System.out.println(bill.getTanggal());
         System.out.println(bill.getWaktu());
         System.out.println(bill);
+        bill = new Bill(2000, detail);
+        for (ElemenDetailTransaksi elemen : bill.getDetailTransaksi().getElement()) {
+            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
+        }
+        System.out.println(bill.getNominal());
+
+        detail.setQuantity(mie, 2);
+        detail.deleteDetail(nasgor);
+        detail.setQuantity(eskrim, 5);
+        detail.editBarang(eskrim, 7, inv);
+        bill = new Bill(2000, detail);
+        for (ElemenDetailTransaksi elemen : bill.getDetailTransaksi().getElement()) {
+            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
+        }
+        System.out.println(bill.getNominal());
+
+        detail.editBarang(eskrim, 7, inv);
+        detail.deleteDetail(nasgor);
+        bill = new Bill(2000, detail);
+        for (ElemenDetailTransaksi elemen : bill.getDetailTransaksi().getElement()) {
+            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
+        }
+        System.out.println(bill.getNominal());
+
         PaymentPage payment = new PaymentPage(bill);
-        /* for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
-            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
-        }
-
-        detail.editQuantity(mie, 2);
-        detail.deleteDetail(nasgor);
-        detail.editQuantity(eskrim, 5);
-        detail.addBarang(eskrim, 7, inv);
-        for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
-            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
-        }
-
-        detail.addBarang(eskrim, 7, inv);
-        detail.deleteDetail(nasgor);
-        for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
-            System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
-        } */
-
-        /* PaymentPage payment = new PaymentPage(fixedbill); */
     }
 }
