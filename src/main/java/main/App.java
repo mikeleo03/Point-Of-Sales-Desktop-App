@@ -30,7 +30,7 @@ public final class App {
         } */
 
         // ArrayList<Barang> listBarang = new ArrayList<>();
-        Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
+        /* Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
         Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
         Barang eskrim = new Barang("Ice Cream", 12, 5000.00, 7000.00, "Makanan", "../");
         
@@ -38,7 +38,6 @@ public final class App {
         inv.addBarang(mie);
         inv.addBarang(nasgor);
         inv.addBarang(eskrim);
-        /*
 
         DetailTransaksi detail = new DetailTransaksi();
         detail.editBarang(nasgor, 3, inv);
@@ -73,8 +72,8 @@ public final class App {
         for (ElemenDetailTransaksi elemen : bill.getDetailTransaksi().getElement()) {
             System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
         }
-        System.out.println(bill.getNominal());
+        System.out.println(bill.getNominal()); */
 
-        PaymentPage payment = new PaymentPage(bill); */
+        // PaymentPage payment = new PaymentPage(bill);
     }
 }

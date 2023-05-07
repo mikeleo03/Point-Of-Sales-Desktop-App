@@ -4,7 +4,13 @@ import java.awt.event.ActionListener;
 import java.awt.*;
 import javax.swing.*;
 import main.Barang.*;
+import main.Transaksi.*;
+import main.Bill.*;
+import main.Client.ClientManager;
 import main.Pages.InventoryPage.*;
+import main.Pages.PaymentPage.*;
+import main.Pages.RegistrationPage.*;
+import main.Pages.RegistrationPage.RegistrationPage;
 
 public class MainPage extends JFrame {
 
@@ -14,6 +20,8 @@ public class MainPage extends JFrame {
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
 
+        ClientManager clientmanager = new ClientManager();
+
         Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
         Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
         Barang eskrim = new Barang("Ice Cream", 12, 5000.00, 7000.00, "Makanan", "../");
@@ -22,6 +30,14 @@ public class MainPage extends JFrame {
         inv.addBarang(mie);
         inv.addBarang(nasgor);
         inv.addBarang(eskrim);
+
+        DetailTransaksi detail = new DetailTransaksi();
+        detail.editBarang(nasgor, 3, inv);
+        detail.editBarang(mie, 5, inv);
+        detail.editBarang(nasgor, 5, inv);
+        detail.editBarang(mie, 5, inv);
+        detail.deleteDetail(eskrim);
+        Bill bill = new Bill(2000, detail);
 
         // create the LeftPanel
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -60,6 +76,10 @@ public class MainPage extends JFrame {
                         newPanel = new MainPanel();
                     } else if (buttonNames[index].equals("Inventory")) {
                         newPanel = new InvPane(inv);
+                    } else if (buttonNames[index].equals("Payment")) {
+                        newPanel = new PaymentPage(bill);
+                    } else if (buttonNames[index].equals("Registration")) {
+                        newPanel = new RegistrationPane(clientmanager);
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;

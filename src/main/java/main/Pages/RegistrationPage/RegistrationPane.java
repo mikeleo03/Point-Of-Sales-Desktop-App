@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import main.Client.*;
 
-class RegistrationPane extends JPanel implements ActionListener {
+public class RegistrationPane extends JPanel implements ActionListener {
 
     private static final String memberType[] = {"1 - Member", "2 - VIP"};
     private ClientManager clientManager;

@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import main.Bill.*;
 import main.Transaksi.DetailTransaksi;  
 
-public class PaymentPage extends JFrame implements ActionListener {
+public class PaymentPage extends JPanel implements ActionListener {
     private JButton cancelButton;
     private JButton saveButton;
     private JButton process = new JButton("Process");
@@ -73,15 +73,11 @@ public class PaymentPage extends JFrame implements ActionListener {
         mainPanel.add(this.process, gbc);
         
         // Set up the frame
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Payment Page");
         setSize(WIDTH, HEIGHT);
-        setLocationRelativeTo(null);
         setVisible(true);
         
         // Add the main panel to the content pane
-        Container contentPane = getContentPane();
-        contentPane.add(mainPanel);
+        add(mainPanel);
     }
 
     public void actionPerformed (ActionEvent e) {
