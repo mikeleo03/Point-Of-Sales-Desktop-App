@@ -73,11 +73,10 @@ public class BillPane extends JPanel {
         }
 
         totalLabel = new JLabel("Total harga: " + total);
-        // gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.0; // reset horizontal weight
+        gbc.weighty = 0.2; 
         gbc.fill = GridBagConstraints.NONE; // reset fill
-        // gbc.insets = new Insets(10, 10, 10, 10);
         add(totalLabel, gbc);
                 
         // String[] clientNames = {"John (123)", "Jane (456)", "Mark (789)"};
@@ -90,14 +89,15 @@ public class BillPane extends JPanel {
         
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.weightx = 1.0;
+        gbc.weightx = 0.5;
+        gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
         add(new JLabel("Nama Client: "), gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 3;
-        gbc.weightx = 1.0;
+        gbc.weightx = 0.5;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 10, 10);
         add(clientComboBox, gbc);
@@ -163,14 +163,12 @@ public class BillPane extends JPanel {
             public void popupMenuCanceled(PopupMenuEvent e) {}
         });
         
-        // create buttons to save bill and pay
         JButton payButton = new JButton("Bayar");
-
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.5;
+        gbc.weightx = 1;
         add(payButton, gbc);
 
         // add action listener to buttons
