@@ -15,6 +15,7 @@ import main.Transaksi.ElemenDetailTransaksi;
 
 public class PaymentPage extends JPanel implements ActionListener, Subscriber {
     private JButton saveButton;
+    private JButton addDiscFromPointButton;
     private JButton process;
     private JLabel pengantar;
     private JLabel total;
@@ -25,6 +26,7 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
     private Inventory inventory;
     private FixedBillManager fixedbillmanager;
     private Bill currentbill;
+    private Integer clientId;
 
     public PaymentPage (BillManager billmanager, Bill currentbill, Inventory inventory, FixedBillManager fixedbillmanager, ClientManager clientManager) {
         // Pass the bill object to the attributes
@@ -40,11 +42,21 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
         List<Bill> listbill = this.billmanager.getListBill();
         int index = listbill.indexOf(currentbill);
         if (index != -1) {
+            clientId = this.currentbill.getIdCustomer();
             if (this.currentbill.getIdCustomer() == null) {
                 clientManager.generateCustomer();
                 this.currentbill.setIdCustomer(clientManager.getLastClientID());
+                clientId = clientManager.getLastClientID();
             }
             this.currentbill.recalculateNominal();
+
+            // Get the clientid
+            System.out.println(clientId);
+            // Jika aktif dan VIP, maka flat disc 10%
+            if (clientManager.getClientActivity(clientId) && clientManager.getClientType(clientId) == 1) {
+                this.currentbill.setNominal(this.currentbill.getNominal() * 0.9);
+            }
+
             ArrayList<Object[]> data = new ArrayList<>();
 
             DetailTransaksi details = this.currentbill.getDetailTransaksi();
@@ -61,6 +73,14 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
 
             // Create a panel to hold the buttons
             JPanel buttonPanel = new JPanel();
+            if (clientManager.getClientActivity(clientId) && (clientManager.getClientType(clientId) == 1 || clientManager.getClientType(clientId) == 0)) {
+                JLabel points = new JLabel("Points : " + clientManager.getClientPoint(clientId));
+                points.setFont(new Font("Arial", ALLBITS, 10));
+                buttonPanel.add(points);
+                addDiscFromPointButton = new JButton("Add Discount");
+                buttonPanel.add(this.addDiscFromPointButton);
+                addDiscFromPointButton.addActionListener(this);
+            }
             saveButton = new JButton("Save");
             buttonPanel.add(this.saveButton);
             saveButton.addActionListener(this);
@@ -119,6 +139,8 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
                 for (ElemenDetailTransaksi elemen : this.currentbill.getDetailTransaksi().getElement()) {
                     this.inventory.changeStock(elemen.getIdBarang(), -1 * elemen.getJumlahBarang());
                 }
+                // Tambah poin sejumlah perhitungan nominal transaksi
+                clientManager.changeClientPoint(clientId, clientManager.getClientPoint(clientId) + this.billmanager.getListBill().get(index).getNominal() * 0.01);
                 // Delete dari bill
                 this.billmanager.deleteBill(this.currentbill);
                 JOptionPane.showMessageDialog(null, "Transaksi berhasil diproses.");

@@ -274,6 +274,5 @@ public class BillPane extends JPanel {
 
         return true;
     }
-
 }
 
