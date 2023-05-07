@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.Barang.*;
 import main.Client.*;
 import main.Bill.*;
+import main.Plugin.Currency.*;
 
 public class JSONDataStoreAdapter implements DataStoreAdapter {
     /* ===================================== ATTRIBUTES =====================================*/
@@ -20,6 +21,8 @@ public class JSONDataStoreAdapter implements DataStoreAdapter {
     private String inventoryFilePath;
     private String clientsFilePath;
     private String billsFilePath;
+    private String fixedBillsFilePath;
+    private String currenciesFilePath;
     
     /* ====================================== METHODS ====================================== */
 
@@ -30,6 +33,8 @@ public class JSONDataStoreAdapter implements DataStoreAdapter {
         this.inventoryFilePath = "../data/inventory.json";
         this.clientsFilePath = "../data/clients.json";
         this.billsFilePath = "../data/bills.json";
+        this.fixedBillsFilePath = "../data/fixedBills.json";
+        this.currenciesFilePath = "../data/currencies.json";
     }
 
     // User-defined constructor, set files path to the chosen datastore location
@@ -37,6 +42,8 @@ public class JSONDataStoreAdapter implements DataStoreAdapter {
         this.inventoryFilePath = folderPath + "/inventory.json";
         this.clientsFilePath = folderPath + "/clients.json";
         this.billsFilePath = folderPath + "/bills.json";
+        this.fixedBillsFilePath = folderPath + "/fixedBills.json";
+        this.currenciesFilePath = folderPath + "/currencies.json";
     } 
 
     /* ------------------------------------ READER-WRITER -----------------------------------*/
@@ -92,6 +99,40 @@ public class JSONDataStoreAdapter implements DataStoreAdapter {
         catch (Exception e) {}
     }
 
+    // Read and return the list of fixed bill defined in the JSON datastore file
+    public FixedBillManager readFixedBillManager() {
+        try {
+            FixedBillManager fixedBillManager = this.mapper.readValue(new File(fixedBillsFilePath), FixedBillManager.class);
+            return fixedBillManager;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of fixed bill into the JSON datastore file
+    public void writeFixedBillManager(FixedBillManager fixedBillManager) {
+        try {
+            this.mapper.writerWithDefaultPrettyPrinter().writeValue(new File(fixedBillsFilePath), fixedBillManager);
+        }
+        catch (Exception e) {}
+    }
+
+    // Read and return the list of currency defined in the JSON datastore file
+    public ExchangeRate readExchangeRate() {
+        try {
+            ExchangeRate exhangeRate = this.mapper.readValue(new File(currenciesFilePath), ExchangeRate.class);
+            return exhangeRate;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of currency into the JSON datastore file
+    public void writeExchangeRate(ExchangeRate exhangeRate) {
+        try {
+            this.mapper.writerWithDefaultPrettyPrinter().writeValue(new File(currenciesFilePath), exhangeRate);
+        }
+        catch (Exception e) {}
+    }
+    
     /* --------------------------------------- DELETER -------------------------------------*/ 
     
     // Delete all datastore stored in the location
@@ -99,5 +140,7 @@ public class JSONDataStoreAdapter implements DataStoreAdapter {
         new File(inventoryFilePath).delete();
         new File(clientsFilePath).delete();
         new File(billsFilePath).delete();
+        new File(fixedBillsFilePath).delete();
+        new File(currenciesFilePath).delete();
     }
 }

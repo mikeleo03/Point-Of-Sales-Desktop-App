@@ -12,6 +12,7 @@ import javax.xml.bind.*;
 import main.Barang.*;
 import main.Client.*;
 import main.Bill.*;
+import main.Plugin.Currency.*;
 
 public class XMLDataStoreAdapter implements DataStoreAdapter {
     /* ===================================== ATTRIBUTES =====================================*/
@@ -19,6 +20,8 @@ public class XMLDataStoreAdapter implements DataStoreAdapter {
     private String inventoryFilePath;
     private String clientsFilePath;
     private String billsFilePath;
+    private String fixedBillsFilePath;
+    private String currenciesFilePath;
     
     /* ====================================== METHODS ====================================== */
 
@@ -29,6 +32,8 @@ public class XMLDataStoreAdapter implements DataStoreAdapter {
         this.inventoryFilePath = "../data/inventory.xml";
         this.clientsFilePath = "../data/clients.xml";
         this.billsFilePath = "../data/bills.xml";
+        this.fixedBillsFilePath = "../data/fixedBills.xml";
+        this.currenciesFilePath = "../data/currencies.xml";
     }
 
     // User-defined constructor, set files path to the chosen datastore location
@@ -36,6 +41,8 @@ public class XMLDataStoreAdapter implements DataStoreAdapter {
         this.inventoryFilePath = folderPath + "/inventory.xml";
         this.clientsFilePath = folderPath + "/clients.xml";
         this.billsFilePath = folderPath + "/bills.xml";
+        this.fixedBillsFilePath = folderPath + "/fixedBills.xml";
+        this.currenciesFilePath = folderPath + "/currencies.xml";
     } 
 
     /* ------------------------------------ READER-WRITER -----------------------------------*/
@@ -91,6 +98,40 @@ public class XMLDataStoreAdapter implements DataStoreAdapter {
         catch (Exception e) {e.printStackTrace();}
     }
 
+    // Read and return the list of fixed bill defined in the JSON datastore file
+    public FixedBillManager readFixedBillManager() {
+        try {
+            FixedBillManager fixedBillManager = JAXB.unmarshal(new File(fixedBillsFilePath), FixedBillManager.class);
+            return fixedBillManager;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of fixed bill into the JSON datastore file
+    public void writeFixedBillManager(FixedBillManager fixedBillManager) {
+        try {
+            JAXB.marshal(fixedBillManager, new File(fixedBillsFilePath));
+        }
+        catch (Exception e) {}
+    }
+
+    // Read and return the list of currency defined in the JSON datastore file
+    public ExchangeRate readExchangeRate() {
+        try {
+            ExchangeRate exchangeRate = JAXB.unmarshal(new File(currenciesFilePath), ExchangeRate.class);
+            return exchangeRate;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of currency into the JSON datastore file
+    public void writeExchangeRate(ExchangeRate exhangeRate) {
+        try {
+            JAXB.marshal(exhangeRate, new File(currenciesFilePath));
+        }
+        catch (Exception e) {}
+    }
+
     /* --------------------------------------- DELETER -------------------------------------*/ 
     
     // Delete all datastore stored in the location
@@ -98,5 +139,7 @@ public class XMLDataStoreAdapter implements DataStoreAdapter {
         new File(inventoryFilePath).delete();
         new File(clientsFilePath).delete();
         new File(billsFilePath).delete();
+        new File(fixedBillsFilePath).delete();
+        new File(currenciesFilePath).delete();
     }
 }

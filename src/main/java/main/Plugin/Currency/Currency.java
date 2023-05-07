@@ -1,7 +1,9 @@
 package main.Plugin.Currency;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.*;
 
+@XmlRootElement
 public class Currency implements Serializable {
     // ATTRIBUTES
     private String currencyName;
@@ -19,6 +21,7 @@ public class Currency implements Serializable {
     }
 
     // GETTER-SETTER
+    @XmlElement
     public String getCurrencyName() {
         return this.currencyName;
     }
@@ -26,6 +29,7 @@ public class Currency implements Serializable {
         this.currencyName = name;
     }
 
+    @XmlElement
     public Double getCurrencyRate() {
         return this.currencyRate;
     }

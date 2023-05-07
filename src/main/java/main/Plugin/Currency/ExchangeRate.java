@@ -2,8 +2,9 @@ package main.Plugin.Currency;
 
 import java.util.ArrayList;
 import java.io.Serializable;
+import javax.xml.bind.annotation.*;
 
-
+@XmlRootElement
 public class ExchangeRate implements Serializable  {
     // ATTRIBUTES
     private ArrayList<Currency> listExchangeRate;
@@ -18,6 +19,7 @@ public class ExchangeRate implements Serializable  {
     }
 
     // SETTER-GETTER
+    @XmlElement
     public ArrayList<Currency> getListExchangeRate() {
         return this.listExchangeRate;
     }

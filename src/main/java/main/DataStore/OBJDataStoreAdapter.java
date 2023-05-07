@@ -11,6 +11,7 @@ import java.io.*;
 import main.Barang.*;
 import main.Client.*;
 import main.Bill.*;
+import main.Plugin.Currency.*;;
 
 public class OBJDataStoreAdapter implements DataStoreAdapter {
     /* ===================================== ATTRIBUTES =====================================*/
@@ -20,6 +21,8 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
     private String inventoryFilePath;
     private String clientsFilePath;
     private String billsFilePath;
+    private String fixedBillsFilePath;
+    private String currenciesFilePath;
     
     /* ====================================== METHODS ====================================== */
 
@@ -30,6 +33,8 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
         this.inventoryFilePath = "../data/inventory.obj";
         this.clientsFilePath = "../data/clients.obj";
         this.billsFilePath = "../data/bills.obj";
+        this.fixedBillsFilePath = "../data/fixedBills.obj";
+        this.currenciesFilePath = "../data/currencies.obj";
     }
 
     // User-defined constructor, set files path to the chosen datastore location
@@ -37,6 +42,8 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
         this.inventoryFilePath = folderPath + "/inventory.obj";
         this.clientsFilePath = folderPath + "/clients.obj";
         this.billsFilePath =  folderPath + "/bills.obj";
+        this.fixedBillsFilePath = folderPath + "/fixedBills.obj";
+        this.currenciesFilePath = folderPath + "/currencies.obj";
     } 
 
     /* ------------------------------------ READER-WRITER -----------------------------------*/
@@ -107,6 +114,50 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
         catch (Exception e) {}
     }
 
+    // Read and return the list of fixed bill defined in the OBJ datastore file
+    public FixedBillManager readFixedBillManager() {
+        try {
+            this.objectInput = new ObjectInputStream(new FileInputStream(fixedBillsFilePath));
+            FixedBillManager fixedBillManager = (FixedBillManager) this.objectInput.readObject();
+            this.objectInput.close();
+            return fixedBillManager;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of fixed bill into the OBJ datastore file
+    public void writeFixedBillManager(FixedBillManager fixedBillManager) {
+        try {
+            this.objectOutput = new ObjectOutputStream(new FileOutputStream(fixedBillsFilePath));
+            this.objectOutput.writeObject(fixedBillManager);
+            this.objectOutput.flush();
+            this.objectOutput.close();
+        }
+        catch (Exception e) {}
+    }
+
+    // Read and return the list of currency defined in the OBJ datastore file
+    public ExchangeRate readExchangeRate() {
+        try {
+            this.objectInput = new ObjectInputStream(new FileInputStream(currenciesFilePath));
+            ExchangeRate exhangeRate = (ExchangeRate) this.objectInput.readObject();
+            this.objectInput.close();
+            return exhangeRate;
+        }
+        catch (Exception e) {e.printStackTrace();return null;}
+    }
+
+    // Write the list of currency into the OBJ datastore file
+    public void writeExchangeRate(ExchangeRate exhangeRate) {
+        try {
+            this.objectOutput = new ObjectOutputStream(new FileOutputStream(currenciesFilePath));
+            this.objectOutput.writeObject(exhangeRate);
+            this.objectOutput.flush();
+            this.objectOutput.close();
+        }
+        catch (Exception e) {}
+    }
+
     /* --------------------------------------- DELETER -------------------------------------*/ 
     
     // Delete all datastore stored in the location
@@ -114,5 +165,7 @@ public class OBJDataStoreAdapter implements DataStoreAdapter {
         new File(inventoryFilePath).delete();
         new File(clientsFilePath).delete();
         new File(billsFilePath).delete();
+        new File(fixedBillsFilePath).delete();
+        new File(currenciesFilePath).delete();
     }
 }
