@@ -94,6 +94,23 @@ public class Inventory implements Serializable {
         return listBrng;
     }
 
+    public ArrayList<Barang> getBarangByMainParams(String name, double lowBound, double highBound, String category) {
+        // Mengembalikan barang yang memiliki kategori yang diberikan
+        ArrayList<Barang> listBrng = new ArrayList<>();
+        for (Barang b : this.listBarang) {
+            if (b.getName().contains(name) && b.getCategory().contains(category)) {
+                if (lowBound >= 0 && highBound >=0) {
+                    if (b.getPrice() >= lowBound && b.getPrice() <= highBound) {
+                        listBrng.add(b);
+                    }
+                } else {
+                    listBrng.add(b);
+                }
+            }
+        }
+        return listBrng;
+    }
+
     // PENAMBAHAN/PENGURANGAN BARANG
     public void addBarang(Barang b) {
         // Menambah barang baru

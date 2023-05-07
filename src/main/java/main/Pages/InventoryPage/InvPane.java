@@ -9,16 +9,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import java.util.ArrayList;
+
 class InvPane extends JPanel implements ActionListener{
     static final int MAXCOLUMN=6;
     private Observer<Barang> obs;
 
     private JLabel title;
+    private JButton searchItem;
     private JButton addItem;
     private Inventory inv;
     private ItemPane itemPanel;
     private ItemsDisplay itemDisplay;
     private JScrollPane itemDisplayScroll;
+    private ItemSearchPane itemSearchPanel;
 
     private Integer selectedID;
 
@@ -32,6 +36,7 @@ class InvPane extends JPanel implements ActionListener{
         gbc.insets = new Insets(2, 2, 2, 2);
 
         this.itemPanel = new ItemPane();
+        this.itemSearchPanel = new ItemSearchPane();
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         this.title = new JLabel("Inventory");
@@ -47,7 +52,7 @@ class InvPane extends JPanel implements ActionListener{
         this.inv = inv;
         this.itemDisplay = new ItemsDisplay(this.inv, this);
         this.itemDisplayScroll = new JScrollPane(this.itemDisplay);
-        this.itemDisplayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.itemDisplayScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.itemDisplayScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         add(this.itemDisplayScroll,gbc);
 
@@ -56,9 +61,13 @@ class InvPane extends JPanel implements ActionListener{
         gbc.gridy++;
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.searchItem = new JButton("Search");
+        this.searchItem.addActionListener(this);
+        add(this.searchItem, gbc);
+        gbc.gridy++;
         this.addItem = new JButton("Add");
-        add(this.addItem, gbc);
         this.addItem.addActionListener(this);
+        add(this.addItem, gbc);
     }
 
     public void addBarang(Barang b) {
@@ -77,6 +86,7 @@ class InvPane extends JPanel implements ActionListener{
         if (com.equals("Add")) {
             int inputSuccess = JOptionPane.showConfirmDialog(this, this.itemPanel, "Insert item details", JOptionPane.OK_CANCEL_OPTION);
             Barang b = null;
+            this.itemDisplay.reshowAll(this.inv);
             if (inputSuccess == JOptionPane.OK_OPTION) {
                 try {
                     b = this.itemPanel.getBarang();
@@ -86,6 +96,18 @@ class InvPane extends JPanel implements ActionListener{
                 }
             }
             this.itemPanel.resetFields();
+        } else if (com.equals("Search")) { // Search barang
+            String[] options = new String[] {"Search", "Cancel"};
+            int input = JOptionPane.showOptionDialog(this, this.itemSearchPanel, "Search Item",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                                null, options, options[0]);
+            if (input == 0) {
+                ArrayList<Barang> result = this.inv.getBarangByMainParams(this.itemSearchPanel.getSearchName(), 
+                                            this.itemSearchPanel.getLowPriceBound(), this.itemSearchPanel.getHighPriceBound(), 
+                                            this.itemSearchPanel.getSearchCategory());
+                this.itemDisplay.generateButtonsFromList(result);
+            }
+            this.itemSearchPanel.resetFields();
         }
         else { // Lihat info barang
             Object source = e.getSource();

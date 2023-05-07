@@ -64,6 +64,38 @@ class ItemsDisplay extends JPanel {
         repaint();
     }
 
+    public void generateButtonsFromList(ArrayList<Barang> arrBrng) {
+        for (int i=0; i<this.itemButtons.size(); i++) {
+            ItemButton deletedButton = this.itemButtons.get(i);
+            remove(deletedButton);
+        }
+        this.itemButtons.clear();
+        this.gbc.gridx = 0;
+        this.gbc.gridy = 0;
+        for (Barang b : arrBrng) {
+            ItemButton newButton = new ItemButton(b.getName(), Utils.getImageIcon(b.getPicturePath()), b.getID());
+            newButton.addActionListener(this.al);
+            this.itemButtons.add(newButton);
+        }
+        for(JButton button : this.itemButtons) {
+            button.setVerticalTextPosition(SwingConstants.BOTTOM);
+            button.setPreferredSize(new Dimension(200, 200));
+            add(button, this.gbc);
+            if (this.gbc.gridx < InvPane.MAXCOLUMN-1) {
+                this.gbc.gridx++;
+            } else {
+                this.gbc.gridx = 0;
+                this.gbc.gridy++;
+            }
+        }
+        revalidate();
+        repaint();
+    }
+
+    public void reshowAll(Inventory inv) {
+        generateButtonsFromList(inv.getListBarang());
+    }
+
     public void addButton(Barang b) {
         ItemButton newButton = new ItemButton(b.getName(), Utils.getImageIcon(b.getPicturePath()), b.getID());
         newButton.setVerticalTextPosition(SwingConstants.BOTTOM);
