@@ -13,7 +13,7 @@ import main.Transaksi.ElemenDetailTransaksi;
 public class PaymentPage extends JPanel implements ActionListener {
     private JButton cancelButton;
     private JButton saveButton;
-    private JButton process = new JButton("Process");
+    private JButton process;
     private JLabel pengantar;
     private JLabel total;
     final int WIDTH = 700, HEIGHT = 400;
@@ -79,6 +79,8 @@ public class PaymentPage extends JPanel implements ActionListener {
         mainPanel.add(this.total, gbc);
 
         gbc.gridy++;
+        this.process = new JButton("Process");
+        process.addActionListener(this);
         mainPanel.add(this.process, gbc);
         
         // Set up the frame
@@ -94,6 +96,8 @@ public class PaymentPage extends JPanel implements ActionListener {
             // Code to perform when button 1 is clicked
             System.out.println("Button 1 clicked!");
         } else if (e.getSource() == this.saveButton) {
+            System.out.println("Button 2 clicked!");
+        } else if (e.getSource() == this.process) {
             // Membuat fixed bill
             FixedBill fixed = new FixedBill(this.bill.getIdCustomer(), this.bill.getDetailTransaksi());
             this.fixedbillmanager.addFixedBill(fixed);
