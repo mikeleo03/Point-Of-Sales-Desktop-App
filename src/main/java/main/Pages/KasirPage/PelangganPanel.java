@@ -20,6 +20,7 @@ import javax.swing.*;
 import main.Transaksi.DetailTransaksi;
 import main.Barang.*;
 import main.Bill.*;
+import main.Client.ClientManager;
 
 public class PelangganPanel extends JPanel implements ActionListener {
     private JButton closeButton;
@@ -30,12 +31,14 @@ public class PelangganPanel extends JPanel implements ActionListener {
     private int pelangganId;
     private Bill bill;
     private CustomerTuple customerTuple;
+    private ClientManager clientManager;
 
-    public PelangganPanel(int pelangganId, KasirPage kasirPage, Bill bill, CustomerTuple customerTuple) {
+    public PelangganPanel(int pelangganId, KasirPage kasirPage, Bill bill, CustomerTuple customerTuple, ClientManager clientManager) {
         this.pelangganId = pelangganId;
         this.kasirPage = kasirPage;
         this.customerTuple = customerTuple;
         this.bill = bill;
+        this.clientManager = clientManager;
         initUI();
     }
 
@@ -46,7 +49,7 @@ public class PelangganPanel extends JPanel implements ActionListener {
 
         // Menambahkan BillPane ke panel
         DetailTransaksi details = new DetailTransaksi();
-        this.billPane = new BillPane(details, this.bill, this.customerTuple);
+        this.billPane = new BillPane(details, this.bill, this.customerTuple, this.clientManager);
         gbc.anchor = GridBagConstraints.NORTHEAST;
         gbc.gridx = 1;
         gbc.gridy = 1;
