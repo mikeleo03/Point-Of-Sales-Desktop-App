@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;  
 
-public class SettingPage extends JFrame {
+public class SettingPage extends JPanel {
     private JComboBox<String> comboBox;
     private JFileChooser fileChooser;
     private JButton saveButton, cancelButton, deleteButton;
@@ -13,8 +13,6 @@ public class SettingPage extends JFrame {
     private JLabel label;
 
     public SettingPage() {
-        this.setTitle("Pengaturan");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(400, 200);
     
         // create main panel
@@ -87,11 +85,11 @@ public class SettingPage extends JFrame {
         });
     
         // add action listener for cancel button
-        cancelButton.addActionListener(new ActionListener() {
+        /* cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
-        });
+        }); */
     
         // add action listener for delete button
         deleteButton.addActionListener(new ActionListener() {

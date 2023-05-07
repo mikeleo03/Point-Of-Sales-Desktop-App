@@ -43,19 +43,19 @@ public class RegistrationPane extends JPanel implements ActionListener {
         this.typeLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
         this.nameField = new JTextField();
-        this.nameField.setPreferredSize(new Dimension(1000, 25));
+        this.nameField.setPreferredSize(new Dimension(800, 25));
         this.nameField.setFont(new Font("Serif", Font.PLAIN, 20));
 
         this.phoneField = new JTextField();
-        this.phoneField.setPreferredSize(new Dimension(1000, 25)); 
+        this.phoneField.setPreferredSize(new Dimension(800, 25)); 
         this.phoneField.setFont(new Font("Serif", Font.PLAIN, 20));
 
         this.regTypeOption = new JComboBox<>(memberType);
-        this.regTypeOption.setPreferredSize(new Dimension(1000, 25));
+        this.regTypeOption.setPreferredSize(new Dimension(800, 25));
         this.regTypeOption.setFont(new Font("Serif", Font.BOLD, 17));
 
         this.idOption = new JComboBox<>(this.clientManager.getAllCustomerID());
-        this.idOption.setPreferredSize(new Dimension(1000, 25));
+        this.idOption.setPreferredSize(new Dimension(800, 25));
         this.idOption.setFont(new Font("Serif", Font.BOLD, 17));
 
         this.submitButton = new JButton("Submit");
@@ -63,7 +63,7 @@ public class RegistrationPane extends JPanel implements ActionListener {
         this.submitButton.addActionListener(this);
 
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets.left = gbc.insets.right = 500;
+        gbc.insets.left = gbc.insets.right = 400;
         gbc.gridwidth = 2;
         this.add(this.title, gbc);
 

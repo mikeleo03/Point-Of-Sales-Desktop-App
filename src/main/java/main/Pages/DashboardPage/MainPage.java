@@ -11,6 +11,7 @@ import main.Pages.InventoryPage.*;
 import main.Pages.PaymentPage.*;
 import main.Pages.RegistrationPage.*;
 import main.Pages.UpdateInformationPage.*;
+import main.Pages.SettingPage.*;
 
 public class MainPage extends JFrame {
 
@@ -82,6 +83,8 @@ public class MainPage extends JFrame {
                         newPanel = new RegistrationPane(clientmanager);
                     } else if (buttonNames[index].equals("Customers")) {
                         newPanel = new UpdateInformationPane(clientmanager);
+                    } else if (buttonNames[index].equals("Settings")) {
+                        newPanel = new SettingPage();
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
