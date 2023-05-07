@@ -108,8 +108,8 @@ public class HistoryPage extends JFrame {
         ArrayList<FixedBill> fixedBills = new ArrayList<>();
 
         // create a FixedBill object and add it to the ArrayList
-        FixedBill fixedbill = new FixedBill(2000, "12:08:23", "22/03/2022", detail);
-        fixedBills.add(fixedbill);
+        // FixedBill fixedbill = new FixedBill(2000, "12:08:23", "22/03/2022", detail);
+        // fixedBills.add(fixedbill);
 
         // return new ArrayList<FixedBill>();
         return fixedBills;
