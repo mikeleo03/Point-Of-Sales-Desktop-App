@@ -30,41 +30,41 @@ public class UpdateInformationPane extends JPanel implements ActionListener {
         this.title = new JLabel("Update Information");
         this.title.setFont(new Font("Serif", Font.BOLD, 30));
 
-        this.idLabel = new JLabel("ID                  : ");
+        this.idLabel = new JLabel("ID");
         this.idLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        this.nameLabel = new JLabel("Name              : ");
+        this.nameLabel = new JLabel("Name");
         this.nameLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        this.phoneLabel = new JLabel("Phone             : ");
+        this.phoneLabel = new JLabel("Phone");
         this.phoneLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        this.typeLabel = new JLabel("Membership : ");
+        this.typeLabel = new JLabel("Membership");
         this.typeLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        this.activeLabel = new JLabel("Activity  : ");
+        this.activeLabel = new JLabel("Status");
         this.activeLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
         this.nameField = new JTextField();
-        this.nameField.setPreferredSize(new Dimension(1000, 25));
+        this.nameField.setPreferredSize(new Dimension(800, 25));
         this.nameField.setFont(new Font("Serif", Font.PLAIN, 20));
 
         this.phoneField = new JTextField();
-        this.phoneField.setPreferredSize(new Dimension(1000, 25)); 
+        this.phoneField.setPreferredSize(new Dimension(800, 25)); 
         this.phoneField.setFont(new Font("Serif", Font.PLAIN, 20));
 
         this.regTypeOption = new JComboBox<>(memberType);
-        this.regTypeOption.setPreferredSize(new Dimension(1000, 25));
+        this.regTypeOption.setPreferredSize(new Dimension(800, 25));
         this.regTypeOption.setFont(new Font("Serif", Font.BOLD, 17));
 
         this.idOption = new JComboBox<>(this.clientManager.getAllNonCustomerID());
         this.idOption.setActionCommand("ID Change");
-        this.idOption.setPreferredSize(new Dimension(1000, 25));
+        this.idOption.setPreferredSize(new Dimension(800, 25));
         this.idOption.setFont(new Font("Serif", Font.BOLD, 17));
         this.idOption.addActionListener(this);
 
         this.activeOption = new JComboBox<>(activeType);
-        this.activeOption.setPreferredSize(new Dimension(1000, 25));
+        this.activeOption.setPreferredSize(new Dimension(800, 25));
         this.activeOption.setFont(new Font("Serif", Font.BOLD, 17));
 
         this.updateButton = new JButton("Update");
@@ -72,7 +72,7 @@ public class UpdateInformationPane extends JPanel implements ActionListener {
         this.updateButton.addActionListener(this);
 
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets.left = gbc.insets.right = 500;
+        gbc.insets.left = gbc.insets.right = 400;
         gbc.gridwidth = 2;
         this.add(this.title, gbc);
 

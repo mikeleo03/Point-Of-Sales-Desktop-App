@@ -30,16 +30,16 @@ public class RegistrationPane extends JPanel implements ActionListener {
         this.title = new JLabel("Registration");
         this.title.setFont(new Font("Serif", Font.BOLD, 30));
 
-        this.idLabel = new JLabel("ID                  : ");
+        this.idLabel = new JLabel("ID");
         this.idLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        this.nameLabel = new JLabel("Name              : ");
+        this.nameLabel = new JLabel("Name");
         this.nameLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        this.phoneLabel = new JLabel("Phone             : ");
+        this.phoneLabel = new JLabel("Phone");
         this.phoneLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
-        this.typeLabel = new JLabel("Membership : ");
+        this.typeLabel = new JLabel("Membership");
         this.typeLabel.setFont(new Font("Serif", Font.BOLD, 20));
 
         this.nameField = new JTextField();
