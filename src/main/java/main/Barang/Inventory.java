@@ -61,6 +61,39 @@ public class Inventory implements Serializable {
         return null;
     }
 
+    public ArrayList<Barang> getBarangByName (String name) {
+        // Mengembalikan barang yang memiliki/mengandung nama yang diberikan
+        ArrayList<Barang> listBrng = new ArrayList<>();
+        for (Barang b : this.listBarang) {
+            if (b.getName().contains(name)) {
+                listBrng.add(b);
+            }
+        }
+        return listBrng;
+    }
+
+    public ArrayList<Barang> getBarangByPrice (double lowBound, double highBound) {
+        // Mengembalikan barang yang memiliki harga di antara batas yang diberikan
+        ArrayList<Barang> listBrng = new ArrayList<>();
+        for (Barang b : this.listBarang) {
+            if (b.getPrice() >= lowBound && b.getPrice() <= highBound) {
+                listBrng.add(b);
+            }
+        }
+        return listBrng;
+    }
+
+    public ArrayList<Barang> getBarangByCategory (String category) {
+        // Mengembalikan barang yang memiliki kategori yang diberikan
+        ArrayList<Barang> listBrng = new ArrayList<>();
+        for (Barang b : this.listBarang) {
+            if (b.getCategory().contains(category)) {
+                listBrng.add(b);
+            }
+        }
+        return listBrng;
+    }
+
     // PENAMBAHAN/PENGURANGAN BARANG
     public void addBarang(Barang b) {
         // Menambah barang baru
