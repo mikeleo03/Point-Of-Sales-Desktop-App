@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import org.javatuples.*;
 import java.awt.*;
 import javax.swing.*;
 import main.Barang.*;
 import main.Transaksi.*;
 import main.Bill.*;
-import main.Client.ClientManager;
+import main.Client.*;
 import main.Pages.InventoryPage.*;
 import main.Pages.PaymentPage.*;
 import main.Pages.RegistrationPage.*;
@@ -22,12 +23,13 @@ public class MainPage extends JFrame implements InterfacePage {
     private JTabbedPane tabbedPane;
     private JPanel leftPanel;
     private Inventory inv;
+    private ClientManager clientmanager;
 
     public MainPage() {
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
 
-        ClientManager clientmanager = new ClientManager();
+        clientmanager = new ClientManager();
 
         Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
         Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
@@ -143,12 +145,41 @@ public class MainPage extends JFrame implements InterfacePage {
         this.leftPanel.repaint();
     }
 
-    // public ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> getInventoryData() {
-    //     ArrayList<Septet> data = new ArrayList<>();
-    //     for (Barang b : this.inv.getListBarang()) {
-    //         Septet<Integer, String, Integer, Double, Double, String, String> currData = 
-    //         new Septet<Integer, String, Integer, Double, Double, String, String> (b.getID(), b.getName(),
-    //         b.getStock(), b.getPrice(), b.getBuyPrice(), b.getCategory(), b.getPicturePath());
-    //     }
-    // }
+    public ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> getInventoryData() {
+        ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> data = new ArrayList<>();
+        for (Barang b : this.inv.getListBarang()) {
+            Septet<Integer, String, Integer, Double, Double, String, String> currData = 
+            new Septet<Integer, String, Integer, Double, Double, String, String> (b.getID(), b.getName(),
+            b.getStock(), b.getPrice(), b.getBuyPrice(), b.getCategory(), b.getPicturePath());
+            data.add(currData);
+        }
+        return data;
+    }
+
+    public HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> getClientManagerData() {
+        HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> data = new HashMap<>();
+        ArrayList<Quintet<Integer, String, String, Integer, Boolean>> customers = new ArrayList<>();
+        for (Customer c : clientmanager.getListCustomer()) {
+            Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
+                (c.getCustomerID(), null, null, null, null);
+            customers.add(currData);
+        }
+        data.put("Customer", customers);
+        customers.clear();
+        for (Member m : clientmanager.getListMember()) {
+            Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
+                (m.getCustomerID(), m.getCustomerName(), m.getNoOfPhone(), m.getPoint(), m.getActive());
+            customers.add(currData);
+        }
+        data.put("Member", customers);
+        customers.clear();
+        for (VIP v : clientmanager.getListVIP()) {
+            Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
+                (v.getCustomerID(), v.getCustomerName(), v.getNoOfPhone(), v.getPoint(), v.getActive());
+            customers.add(currData);
+        }
+        data.put("VIP", customers);
+        customers.clear();
+        return data;
+    }
 }
