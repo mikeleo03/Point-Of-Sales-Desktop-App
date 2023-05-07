@@ -64,6 +64,8 @@ public class MainPage extends JFrame implements InterfacePage {
         leftPanel.add(POS);
 
         // create the buttons with icons
+        String[] buttonNames = {"Dashboard", "Registration", "Customers", "History", "Payment", 
+                                "Inventory", "Sales", "Stocks", "Settings", "Plugin"};
         ImageIcon[] buttonIcons = {
             new ImageIcon(new ImageIcon("../img/icon/home.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
             new ImageIcon(new ImageIcon("../img/icon/registration.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
@@ -77,14 +79,78 @@ public class MainPage extends JFrame implements InterfacePage {
             new ImageIcon(new ImageIcon("../img/icon/plugin.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH))
         };
         
-        // Add list of pages
-        addPage("Dashboard", buttonIcons[0], new MainPanel());
-        addPage("Inventory", buttonIcons[0], new InvPane(inv));
-        addPage("Payment", buttonIcons[0], new PaymentPage(bill, inv, fixedbillmanager));
-        addPage("Registration", buttonIcons[0], new InvPane(inv));
-        addPage("Customers", buttonIcons[0], new UpdateInformationPane(clientmanager));
-        addPage("Settings", buttonIcons[0], new SettingPage());
-        addPage("History", buttonIcons[0], new HistoryPage(fixedbillmanager));
+        JButton[] buttons = new JButton[buttonNames.length];
+        for (int i = 0; i < buttonNames.length; i++) {
+            final int index = i;
+            buttons[i] = new JButton(buttonNames[i], buttonIcons[i]);
+            buttons[i].setPreferredSize(new Dimension(180, 50));
+            buttons[i].setBorder(BorderFactory.createEmptyBorder());
+            buttons[i].setContentAreaFilled(false);
+            buttons[i].setForeground(Color.WHITE);
+            buttons[i].addMouseListener (new MouseAdapter() {
+                public void mouseEntered(MouseEvent e) {
+                    setBackground(Color.GRAY);
+                }
+                public void mouseExited(MouseEvent e) {
+                    setBackground(new Color(0x1a1e3b));
+                }
+            });
+            buttons[i].addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // create a new panel and add it to the tabbedPane
+                    JPanel newPanel;
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridx = 0;
+                    gbc.gridy = 0;
+                    gbc.fill = GridBagConstraints.HORIZONTAL;
+                    if (buttonNames[index].equals("Dashboard")) {
+                        newPanel = new MainPanel();
+                    } else if (buttonNames[index].equals("Inventory")) {
+                        newPanel = new InvPane(inv);
+                    } else if (buttonNames[index].equals("Payment")) {
+                        newPanel = new PaymentPage(bill, inv, fixedbillmanager);
+                    } else if (buttonNames[index].equals("Registration")) {
+                        newPanel = new RegistrationPane(clientmanager);
+                    } else if (buttonNames[index].equals("Customers")) {
+                        newPanel = new UpdateInformationPane(clientmanager);
+                    } else if (buttonNames[index].equals("Settings")) {
+                        newPanel = new SettingPage();
+                    } else if (buttonNames[index].equals("History")) {
+                        newPanel = new HistoryPage(fixedbillmanager);
+                    } else if (buttonNames[index].equals("Plugin")) {
+                        newPanel = new PluginPanel();
+                    } else {
+                        newPanel = new JPanel(new GridBagLayout());
+                        gbc.anchor = GridBagConstraints.CENTER;
+                        JLabel label = new JLabel("AAAAAA");
+                        newPanel.add(label, gbc);
+                    }
+                    // create a close button and add it to the tab
+                    JButton closeButton = new JButton("X");
+                    // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
+                    closeButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // remove the tab
+                            tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
+                        }
+                    });
+                    // closeButton.setPreferredSize(new Dimension(30,20));
+                    JPanel tabPanel = new JPanel(new BorderLayout(3,3));
+                    JLabel tabTitle = new JLabel(buttonNames[index]);
+                    tabPanel.add(tabTitle, BorderLayout.WEST);
+                    tabPanel.add(closeButton, BorderLayout.EAST);
+
+                    // add the panel to the tabbedPane
+                    tabbedPane.addTab(buttonNames[index], newPanel);
+                    tabbedPane.setTabComponentAt(tabbedPane.getTabCount()-1, tabPanel);
+                    tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
+                }
+            });
+            leftPanel.add(buttons[i]);
+        }
 
         // create the JTabbedPane
         tabbedPane = new JTabbedPane();
@@ -103,46 +169,6 @@ public class MainPage extends JFrame implements InterfacePage {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
-    public void addPage(String pagename, ImageIcon imageicon, JPanel panel) {
-        JButton button = new JButton(pagename, imageicon);
-        button.setPreferredSize(new Dimension(180, 50));
-        button.setBorder(BorderFactory.createEmptyBorder());
-        button.setContentAreaFilled(false);
-        button.setForeground(Color.WHITE);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // create a new panel and add it to the tabbedPane
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.gridx = 0;
-                gbc.gridy = 0;
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                // create a close button and add it to the tab
-                JButton closeButton = new JButton("X");
-                // closeButton.setFont(new Font("Arial", Font.PLAIN, 5));
-                closeButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // remove the tab
-                        tabbedPane.removeTabAt(tabbedPane.indexOfComponent(panel));
-                    }
-                });
-                // closeButton.setPreferredSize(new Dimension(30,20));
-                JPanel tabPanel = new JPanel(new BorderLayout(3,3));
-                JLabel tabTitle = new JLabel(pagename);
-                tabPanel.add(tabTitle, BorderLayout.WEST);
-                tabPanel.add(closeButton, BorderLayout.EAST);
-
-                // add the panel to the tabbedPane
-                tabbedPane.addTab(pagename, panel);
-                tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, tabPanel);
-            }
-        });
-        this.leftPanel.add(button);
-        this.leftPanel.revalidate();
-        this.leftPanel.repaint();
     }
 
     public ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> getInventoryData() {
