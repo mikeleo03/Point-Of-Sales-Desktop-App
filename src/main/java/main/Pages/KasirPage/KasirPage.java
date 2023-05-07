@@ -28,12 +28,14 @@ public class KasirPage extends JFrame {
     private Map<String, Map<String, Integer>> stateMap;
     private Map<String, Bill> billMap;
     private CustomerTuple customerTuple;
+    private BillManager billManager;
 
-    public KasirPage() {
-        panelMap = new HashMap<>();
-        stateMap = new HashMap<>();
-        billMap = new HashMap<>();
-        customerTuple = new CustomerTuple("", -1);
+    public KasirPage(BillManager billManager) {
+        this.panelMap = new HashMap<>();
+        this.stateMap = new HashMap<>();
+        this.billMap = new HashMap<>();
+        this.customerTuple = new CustomerTuple("", -1);
+        this.billManager = billManager;
         initUI();
     }
 
@@ -49,19 +51,29 @@ public class KasirPage extends JFrame {
         // Membuat tombol untuk menambah tab baru
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton addButton = new JButton("Tambah");
+        if (!this.billManager.isEmpty()) {
+            for (Bill bill : billManager.getListBill()) {
+                addTab(bill);
+            }
+        }
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                addTab();
+                addTab(null);
             }
         });
         buttonPanel.add(addButton);
         getContentPane().add(buttonPanel, BorderLayout.NORTH);
     }
 
-    private void addTab() {
+    private void addTab(Bill inputBill) {
         DetailTransaksi details = new DetailTransaksi();
         Bill bill = new Bill(this.customerTuple.getCustomerId(), details); // Set idCustomer ke 0 karena belum ada input dari user
-        // JPanel panel = new JPanel(new GridBagLayout());
+        if (inputBill != null) {
+            bill = inputBill;
+        } else {
+            // JPanel panel = new JPanel(new GridBagLayout());
+            billManager.addBill(bill);
+        }
         
         // Membuat panel baru untuk menangani pelanggan baru
         JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple);
@@ -93,7 +105,7 @@ public class KasirPage extends JFrame {
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            KasirPage kasirPage = new KasirPage();
+            KasirPage kasirPage = new KasirPage(new BillManager());
             kasirPage.setVisible(true);
         });
     }

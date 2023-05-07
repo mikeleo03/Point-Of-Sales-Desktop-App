@@ -21,4 +21,11 @@ public class BillManager implements Serializable {
         this.listBill = listBill;
     }
 
+    public void addBill(Bill bill) {
+        this.listBill.add(bill);
+    }
+
+    public Boolean isEmpty() {
+        return this.listBill.isEmpty();
+    }
 }   
