@@ -21,4 +21,7 @@ public class FixedBillManager implements Serializable {
         this.listFixedBill = listBill;
     }
 
+    public void addFixedBill(FixedBill fixedbill) {
+        this.listFixedBill.add(fixedbill);
+    }
 }  

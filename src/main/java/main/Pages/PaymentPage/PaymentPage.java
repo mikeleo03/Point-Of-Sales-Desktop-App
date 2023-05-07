@@ -1,12 +1,14 @@
 package main.Pages.PaymentPage;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import main.Bill.*;
-import main.Transaksi.DetailTransaksi;  
+import main.Barang.*;
+import main.Transaksi.DetailTransaksi;
+import main.Transaksi.ElemenDetailTransaksi;  
 
 public class PaymentPage extends JPanel implements ActionListener {
     private JButton cancelButton;
@@ -17,10 +19,14 @@ public class PaymentPage extends JPanel implements ActionListener {
     final int WIDTH = 700, HEIGHT = 400;
 
     private Bill bill;
+    private Inventory inventory;
+    private FixedBillManager fixedbillmanager;
 
-    public PaymentPage (Bill bill) {
+    public PaymentPage (Bill bill, Inventory inventory, FixedBillManager fixedbillmanager) {
         // Pass the bill object to the attributes
         this.bill = bill;
+        this.inventory = inventory;
+        this.fixedbillmanager = fixedbillmanager;
         
         // Create the table with some sample data
         ArrayList<Object[]> data = new ArrayList<>();
@@ -88,8 +94,13 @@ public class PaymentPage extends JPanel implements ActionListener {
             // Code to perform when button 1 is clicked
             System.out.println("Button 1 clicked!");
         } else if (e.getSource() == this.saveButton) {
-            // Code to perform when button 2 is clicked
-            System.out.println("Button 2 clicked!");
+            // Membuat fixed bill
+            FixedBill fixed = new FixedBill(this.bill.getIdCustomer(), this.bill.getDetailTransaksi());
+            this.fixedbillmanager.addFixedBill(fixed);
+            // Mengurangi nilai barang dari inventory
+            for (ElemenDetailTransaksi elemen : this.bill.getDetailTransaksi().getElement()) {
+                this.inventory.changeStock(elemen.getIdBarang(), elemen.getJumlahBarang());
+            }
         }
     }
 }

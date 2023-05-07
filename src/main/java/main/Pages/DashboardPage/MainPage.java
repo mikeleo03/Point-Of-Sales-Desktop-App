@@ -80,7 +80,7 @@ public class MainPage extends JFrame {
                     } else if (buttonNames[index].equals("Inventory")) {
                         newPanel = new InvPane(inv);
                     } else if (buttonNames[index].equals("Payment")) {
-                        newPanel = new PaymentPage(bill);
+                        newPanel = new PaymentPage(bill, fixedbillmanager);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientmanager);
                     } else if (buttonNames[index].equals("Customers")) {
