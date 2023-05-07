@@ -2,24 +2,26 @@ package main.Pages.PaymentPage;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import main.Bill.*;
 import main.Transaksi.DetailTransaksi;  
 
-public class PaymentPage extends JFrame {
-    private JButton cancelButton = new JButton("Cancel");
-    private JButton saveButton = new JButton("Save");
+public class PaymentPage extends JFrame implements ActionListener {
+    private JButton cancelButton;
+    private JButton saveButton;
     private JButton process = new JButton("Process");
     private JLabel pengantar;
     private JLabel total;
     
     final int WIDTH = 700, HEIGHT = 400;
 
-    public PaymentPage(FixedBill fixedbill) {
+    public PaymentPage (Bill bill) {
         
         // Create the table with some sample data
         ArrayList<Object[]> data = new ArrayList<>();
-        DetailTransaksi details = fixedbill.getDetailTransaksi();
+        DetailTransaksi details = bill.getDetailTransaksi();
         for (int i = 0; i < details.getElement().size(); i++) {
             Object[] row = new Object[4];
             row[0] = details.getElement().get(i).getJumlahBarang();
@@ -33,8 +35,12 @@ public class PaymentPage extends JFrame {
 
         // Create a panel to hold the buttons
         JPanel buttonPanel = new JPanel();
+        cancelButton = new JButton("Cancel");
+        saveButton = new JButton("Save");
         buttonPanel.add(this.cancelButton);
         buttonPanel.add(this.saveButton);
+        cancelButton.addActionListener(this);
+        saveButton.addActionListener(this);
 
         // Create a panel to hold the table
         JPanel tablePanel = new JPanel(new BorderLayout());
@@ -59,7 +65,7 @@ public class PaymentPage extends JFrame {
 
         gbc.gridy++;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.total = new JLabel("Total :" + fixedbill.getNominal().toString());
+        this.total = new JLabel("Total :" + bill.getNominal().toString());
         this.total.setFont(new Font("Arial", ALLBITS, 20));
         mainPanel.add(this.total, gbc);
 
@@ -76,5 +82,15 @@ public class PaymentPage extends JFrame {
         // Add the main panel to the content pane
         Container contentPane = getContentPane();
         contentPane.add(mainPanel);
+    }
+
+    public void actionPerformed (ActionEvent e) {
+        if (e.getSource() == this.cancelButton) {
+            // Code to perform when button 1 is clicked
+            System.out.println("Button 1 clicked!");
+        } else if (e.getSource() == this.saveButton) {
+            // Code to perform when button 2 is clicked
+            System.out.println("Button 2 clicked!");
+        }
     }
 }

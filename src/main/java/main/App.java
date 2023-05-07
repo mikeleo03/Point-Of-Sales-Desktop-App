@@ -46,10 +46,11 @@ public final class App {
         detail.editBarang(mie, 5, inv);
         detail.deleteDetail(eskrim);
 
-        FixedBill fixedbill = new FixedBill(2000, detail);
-        System.out.println(fixedbill.getTanggal());
-        System.out.println(fixedbill.getWaktu());
-        System.out.println(fixedbill);
+        Bill bill = new Bill(2000, detail);
+        System.out.println(bill.getTanggal());
+        System.out.println(bill.getWaktu());
+        System.out.println(bill);
+        PaymentPage payment = new PaymentPage(bill);
         /* for (ElemenDetailTransaksi elemen : fixedbill.getDetailTransaksi().getElement()) {
             System.out.println(elemen.getJumlahBarang() + " " + elemen.getIdBarang() + " " + elemen.getNamaBarang() + " " + elemen.getSubTotal());
         }
