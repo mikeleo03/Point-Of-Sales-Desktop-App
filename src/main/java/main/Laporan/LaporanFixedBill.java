@@ -21,11 +21,12 @@ import be.quodlibet.boxable.image.Image;
 import be.quodlibet.boxable.utils.PDStreamUtils;
 import be.quodlibet.boxable.utils.PageContentStreamOptimized;
 import main.Barang.Barang;
+import main.Transaksi.*;;
 
 public class LaporanFixedBill extends Laporan{
-    private ArrayList<Barang> listFixedBill; 
+    private ArrayList<ElemenDetailTransaksi> listFixedBill; 
 
-    public LaporanFixedBill(ArrayList<Barang> listFixedBill, String fileName) {
+    public LaporanFixedBill(ArrayList<ElemenDetailTransaksi> listFixedBill, String fileName) {
         super(fileName);
         this.listFixedBill = listFixedBill;
     }
@@ -56,30 +57,27 @@ public class LaporanFixedBill extends Laporan{
         boolean drawContent = true;
         float bottomMargin = 70;
         float yPosition = 680;
-        BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, drawContent);
+        BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin + 50, document, page, true, drawContent);
         Row<PDPage> headerRow = table.createRow(15f);
         Cell<PDPage> cell = headerRow.createCell(5, "No.");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
+        cell = headerRow.createCell(10, "Id Barang");
+        cell.setFont(PDType1Font.HELVETICA_BOLD);
         cell = headerRow.createCell(30, "Nama Barang");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(10, "Stock");
+        cell = headerRow.createCell(15, "Jumlah Barang");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
         cell = headerRow.createCell(15, "Harga");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(15, "Harga Beli");
-        cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(20, "Kategori");
-        cell.setFont(PDType1Font.HELVETICA_BOLD);
         table.addHeaderRow(headerRow);
         int count = 1;
-        for (Barang penjualanFix : listFixedBill) {
+        for (ElemenDetailTransaksi penjualanFix : listFixedBill) {
             Row<PDPage> row = table.createRow(10f);
             cell = row.createCell(5, String.valueOf(count++));
-            cell = row.createCell(30, penjualanFix.getName());
-            cell = row.createCell(10, String.valueOf(penjualanFix.getStock()));
-            cell = row.createCell(15, String.valueOf(penjualanFix.getPrice()));
-            cell = row.createCell(15, String.valueOf(penjualanFix.getBuyPrice()));
-            cell = row.createCell(20, penjualanFix.getCategory());
+            cell = row.createCell(10, String.valueOf(penjualanFix.getIdBarang()));
+            cell = row.createCell(30, String.valueOf(penjualanFix.getNamaBarang()));
+            cell = row.createCell(15, String.valueOf(penjualanFix.getJumlahBarang()));
+            cell = row.createCell(15, String.valueOf(penjualanFix.getSubTotal()));
         }
         table.draw();
 
@@ -91,7 +89,7 @@ public class LaporanFixedBill extends Laporan{
 
         contentStream.close();
         document.addPage(page);
-        document.save(new File(System.getProperty("user.dir") + "/docs/" + getFileName()));
+        document.save(new File("../docs/" + getFileName()+".pdf"));
         document.close();
     }
 }
