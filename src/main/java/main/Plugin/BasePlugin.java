@@ -1,12 +1,9 @@
 package main.Plugin;
 
-import javax.swing.*;
-
 public abstract class BasePlugin {
-    static JPanel pluginPage;
+    protected final InterfacePage ip;
 
-    public void makeEmptyPage (JComponent c) {
-        BasePlugin.pluginPage = new JPanel();
-        c.add(BasePlugin.pluginPage);
+    public BasePlugin(InterfacePage ip) {
+        this.ip = ip;
     }
 }

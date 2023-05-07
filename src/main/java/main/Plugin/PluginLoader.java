@@ -7,7 +7,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import java.util.jar.JarFile;
 
 public class PluginLoader {
     // Returns an arraylist of class names in a JarInputStream
@@ -53,13 +52,17 @@ public class PluginLoader {
         URLClassLoader classLoader = new URLClassLoader(new URL[]{f.toURI().toURL()});
         for (String className : classNames) {
             try {
-                System.out.println(className);
                 String name = "main.Plugin." + className;
-                System.out.println(name);
                 Class cc = classLoader.loadClass(name);
-                availableClasses.add(cc);
+                final List<Class> implementedItf = Arrays.asList(cc.getInterfaces());
+                for (Class inter : implementedItf) {
+                    if (inter.getName().contains("PluginInterface")) {
+                        availableClasses.add(cc);
+                        break;
+                    }
+                }
             } catch (ClassNotFoundException e) {
-
+                continue;
             }
         }
         return availableClasses;
@@ -82,15 +85,15 @@ public class PluginLoader {
         }
     } */
 
-    public void loadPlugin (String pluginPath) throws Exception {
+    public void loadPlugin (String pluginPath, InterfacePage mp) throws Exception {
         try {
             ArrayList<Class> classes = loadJarFile(pluginPath);
             for (Class c : classes) {
                 try {
-                    Method s = c.getMethod("start", String.class);
-                    Constructor<?> constructor = c.getDeclaredConstructor();
-                    BasePlugin p = (BasePlugin) constructor.newInstance();
-                    System.out.println(s.invoke(p, "test"));
+                    Method m = c.getMethod("onLoad");
+                    Constructor<?> constructor = c.getDeclaredConstructor(InterfacePage.class);
+                    PluginInterface p = (PluginInterface) constructor.newInstance(mp);
+                    m.invoke(p);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

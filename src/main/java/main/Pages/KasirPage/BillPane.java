@@ -30,9 +30,9 @@ public class BillPane extends JPanel {
     private JComboBox<String> clientComboBox;
     private ClientManager clientManager;
 
-    public BillPane(DetailTransaksi details, Bill bill, CustomerTuple customerTuple) {
+    public BillPane(DetailTransaksi details, Bill bill, CustomerTuple customerTuple, ClientManager clientManager) {
         details = bill.getDetailTransaksi();
-        clientManager = new ClientManager();
+        this.clientManager = clientManager;
         setLayout(new GridBagLayout());
 
         // create table and add to scroll pane
@@ -164,17 +164,9 @@ public class BillPane extends JPanel {
         });
         
         // create buttons to save bill and pay
-        JButton saveButton = new JButton("Save Bill");
         JButton payButton = new JButton("Bayar");
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0;
-        add(saveButton, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -182,7 +174,6 @@ public class BillPane extends JPanel {
         add(payButton, gbc);
 
         // add action listener to buttons
-        saveButton.addActionListener(new ButtonActionListener ());
         payButton.addActionListener(new ButtonActionListener ());
     }
 

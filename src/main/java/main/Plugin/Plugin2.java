@@ -1,30 +1,61 @@
 package main.Plugin;
 
-import main.Barang.*;
-import main.Client.*;
+import javax.swing.JPanel;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
-import javax.swing.*;
 import org.jfree.chart.*;
 import org.jfree.data.general.DefaultPieDataset;
+import org.javatuples.*;
 import java.lang.Thread;
+import java.util.ArrayList;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class Plugin2 extends BasePlugin implements PluginInterface, Runnable {
+    private ChartPanel panel1, panel2;
+
+    public Plugin2(InterfacePage ip) {
+        super(ip);
+        this.panel1 = new ChartPanel(null);
+        this.panel2 = new ChartPanel(null);
+    }
+
     public void onLoad() {
-        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.5;
+        gbc.fill = GridBagConstraints.BOTH;
+        JPanel pluginPage = ip.getPluginPage();
+        pluginPage.setLayout(new GridBagLayout());
+        pluginPage.add(panel1, gbc);
+        gbc.gridx++;
+        pluginPage.add(panel2, gbc);
+        Thread makeChart = new Thread(this);
+        makeChart.start();
     }
 
     public void run() {
-        makeCategoryChart(null);
+        while (true) {
+            makeCategoryChart();
+            makeMembershipChart();
+            ip.getPluginPage().revalidate();
+            ip.getPluginPage().repaint();
+            try {
+                Thread.sleep(10000);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
-    public void makeCategoryChart(Inventory inv) {
+    public void makeCategoryChart() {
         DefaultPieDataset pds = new DefaultPieDataset();
         HashMap<String,Integer> categorySum = new HashMap<>();
-        for (Barang b : inv.getListBarang()) {
-            categorySum.merge(b.getCategory(),1,Integer::sum);
+        for (Septet<Integer, String, Integer, Double, Double, String, String> data : ip.getInventoryData()) {
+            categorySum.merge(data.getValue5(),1,Integer::sum);
         }
         for (String k : categorySum.keySet()) {
             pds.setValue(k, categorySum.get(k));
@@ -35,22 +66,16 @@ public class Plugin2 extends BasePlugin implements PluginInterface, Runnable {
           true,             // include legend   
           true, 
           false);
-        ChartPanel cp = new ChartPanel(pieChart);
-        cp.setSize(560,400);
-        File out = new File("Category Count.png");
-        try {
-            ChartUtils.saveChartAsPNG(out, pieChart, cp.getWidth(), cp.getHeight());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        this.panel1.setChart(pieChart);
     }
 
-    public void makeMembershipChart(ClientManager cm) {
+    public void makeMembershipChart() {
         DefaultPieDataset pds = new DefaultPieDataset();
+        HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> data = ip.getClientManagerData();
         HashMap<String,Integer> membershipSum = new HashMap<>();
-        membershipSum.put("Customer", cm.getListCustomer().size());
-        membershipSum.put("Member", cm.getListMember().size());
-        membershipSum.put("VIP", cm.getListVIP().size());
+        membershipSum.put("Customer", data.get("Customer").size());
+        membershipSum.put("Member", data.get("Member").size());
+        membershipSum.put("VIP", data.get("VIP").size());
         for (String k : membershipSum.keySet()) {
             pds.setValue(k, membershipSum.get(k));
         }
@@ -60,13 +85,6 @@ public class Plugin2 extends BasePlugin implements PluginInterface, Runnable {
           true,             // include legend   
           true, 
           false);
-        ChartPanel cp = new ChartPanel(pieChart);
-        cp.setSize(560,400);
-        File out = new File("Membership Count.png");
-        try {
-            ChartUtils.saveChartAsPNG(out, pieChart, cp.getWidth(), cp.getHeight());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+          this.panel2.setChart(pieChart);
     }
 }

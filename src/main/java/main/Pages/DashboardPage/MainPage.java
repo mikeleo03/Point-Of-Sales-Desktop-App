@@ -18,6 +18,7 @@ import main.Pages.InventoryPage.*;
 import main.Pages.PaymentPage.*;
 import main.Pages.RegistrationPage.*;
 import main.Pages.UpdateInformationPage.*;
+import main.Plugin.InterfacePage;
 import main.Pages.SettingPage.*;
 import main.Pages.HistoryPage.*;
 import main.Pages.PluginPage.*;
@@ -31,16 +32,21 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
     private ClientManager clientManager;
     private Inventory inv;
     private FixedBillManager fixedbillmanager;
-    private BillManager billmanager;
+    private BillManager billManager;
+    private PluginPanel pluginPane;
 
     public MainPage() {
         this.dataStoreAdapter = new JSONDataStoreAdapter();
         this.clientManager = this.dataStoreAdapter.readClientManager();
+        this.billManager = new BillManager();
 
         this.clientManager.observer.subscribe(this);
 
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
+
+        clientManager = new ClientManager();
+        pluginPane = new PluginPanel();
 
         Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
         Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
@@ -120,20 +126,20 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                     } else if (buttonNames[index].equals("Inventory")) {
                         newPanel = new InvPane(inv);
                     } else if (buttonNames[index].equals("Payment")) {
-                        newPanel = new PaymentPage(billmanager, inv, fixedbillmanager);
+                        newPanel = new PaymentPage(billManager, inv, fixedbillmanager);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientManager);
                     } else if (buttonNames[index].equals("Customers")) {
                         newPanel = new UpdateInformationPane(clientManager);
                     } else if (buttonNames[index].equals("Settings")) {
-                        newPanel = new SettingPage();
+                        newPanel = new SettingPage(MainPage.this);
                     } else if (buttonNames[index].equals("History")) {
                         newPanel = new HistoryPage(fixedbillmanager);
                     } else if (buttonNames[index].equals("Plugin")) {
-                        newPanel = new PluginPanel();
-                    } /* else if (buttonNames[index].equals("Sales")) {
-                        // newPanel = new KasirPage(billmanager);
-                    } */ else {
+                        newPanel = pluginPane;
+                    } else if (buttonNames[index].equals("Sales")) {
+                        newPanel = new KasirPage(billManager, clientManager, inv);
+                    } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
                         JLabel label = new JLabel("AAAAAA");
@@ -181,6 +187,10 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public JPanel getPluginPage() {
+        return pluginPane;
     }
 
     public ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> getInventoryData() {

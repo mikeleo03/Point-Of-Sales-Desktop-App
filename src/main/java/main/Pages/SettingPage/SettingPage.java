@@ -1,5 +1,8 @@
 package main.Pages.SettingPage;
 
+import main.Pages.DashboardPage.MainPage;
+import main.Plugin.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -14,7 +17,7 @@ public class SettingPage extends JPanel {
     private JLabel label;
     private String jarPath;
 
-    public SettingPage() {
+    public SettingPage(MainPage mp) {
         this.setSize(400, 200);
         this.jarPath = "";
     
@@ -37,6 +40,8 @@ public class SettingPage extends JPanel {
     
         // create file chooser
         JFileChooser fileChooser = new JFileChooser();
+        File currDir = new File(System.getProperty("user.dir"));
+        fileChooser.setCurrentDirectory(currDir);
         fileChooser.setFileFilter(new FileNameExtensionFilter("JAR files", "jar"));
     
         // create buttons
@@ -86,8 +91,12 @@ public class SettingPage extends JPanel {
                         // display selected file path
                         pathLabel.setText(file.getPath());
                         jarPath = file.getPath();
-                        // do something with the selected file
-                        // ...
+                        PluginLoader pl = new PluginLoader();
+                        try {
+                            pl.loadPlugin(jarPath, mp);
+                        } catch (Exception err) {
+                            System.out.println(err.getMessage());
+                        }
                     } else {
                         // display an error message
                         JOptionPane.showMessageDialog(mainPanel, "Please select a JAR file.", "Error", JOptionPane.ERROR_MESSAGE);
