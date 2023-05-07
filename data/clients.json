@@ -1,0 +1,18 @@
+{
+  "lastClientID" : 2,
+  "listCustomer" : [ ],
+  "listMember" : [ {
+    "customerID" : 2,
+    "customerName" : "Leon",
+    "noOfPhone" : "0811",
+    "point" : 0,
+    "active" : false
+  } ],
+  "listVIP" : [ {
+    "customerID" : 1,
+    "customerName" : "Dillon",
+    "noOfPhone" : "0897",
+    "point" : 0,
+    "active" : true
+  } ]
+}

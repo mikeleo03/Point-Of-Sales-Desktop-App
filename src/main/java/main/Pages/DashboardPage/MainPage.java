@@ -7,10 +7,13 @@ import java.awt.event.MouseEvent;
 import org.javatuples.*;
 import java.awt.*;
 import javax.swing.*;
+
+import main.Client.*;
 import main.Barang.*;
 import main.Transaksi.*;
 import main.Bill.*;
-import main.Client.*;
+import main.DataStore.*;
+import main.Observer.*;
 import main.Pages.InventoryPage.*;
 import main.Pages.PaymentPage.*;
 import main.Pages.RegistrationPage.*;
@@ -20,19 +23,24 @@ import main.Pages.HistoryPage.*;
 import main.Pages.PluginPage.*;
 import main.Pages.KasirPage.*;
 
-public class MainPage extends JFrame implements InterfacePage {
+public class MainPage extends JFrame implements InterfacePage, Subscriber {
     private JTabbedPane tabbedPane;
     private JPanel leftPanel;
+
+    private DataStoreAdapter dataStoreAdapter;
+    private ClientManager clientManager;
     private Inventory inv;
-    private ClientManager clientmanager;
     private FixedBillManager fixedbillmanager;
     private BillManager billmanager;
 
     public MainPage() {
+        this.dataStoreAdapter = new JSONDataStoreAdapter();
+        this.clientManager = this.dataStoreAdapter.readClientManager();
+
+        this.clientManager.observer.subscribe(this);
+
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
-
-        //clientmanager = new ClientManager();
 
         Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
         Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
@@ -114,9 +122,9 @@ public class MainPage extends JFrame implements InterfacePage {
                     } else if (buttonNames[index].equals("Payment")) {
                         newPanel = new PaymentPage(billmanager, inv, fixedbillmanager);
                     } else if (buttonNames[index].equals("Registration")) {
-                        newPanel = new RegistrationPane(clientmanager);
+                        newPanel = new RegistrationPane(clientManager);
                     } else if (buttonNames[index].equals("Customers")) {
-                        newPanel = new UpdateInformationPane(clientmanager);
+                        newPanel = new UpdateInformationPane(clientManager);
                     } else if (buttonNames[index].equals("Settings")) {
                         newPanel = new SettingPage();
                     } else if (buttonNames[index].equals("History")) {
@@ -189,21 +197,21 @@ public class MainPage extends JFrame implements InterfacePage {
     public HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> getClientManagerData() {
         HashMap<String,ArrayList<Quintet<Integer, String, String, Integer, Boolean>>> data = new HashMap<>();
         ArrayList<Quintet<Integer, String, String, Integer, Boolean>> customers = new ArrayList<>();
-        for (Customer c : clientmanager.getListCustomer()) {
+        for (Customer c : clientManager.getListCustomer()) {
             Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
                 (c.getCustomerID(), null, null, null, null);
             customers.add(currData);
         }
         data.put("Customer", customers);
         customers.clear();
-        for (Member m : clientmanager.getListMember()) {
+        for (Member m : clientManager.getListMember()) {
             Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
                 (m.getCustomerID(), m.getCustomerName(), m.getNoOfPhone(), m.getPoint(), m.getActive());
             customers.add(currData);
         }
         data.put("Member", customers);
         customers.clear();
-        for (VIP v : clientmanager.getListVIP()) {
+        for (VIP v : clientManager.getListVIP()) {
             Quintet<Integer, String, String, Integer, Boolean> currData = new Quintet<Integer, String, String, Integer, Boolean>
                 (v.getCustomerID(), v.getCustomerName(), v.getNoOfPhone(), v.getPoint(), v.getActive());
             customers.add(currData);
@@ -211,5 +219,9 @@ public class MainPage extends JFrame implements InterfacePage {
         data.put("VIP", customers);
         customers.clear();
         return data;
+    }
+
+    public void update() {
+        this.dataStoreAdapter.writeClientManager(this.clientManager);
     }
 }

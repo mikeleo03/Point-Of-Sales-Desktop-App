@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.io.Serializable;
 import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
 
 import main.Observer.*;
 
@@ -23,7 +24,9 @@ public class ClientManager implements Serializable {
     private List<Customer> listCustomer;
     private List<Member> listMember;
     private List<VIP> listVIP;
-    public Observer observer; 
+
+    @JsonIgnore
+    public transient Observer observer; 
 
     /* ====================================== METHODS ====================================== */
 
@@ -87,6 +90,7 @@ public class ClientManager implements Serializable {
     /* ----------------------------------- ADDITIONAL METHOD ----------------------------------*/
 
     // Return the type of customerID
+    @JsonIgnore
     public Integer getClientType(Integer customerID) {
         for (Member member : this.listMember) {
             if (member.getCustomerID() == customerID) {
@@ -102,6 +106,7 @@ public class ClientManager implements Serializable {
     }
 
     // Return the name of customerID
+    @JsonIgnore
     public String getClientName(Integer customerID) {
         for (Member member : this.listMember) {
             if (member.getCustomerID() == customerID) {
@@ -117,6 +122,7 @@ public class ClientManager implements Serializable {
     }
 
     // Return the phone of customerID
+    @JsonIgnore
     public String getClientPhone(Integer customerID) {
         for (Member member : this.listMember) {
             if (member.getCustomerID() == customerID) {
@@ -132,6 +138,7 @@ public class ClientManager implements Serializable {
     }
 
     // Return the activity of customerID
+    @JsonIgnore
     public Boolean getClientActivity(Integer customerID) {
         for (Member member : this.listMember) {
             if (member.getCustomerID() == customerID) {
@@ -147,6 +154,7 @@ public class ClientManager implements Serializable {
     }
 
     // Return the name of all clientID
+    @JsonIgnore
     public String[] getNonCustomerName() {
         String[] listName = new String[this.listMember.size() + this.listVIP.size() + 1];
         
@@ -163,6 +171,7 @@ public class ClientManager implements Serializable {
     }   
 
     // Return all ID of customer in descending order
+    @JsonIgnore
     public Integer[] getAllCustomerID() {
         Integer listID[] = new Integer[this.listCustomer.size()];
 
@@ -175,6 +184,7 @@ public class ClientManager implements Serializable {
     }
 
     // Return all ID of member and VIP in descending order
+    @JsonIgnore
     public Integer[] getAllNonCustomerID() {
         Integer listID[] = new Integer[this.listMember.size() + this.listVIP.size()];
 

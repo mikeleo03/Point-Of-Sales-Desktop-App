@@ -11,7 +11,7 @@ import main.Barang.*;
 import main.Bill.*;
 import main.Plugin.Currency.*;
 
-interface DataStoreAdapter {
+public interface DataStoreAdapter {
     /* ------------------------------------ READER-WRITER -----------------------------------*/
 
     public ClientManager readClientManager();
