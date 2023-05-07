@@ -110,7 +110,7 @@ public class BillPane extends JPanel {
                     String selectedClient = clientComboBox.getSelectedItem().toString();
 
                     if (selectedClient == null || clientComboBox.getSelectedItem().toString().isEmpty()) {
-                        customerTuple.setCustomerId(-1);
+                        customerTuple.setCustomerId(originalClientList.size());
                         customerTuple.setCustomerName("");
                     } else {
                         // parse name and id from selectedClient
