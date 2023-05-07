@@ -138,7 +138,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                     } else if (buttonNames[index].equals("Plugin")) {
                         newPanel = pluginPane;
                     } else if (buttonNames[index].equals("Sales")) {
-                        newPanel = new KasirPage(billManager, clientManager);
+                        newPanel = new KasirPage(billManager, clientManager, inv);
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;

@@ -26,19 +26,20 @@ public class PelangganPanel extends JPanel implements ActionListener {
     private JButton closeButton;
     private BillPane billPane;
     private ItemsDisplay itemsDisplay;
-    private Inventory testInventory;
     private KasirPage kasirPage;
     private int pelangganId;
     private Bill bill;
     private CustomerTuple customerTuple;
     private ClientManager clientManager;
+    private Inventory inventory;    
 
-    public PelangganPanel(int pelangganId, KasirPage kasirPage, Bill bill, CustomerTuple customerTuple, ClientManager clientManager) {
+    public PelangganPanel(int pelangganId, KasirPage kasirPage, Bill bill, CustomerTuple customerTuple, ClientManager clientManager, Inventory inventory) {
         this.pelangganId = pelangganId;
         this.kasirPage = kasirPage;
         this.customerTuple = customerTuple;
         this.bill = bill;
         this.clientManager = clientManager;
+        this.inventory = inventory;
         initUI();
     }
 
@@ -60,14 +61,13 @@ public class PelangganPanel extends JPanel implements ActionListener {
         gbc.insets = new Insets(5, 5, 5, 5);
         add(this.billPane, gbc);
     
-        this.testInventory = new Inventory();
-        Barang b = new Barang("Test", 10, 5.0, 2.0, "Food", "../img/test.jpg");
-        for (int i =0; i<28;i++) {
-            this.testInventory.addBarang(b);
-        }
+        // Barang b = new Barang("Test", 10, 5.0, 2.0, "Food", "../img/test.jpg");
+        // for (int i =0; i<28;i++) {
+        //     this.inventory.addBarang(b);
+        // }
 
         // Menambahkan ItemsDisplay ke panel
-        ItemsDisplay itemsDisplay = new ItemsDisplay(this.testInventory, bill, this);
+        ItemsDisplay itemsDisplay = new ItemsDisplay(this.inventory, bill, this);
 
         gbc.gridx = 0;
         gbc.weightx = 0.7;

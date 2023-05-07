@@ -31,14 +31,16 @@ public class KasirPage extends JPanel {
     private CustomerTuple customerTuple;
     private BillManager billManager;
     private ClientManager clientManager;
+    private Inventory inventory;
 
-    public KasirPage(BillManager billManager, ClientManager clientManager) {
+    public KasirPage(BillManager billManager, ClientManager clientManager, Inventory inventory) {
         this.panelMap = new HashMap<>();
         this.stateMap = new HashMap<>();
         this.billMap = new HashMap<>();
         this.customerTuple = new CustomerTuple("", -1);
         this.billManager = billManager;
         this.clientManager = clientManager;
+        this.inventory = inventory;
         initUI();
     }
 
@@ -78,7 +80,7 @@ public class KasirPage extends JPanel {
         }
         
         // Membuat panel baru untuk menangani pelanggan baru
-        JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple, this.clientManager);
+        JPanel panel = new PelangganPanel(panelMap.size() + 1, this, bill, this.customerTuple, this.clientManager, this.inventory);
 
         JButton closeButton = new JButton("X");
         closeButton.addActionListener(new ActionListener() {
