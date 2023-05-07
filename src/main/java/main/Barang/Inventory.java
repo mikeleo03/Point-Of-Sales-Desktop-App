@@ -7,16 +7,23 @@ package main.Barang;
 import java.util.ArrayList;
 import java.io.Serializable;
 import javax.xml.bind.annotation.*;
+import com.fasterxml.jackson.annotation.*;
+
+import main.Observer.*;
 
 @XmlRootElement
 public class Inventory implements Serializable {
     private Integer lastID;
     private ArrayList<Barang> listBarang;
 
+    @JsonIgnore
+    public transient Observer observer;
+
     // CONSTRUCTOR
     public Inventory() {
         this.listBarang = new ArrayList<Barang>();
         this.lastID = 0;
+        this.observer = new Observer();
     }
 
     public Inventory(ArrayList<Barang> list) {
@@ -39,6 +46,7 @@ public class Inventory implements Serializable {
     public void setLastID(Integer lastID) {
         // Setter lastID
         this.lastID = lastID;
+        this.observer.notifySubscriber();
     }
 
     @XmlElement
@@ -49,6 +57,7 @@ public class Inventory implements Serializable {
     public void setListBarang(ArrayList<Barang> listBarang) {
         // Setter listBarang
         this.listBarang = listBarang;
+        this.observer.notifySubscriber();
     }
 
     public Barang getBarangByID(int ID) {
@@ -117,6 +126,7 @@ public class Inventory implements Serializable {
         b.setID(this.lastID);
         this.listBarang.add(b);
         this.lastID++;
+        this.observer.notifySubscriber();
     }
 
     public void deleteBarang(int ID) {
@@ -126,6 +136,7 @@ public class Inventory implements Serializable {
                 this.listBarang.remove(this.listBarang.get(i));
             }
         }
+        this.observer.notifySubscriber();
     }
 
     public void updateBarang(int ID, String name, Integer stock, Double price, Double buyPrice, String category, String picturePath) {
@@ -151,6 +162,7 @@ public class Inventory implements Serializable {
                 b.setPicturePath(picturePath);
             }
         }
+        this.observer.notifySubscriber();
     }
 
     public void changeStock(int ID, int amount) {
@@ -158,5 +170,6 @@ public class Inventory implements Serializable {
         // Diasumsikan apabila amount negatif, abs(amount) <= stok barang yang tersisa
         Barang b = getBarangByID(ID);
         b.setStock(b.getStock()+amount);
+        this.observer.notifySubscriber();
     }
 }
