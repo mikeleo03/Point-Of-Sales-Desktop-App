@@ -2,11 +2,13 @@ package main.Pages.UpdateInformationPage;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import main.Client.*;
+import main.Observer.*;
 
-public class UpdateInformationPane extends JPanel implements ActionListener {
+public class UpdateInformationPane extends JPanel implements ActionListener, Subscriber {
 
     private static final String memberType[] = {"1 - Member", "2 - VIP"};
     private static final String activeType[] = {"Active", "Not Active"};
@@ -19,8 +21,10 @@ public class UpdateInformationPane extends JPanel implements ActionListener {
 
     public UpdateInformationPane(ClientManager clientManager) {
         this.clientManager = clientManager;
+        this.clientManager.observer.subscribe(this);
 
         this.setLayout(new GridBagLayout());
+        this.setBackground(new Color(0x1a1e3b));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -29,21 +33,27 @@ public class UpdateInformationPane extends JPanel implements ActionListener {
         
         this.title = new JLabel("Update Information");
         this.title.setFont(new Font("Serif", Font.BOLD, 30));
+        this.title.setForeground(Color.WHITE);
 
         this.idLabel = new JLabel("ID");
         this.idLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        this.idLabel.setForeground(Color.WHITE);
 
         this.nameLabel = new JLabel("Name");
         this.nameLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        this.nameLabel.setForeground(Color.WHITE);
 
         this.phoneLabel = new JLabel("Phone");
         this.phoneLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        this.phoneLabel.setForeground(Color.WHITE);
 
         this.typeLabel = new JLabel("Membership");
         this.typeLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        this.typeLabel.setForeground(Color.WHITE);
 
         this.activeLabel = new JLabel("Status");
         this.activeLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        this.activeLabel.setForeground(Color.WHITE);
 
         this.nameField = new JTextField();
         this.nameField.setPreferredSize(new Dimension(800, 25));
@@ -123,7 +133,7 @@ public class UpdateInformationPane extends JPanel implements ActionListener {
     }
 
     public void updateMember() {
-        Integer membership = Character.getNumericValue(((String) this.activeOption.getSelectedItem()).charAt(0));
+        Integer membership = Character.getNumericValue(((String) this.regTypeOption.getSelectedItem()).charAt(0));
         Integer idSelected = (Integer) this.idOption.getSelectedItem();
         Boolean isActive = ((String) this.activeOption.getSelectedItem()).equals("Active");
         this.clientManager.changeClientStatus(idSelected, this.nameField.getText().trim(), this.phoneField.getText().trim(), isActive, membership);
@@ -134,18 +144,26 @@ public class UpdateInformationPane extends JPanel implements ActionListener {
             this.reloadComponent();
         }
         else if (e.getActionCommand().equals("Update")) {
-            if (this.nameField.getText().trim().length() == 0) {
+            if (this.idOption.getItemCount() == 0) {
+                JOptionPane.showMessageDialog(null, "Belum ada member atau VIP yang terdaftar");
+            }
+            else if (this.nameField.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Mohon masukkan nama yang valid");
             }
             else if (this.phoneField.getText().trim().length() == 0) {
                 JOptionPane.showMessageDialog(null, "Mohon masukkan nomor telepon yang valid");
             }
-            else if (this.idOption.getItemCount() == 0) {
-                JOptionPane.showMessageDialog(null, "Belum ada member atau VIP yang terdaftar");
-            }
             else {
                 this.updateMember();
             }
         }
+    }
+
+    public void update() {
+        this.idOption.removeAllItems();
+        for (Integer id : this.clientManager.getAllNonCustomerID()) {
+            this.idOption.addItem(id);
+        }
+        
     }
 }
