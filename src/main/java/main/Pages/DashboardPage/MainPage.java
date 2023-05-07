@@ -1,6 +1,8 @@
 package main.Pages.DashboardPage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.*;
 import javax.swing.*;
 import main.Barang.*;
@@ -13,6 +15,7 @@ import main.Pages.RegistrationPage.*;
 import main.Pages.UpdateInformationPage.*;
 import main.Pages.SettingPage.*;
 import main.Pages.HistoryPage.*;
+import main.Pages.PluginPage.*;
 
 public class MainPage extends JFrame {
 
@@ -46,14 +49,30 @@ public class MainPage extends JFrame {
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setPreferredSize(new Dimension(200, getHeight()));
         leftPanel.setBackground(new Color(0x1a1e3b));
+        ImageIcon logo = new ImageIcon(new ImageIcon("../img/icon/logo.png").getImage().getScaledInstance(150, 30, Image.SCALE_SMOOTH));
+        JLabel logoLabel = new JLabel(logo);
+        logoLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
+        leftPanel.add(logoLabel);
+        
+        JLabel POS = new JLabel("Point Of Sale");
+        POS.setForeground(new Color(0x9c9c9c));
+        POS.setBorder(BorderFactory.createEmptyBorder(5, 50, 20, 0));
+        leftPanel.add(POS);
 
         // create the buttons with icons
         String[] buttonNames = {"Dashboard", "Registration", "Customers", "History", "Payment", 
                                 "Inventory", "Sales", "Stocks", "Settings", "Plugin"};
         ImageIcon[] buttonIcons = {
-                new ImageIcon("images.png"), new ImageIcon("registration.png"), new ImageIcon("customers.png"),
-                new ImageIcon("history.png"), new ImageIcon("payment.png"), new ImageIcon("inventory.png"),
-                new ImageIcon("sales.png"), new ImageIcon("stocks.png"), new ImageIcon("settings.png"), new ImageIcon("plugin.png")
+            new ImageIcon(new ImageIcon("../img/icon/home.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/registration.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/customer.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/history.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/payment.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/inventory.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/sales.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/stock.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/settings.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)),
+            new ImageIcon(new ImageIcon("../img/icon/plugin.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH))
         };
         JButton[] buttons = new JButton[buttonNames.length];
         for (int i = 0; i < buttonNames.length; i++) {
@@ -63,7 +82,16 @@ public class MainPage extends JFrame {
             buttons[i].setBorder(BorderFactory.createEmptyBorder());
             buttons[i].setContentAreaFilled(false);
             buttons[i].setForeground(Color.WHITE);
+            buttons[i].addMouseListener (new MouseAdapter() {
+                public void mouseEntered(MouseEvent e) {
+                    setBackground(Color.GRAY);
+                }
+                public void mouseExited(MouseEvent e) {
+                    setBackground(new Color(0x1a1e3b));
+                }
+            });
             buttons[i].addActionListener(new ActionListener() {
+
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // create a new panel and add it to the tabbedPane
@@ -89,6 +117,8 @@ public class MainPage extends JFrame {
                         newPanel = new SettingPage();
                     } else if (buttonNames[index].equals("History")) {
                         newPanel = new HistoryPage(fixedbillmanager);
+                    } else if (buttonNames[index].equals("Plugin")) {
+                        newPanel = new PluginPanel();
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
@@ -121,6 +151,11 @@ public class MainPage extends JFrame {
 
         // create the JTabbedPane
         tabbedPane = new JTabbedPane();
+        tabbedPane.setBackground(new Color(0x1a1e3b));
+
+        // // create startpanel
+        // JPanel start;
+        // start = new MainPanel();
 
         // add the LeftPanel and JTabbedPane to the JFrame
         add(leftPanel, BorderLayout.WEST);
