@@ -1,10 +1,11 @@
 package main.Pages.HistoryPage;
 import main.Bill.FixedBill;
+import main.Bill.FixedBillManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 import main.Barang.*;
 import main.Transaksi.*;
 
@@ -12,7 +13,7 @@ public class HistoryPage extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
 
-    public HistoryPage() {
+    public HistoryPage(FixedBillManager fixedBillManager) {
         super("History Page");
     
         // create main panel with GridBagLayout
@@ -49,7 +50,7 @@ public class HistoryPage extends JFrame {
         tableModel.addColumn("Subtotal");
     
         // populate table with data from fixed bills
-        ArrayList<FixedBill> fixedBills = getFixedBills(); // assume this method returns a list of FixedBill objects
+        List<FixedBill> fixedBills = fixedBillManager.getListFixedBill(); // assume this method returns a list of FixedBill objects
         for (FixedBill bill : fixedBills) {
             DetailTransaksi details = bill.getDetailTransaksi();
             for (int i = 0; i < details.getElement().size(); i++) {
@@ -77,47 +78,10 @@ public class HistoryPage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    // method to get fixed bills from database or other source
-    private ArrayList<FixedBill> getFixedBills() {
-        // TODO: implement method to get fixed bills from database or other source
-    
-        // ArrayList<Barang> listBarang = new ArrayList<>();
-        Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
-        Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
-        Barang eskrim = new Barang("Ice Cream", 12, 5000.00, 7000.00, "Makanan", "../");
-        
-        Inventory inv = new Inventory();
-        inv.addBarang(mie);
-        inv.addBarang(nasgor);
-        inv.addBarang(eskrim);
-        for (Barang barang : inv.getListBarang()) {
-            System.out.println(barang.getName() + " " + barang.getID());
-        }
-
-        DetailTransaksi detail = new DetailTransaksi();
-        detail.editBarang(nasgor, 3, inv);
-        detail.editBarang(mie, 5, inv);
-        detail.editBarang(nasgor, 5, inv);
-        detail.editBarang(mie, 5, inv);
-        detail.deleteDetail(eskrim);
-
-        // FixedBill fixedbill = new FixedBill(2000, "12:08:23", "22/03/2022", detail);
-        // System.out.println(fixedbill);
-
-        // create an ArrayList of FixedBill
-        ArrayList<FixedBill> fixedBills = new ArrayList<>();
-
-        // create a FixedBill object and add it to the ArrayList
-        // FixedBill fixedbill = new FixedBill(2000, "12:08:23", "22/03/2022", detail);
-        // fixedBills.add(fixedbill);
-
-        // return new ArrayList<FixedBill>();
-        return fixedBills;
-    }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            HistoryPage historyPage = new HistoryPage();
+            FixedBillManager fxm = new FixedBillManager();
+            HistoryPage historyPage = new HistoryPage(fxm);
             historyPage.setVisible(true);
         });
     }
