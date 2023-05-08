@@ -10,12 +10,10 @@ import javax.swing.*;
 
 import main.Client.*;
 import main.Barang.*;
-import main.Transaksi.*;
 import main.Bill.*;
 import main.DataStore.*;
 import main.Observer.*;
 import main.Pages.InventoryPage.*;
-import main.Pages.PaymentPage.*;
 import main.Pages.RegistrationPage.*;
 import main.Pages.UpdateInformationPage.*;
 import main.Plugin.InterfacePage;
@@ -30,7 +28,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
 
     private DataStoreAdapter dataStoreAdapter;
     private ClientManager clientManager;
-    private Inventory inv;
+    private Inventory inventory;
     private FixedBillManager fixedBillManager;
     private BillManager billManager;
     private PluginPanel pluginPane;
@@ -38,31 +36,15 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
     public MainPage() {
         this.dataStoreAdapter = new JSONDataStoreAdapter();
         this.clientManager = this.dataStoreAdapter.readClientManager();
-        this.billManager = new BillManager();
-        this.fixedBillManager = new FixedBillManager();
+        this.inventory = this.dataStoreAdapter.readInventory();
+        this.billManager = this.dataStoreAdapter.readBillManager();
+        this.fixedBillManager = this.dataStoreAdapter.readFixedBillManager();
 
         this.clientManager.observer.subscribe(this);
 
         // set the layout of the JFrame to BorderLayout
         setLayout(new BorderLayout());
         pluginPane = new PluginPanel();
-
-        Barang nasgor = new Barang("Nasi Goreng", 10, 11000.00, 13000.00, "Makanan", "../");
-        Barang mie = new Barang("Mie Goreng", 10, 9000.00, 7000.00, "Makanan", "../");
-        Barang eskrim = new Barang("Ice Cream", 12, 5000.00, 7000.00, "Makanan", "../");
-        
-        inv = new Inventory();
-        inv.addBarang(mie);
-        inv.addBarang(nasgor);
-        inv.addBarang(eskrim);
-
-        DetailTransaksi detail = new DetailTransaksi();
-        detail.editBarang(nasgor, 3, inv);
-        detail.editBarang(mie, 5, inv);
-        detail.editBarang(nasgor, 5, inv);
-        detail.editBarang(mie, 5, inv);
-        detail.deleteDetail(eskrim);
-        // Bill bill = new Bill(2000, detail);
 
         // create the LeftPanel
         leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -73,7 +55,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
         logoLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
         leftPanel.add(logoLabel);
         
-        JLabel POS = new JLabel("Point Of Sale");
+        JLabel POS = new JLabel("Point Of Sales");
         POS.setForeground(new Color(0x9c9c9c));
         POS.setBorder(BorderFactory.createEmptyBorder(5, 50, 20, 0));
         leftPanel.add(POS);
@@ -121,7 +103,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                     if (buttonNames[index].equals("Dashboard")) {
                         newPanel = new MainPanel();
                     } else if (buttonNames[index].equals("Inventory")) {
-                        newPanel = new InvPane(inv);
+                        newPanel = new InvPane(inventory);
                     } else if (buttonNames[index].equals("Registration")) {
                         newPanel = new RegistrationPane(clientManager);
                     } else if (buttonNames[index].equals("Customers")) {
@@ -133,7 +115,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                     } else if (buttonNames[index].equals("Plugin")) {
                         newPanel = pluginPane;
                     } else if (buttonNames[index].equals("Sales")) {
-                        newPanel = new KasirPage(billManager, fixedBillManager, clientManager, inv);
+                        newPanel = new KasirPage(billManager, fixedBillManager, clientManager, inventory);
                     } else {
                         newPanel = new JPanel(new GridBagLayout());
                         gbc.anchor = GridBagConstraints.CENTER;
@@ -148,6 +130,10 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                         public void actionPerformed(ActionEvent e) {
                             // remove the tab
                             tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
+                            clientManager.observer.unsubscribe((Subscriber) newPanel);
+                            inventory.observer.unsubscribe((Subscriber) newPanel);
+                            billManager.observer.unsubscribe((Subscriber) newPanel);
+                            fixedBillManager.observer.unsubscribe((Subscriber) newPanel);
                         }
                     });
                     // closeButton.setPreferredSize(new Dimension(30,20));
@@ -190,7 +176,7 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
 
     public ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> getInventoryData() {
         ArrayList<Septet<Integer, String, Integer, Double, Double, String, String>> data = new ArrayList<>();
-        for (Barang b : this.inv.getListBarang()) {
+        for (Barang b : this.inventory.getListBarang()) {
             Septet<Integer, String, Integer, Double, Double, String, String> currData = 
             new Septet<Integer, String, Integer, Double, Double, String, String> (b.getID(), b.getName(),
             b.getStock(), b.getPrice(), b.getBuyPrice(), b.getCategory(), b.getPicturePath());
@@ -228,5 +214,8 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
 
     public void update() {
         this.dataStoreAdapter.writeClientManager(this.clientManager);
+        this.dataStoreAdapter.writeInventory(this.inventory);
+        this.dataStoreAdapter.writeFixedBillManager(this.fixedBillManager);
+        this.dataStoreAdapter.writeBillManager(this.billManager);
     }
 }
