@@ -50,8 +50,12 @@ public class DetailTransaksi implements Serializable {
             this.element.add(new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahBarang, harga * jumlahBarang));
         } else {
             Integer jumlahSebelumnya = this.element.get(id).getJumlahBarang();
-            if (jumlahBarang + jumlahSebelumnya > barang.getStock()) {
-                System.out.println("Stok tidak mencukupi.");
+            if (jumlahBarang > 0) {
+                if (jumlahBarang + jumlahSebelumnya > barang.getStock()) {
+                    System.out.println("Stok tidak mencukupi.");
+                } else {
+                    this.element.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
+                }
             } else {
                 this.element.set(id, new ElemenDetailTransaksi(barang.getID(), barang.getName(), jumlahSebelumnya + jumlahBarang, harga * (jumlahSebelumnya + jumlahBarang)));
             }

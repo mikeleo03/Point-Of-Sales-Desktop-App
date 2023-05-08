@@ -5,19 +5,26 @@ import java.awt.event.*;
 import javax.swing.*;
 import main.Barang.*;
 import main.Bill.*;
+import main.Observer.*;
 import main.Pages.Utils;
 
-public class ItemGrid extends JPanel {
-
+public class ItemGrid extends JPanel implements Subscriber {
     private JLabel imageLabel;
+    private JLabel nameLabel;
     private JLabel stockLabel;
     private JLabel priceLabel;
     private JButton minusButton;
     private JLabel quantityLabel;
     private JButton plusButton;
     private QtyButton qtyButton;
+    private Bill bill;
+    private Barang barang;
+    private Inventory inv;
 
     public ItemGrid(Inventory inv, Barang barang, Bill bill, ActionListener al) {
+        this.barang = barang;
+        this.inv = inv;
+        this.inv.observer.subscribe(this);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2, 2, 2, 2);
@@ -36,9 +43,9 @@ public class ItemGrid extends JPanel {
         gbc.gridy++;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.weighty = 0.1;
-        JLabel nameLabel = new JLabel(barang.getName());
-        JLabel stockLabel = new JLabel("Stock: " + barang.getStock());
-        JLabel priceLabel = new JLabel("Price: " + barang.getPrice());
+        this.nameLabel = new JLabel(barang.getName());
+        this.stockLabel = new JLabel("Stock: " + barang.getStock());
+        this.priceLabel = new JLabel("Price: " + barang.getPrice());
         add(nameLabel, gbc);
         gbc.gridy++;
         add(stockLabel, gbc);
@@ -103,5 +110,14 @@ public class ItemGrid extends JPanel {
 
     public void setQuantity(int quantity) {
         quantityLabel.setText(Integer.toString(quantity));
+    }
+
+    public void update () {
+        System.out.println("update");
+        stockLabel.setText(this.barang.getName());
+        stockLabel.setText("Stock: " + this.barang.getStock());
+        priceLabel.setText("Price: " + this.barang.getPrice());
+        this.revalidate();
+        this.repaint();
     }
 }
