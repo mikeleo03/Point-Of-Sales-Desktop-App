@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import main.Bill.*;
 import main.Barang.*;
 import main.Client.*;
+import main.Laporan.Laporan;
+import main.Laporan.LaporanFixedBill;
 import main.Observer.*;
 import main.Transaksi.DetailTransaksi;
 import main.Transaksi.ElemenDetailTransaksi;  
@@ -126,9 +129,31 @@ public class PaymentPage extends JPanel implements ActionListener, Subscriber {
         }
     }
 
+    @Override
     public void actionPerformed (ActionEvent e) {
         if (e.getSource() == this.saveButton) {
             System.out.println("Button 2 clicked!");
+            ArrayList<ElemenDetailTransaksi> elemen = this.currentbill.getDetailTransaksi().getElement();
+            Thread pdfThread = new Thread(() -> {
+                try {
+                    Laporan laporan = new LaporanFixedBill(elemen, "Fixed_bill");
+                    laporan.generatePDF();
+                } catch (IOException exception) {
+                    System.out.println(exception.getMessage());
+                }
+            });
+            pdfThread.start();
+            Thread popupThread = new Thread(() -> {
+                try {
+                    Thread.sleep(10000);
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "PDF berhasil di-download!");
+                    });
+                } catch (InterruptedException exception) {
+                    System.out.println(exception.getMessage());
+                }
+            });
+            popupThread.start();
         } else if (e.getSource() == this.process) {
             int index = this.billmanager.getListBill().indexOf(currentbill);
             if (index != -1) {

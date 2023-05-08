@@ -64,7 +64,9 @@ public class LaporanFixedBill extends Laporan{
         cell.setFont(PDType1Font.HELVETICA_BOLD);
         table.addHeaderRow(headerRow);
         int count = 1;
+        Double total = 0.0;
         for (ElemenDetailTransaksi penjualanFix : listFixedBill) {
+            total += penjualanFix.getSubTotal();
             Row<PDPage> row = table.createRow(10f);
             cell = row.createCell(5, String.valueOf(count++));
             cell = row.createCell(10, String.valueOf(penjualanFix.getIdBarang()));
@@ -72,6 +74,9 @@ public class LaporanFixedBill extends Laporan{
             cell = row.createCell(15, String.valueOf(penjualanFix.getJumlahBarang()));
             cell = row.createCell(15, String.valueOf(penjualanFix.getSubTotal()));
         }
+        Row<PDPage> row = table.createRow(10f);
+        cell = row.createCell(60, String.valueOf("Total"));
+        cell = row.createCell(50, String.valueOf(total));
         table.draw();
 
         contentStream.beginText();

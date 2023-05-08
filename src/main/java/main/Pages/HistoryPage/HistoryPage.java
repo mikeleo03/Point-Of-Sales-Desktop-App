@@ -1,17 +1,24 @@
 package main.Pages.HistoryPage;
 import main.Bill.FixedBill;
 import main.Bill.FixedBillManager;
+import main.Laporan.Laporan;
+import main.Laporan.LaporanPenjualan;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 import main.Barang.*;
 import main.Transaksi.*;
 
-public class HistoryPage extends JPanel {
+public class HistoryPage extends JPanel implements ActionListener {
     private JTable table;
+    private JButton print;
     private DefaultTableModel tableModel;
+    private List<FixedBill> fixedBills;
 
     public HistoryPage(FixedBillManager fixedBillManager) {    
         // create main panel with GridBagLayout
@@ -48,7 +55,7 @@ public class HistoryPage extends JPanel {
         tableModel.addColumn("Subtotal");
     
         // populate table with data from fixed bills
-        List<FixedBill> fixedBills = fixedBillManager.getListFixedBill(); // assume this method returns a list of FixedBill objects
+        this.fixedBills = fixedBillManager.getListFixedBill(); // assume this method returns a list of FixedBill objects
         for (FixedBill bill : fixedBills) {
             DetailTransaksi details = bill.getDetailTransaksi();
             for (int i = 0; i < details.getElement().size(); i++) {
@@ -72,6 +79,12 @@ public class HistoryPage extends JPanel {
         
         // set JFrame properties
         setSize(800, 600);
+
+        this.print = new JButton("Print Laporan Penjualan");
+        gbc.gridy++;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        mainPanel.add(this.print, gbc);
+        this.print.addActionListener(this);
     }
     
     public static void main(String[] args) {
@@ -80,5 +93,31 @@ public class HistoryPage extends JPanel {
             HistoryPage historyPage = new HistoryPage(fxm);
             historyPage.setVisible(true);
         });
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == print) {
+            Thread pdfThread = new Thread(() -> {
+                try {
+                    Laporan laporan = new LaporanPenjualan(this.fixedBills, "Laporan_Penjualan");
+                    laporan.generatePDF();
+                } catch (IOException exception) {
+                    System.out.println(exception.getMessage());
+                }
+            });
+            pdfThread.start();
+            Thread popupThread = new Thread(() -> {
+                try {
+                    Thread.sleep(10000);
+                    SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(null, "PDF berhasil di-download!");
+                    });
+                } catch (InterruptedException exception) {
+                    System.out.println(exception.getMessage());
+                }
+            });
+            popupThread.start();
+        }
     }
 }

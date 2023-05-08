@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 public abstract class Laporan extends Thread {
     private String fileName;
 
@@ -20,7 +22,11 @@ public abstract class Laporan extends Thread {
         try {
             Thread.sleep(10000);
             generatePDF();
-        } catch (Exception e) {}
+            JOptionPane.showMessageDialog(null, "PDF berhasil di-generate!");
+        } catch (Exception e) {
+            System.err.println("Exception occurred while generating PDF: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public String getCurrentDate() {
@@ -29,7 +35,6 @@ public abstract class Laporan extends Thread {
         return formatter.format(date);
     }
 
-    protected abstract void generatePDF() throws IOException;
-
+    public abstract void generatePDF() throws IOException;
 
 }

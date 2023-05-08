@@ -2,7 +2,7 @@ package main.Laporan;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -14,11 +14,13 @@ import be.quodlibet.boxable.BaseTable;
 import be.quodlibet.boxable.Cell;
 import be.quodlibet.boxable.Row;
 import main.Barang.Barang;
+import main.Bill.FixedBill;
+import main.Transaksi.DetailTransaksi;
 
 public class LaporanPenjualan extends Laporan{
-    private ArrayList<Barang> listPenjualan; 
+    private List<FixedBill> listPenjualan; 
 
-    public LaporanPenjualan(ArrayList<Barang> listPenjualan, String fileName) {
+    public LaporanPenjualan(List<FixedBill> listPenjualan, String fileName) {
         super(fileName);
         this.listPenjualan = listPenjualan;
     }
@@ -28,14 +30,6 @@ public class LaporanPenjualan extends Laporan{
         PDDocument document = new PDDocument();
         PDPage page = new PDPage(PDRectangle.A4);
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        // PageContentStreamOptimized streamOptimized = new PageContentStreamOptimized(contentStream);
-        
-        // Image image = new Image(ImageIO.read(new File(System.getProperty("user.dir") + "\\img\\icon\\images\\logo.png")));
-        // float imageWidth = 75;
-        // image = image.scaleByWidth(imageWidth);
-        // float xPos = 50;
-        // float yPos = page.getMediaBox().getHeight() - image.getHeight() - 50;
-        // image.draw(document,streamOptimized, xPos, yPos);
 
         contentStream.beginText();
         contentStream.setFont(PDType1Font.HELVETICA_BOLD, 22);
@@ -51,28 +45,36 @@ public class LaporanPenjualan extends Laporan{
         float yPosition = 680;
         BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, drawContent);
         Row<PDPage> headerRow = table.createRow(15f);
-        Cell<PDPage> cell = headerRow.createCell(5, "No.");
+        Cell<PDPage> cell = headerRow.createCell(10, "ID Customer");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(30, "Nama Barang");
+        cell = headerRow.createCell(10, "Waktu");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(10, "Stock");
+        cell = headerRow.createCell(15, "Tanggal");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(15, "Harga");
+        cell = headerRow.createCell(10, "idBarang");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(15, "Harga Beli");
+        cell = headerRow.createCell(20, "Nama Barang");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
-        cell = headerRow.createCell(20, "Kategori");
+        cell = headerRow.createCell(20, "Jumlah Barang");
+        cell.setFont(PDType1Font.HELVETICA_BOLD);
+        cell = headerRow.createCell(10, "Subtotal");
         cell.setFont(PDType1Font.HELVETICA_BOLD);
         table.addHeaderRow(headerRow);
         int count = 1;
-        for (Barang penjualan : listPenjualan) {
+        for (FixedBill penjualan : listPenjualan) {
+            DetailTransaksi details = penjualan.getDetailTransaksi();
             Row<PDPage> row = table.createRow(10f);
-            cell = row.createCell(5, String.valueOf(count++));
-            cell = row.createCell(30, penjualan.getName());
-            cell = row.createCell(10, String.valueOf(penjualan.getStock()));
-            cell = row.createCell(15, String.valueOf(penjualan.getPrice()));
-            cell = row.createCell(15, String.valueOf(penjualan.getBuyPrice()));
-            cell = row.createCell(20, penjualan.getCategory());
+            for (int i = 0; i < details.getElement().size(); i++) {
+                if (i==0) {
+                    cell = row.createCell(10, String.valueOf(penjualan.getIdCustomer()));
+                    cell = row.createCell(10, penjualan.getWaktu());
+                    cell = row.createCell(15, String.valueOf(penjualan.getTanggal()));
+                }
+                cell = row.createCell(10, String.valueOf(details.getElement().get(i).getIdBarang()));
+                cell = row.createCell(20, String.valueOf(details.getElement().get(i).getNamaBarang()));
+                cell = row.createCell(20, String.valueOf(details.getElement().get(i).getJumlahBarang()));
+                cell = row.createCell(10, String.valueOf(details.getElement().get(i).getSubTotal()));
+            }
         }
         table.draw();
 
@@ -84,7 +86,7 @@ public class LaporanPenjualan extends Laporan{
 
         contentStream.close();
         document.addPage(page);
-        document.save(new File(System.getProperty("user.dir") + "/docs/" + getFileName()));
+        document.save(new File("../docs/" + getFileName()+".pdf"));
         document.close();
     }
 }
