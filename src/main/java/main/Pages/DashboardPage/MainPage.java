@@ -129,11 +129,21 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             // remove the tab
+                            Class panel = newPanel.getClass();
+                            boolean isSubscriber = false;
+                            for (Class itf : panel.getInterfaces()) {
+                                if (itf.getName().equals("Subscriber")) {
+                                    isSubscriber = true;
+                                    break;
+                                }
+                            }
+                            if (isSubscriber) {
+                                clientManager.observer.unsubscribe((Subscriber) newPanel);
+                                inventory.observer.unsubscribe((Subscriber) newPanel);
+                                billManager.observer.unsubscribe((Subscriber) newPanel);
+                                fixedBillManager.observer.unsubscribe((Subscriber) newPanel);
+                            }
                             tabbedPane.removeTabAt(tabbedPane.indexOfComponent(newPanel));
-                            clientManager.observer.unsubscribe((Subscriber) newPanel);
-                            inventory.observer.unsubscribe((Subscriber) newPanel);
-                            billManager.observer.unsubscribe((Subscriber) newPanel);
-                            fixedBillManager.observer.unsubscribe((Subscriber) newPanel);
                         }
                     });
                     // closeButton.setPreferredSize(new Dimension(30,20));
@@ -154,10 +164,6 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
         // create the JTabbedPane
         tabbedPane = new JTabbedPane();
         tabbedPane.setBackground(new Color(0x1a1e3b));
-
-        // // create startpanel
-        // JPanel start;
-        // start = new MainPanel();
 
         // add the LeftPanel and JTabbedPane to the JFrame
         add(leftPanel, BorderLayout.WEST);
@@ -194,21 +200,20 @@ public class MainPage extends JFrame implements InterfacePage, Subscriber {
             customers.add(currData);
         }
         data.put("Customer", customers);
-        customers.clear();
+        ArrayList<Quintet<Integer, String, String, Double, Boolean>> members = new ArrayList<>();
         for (Member m : clientManager.getListMember()) {
             Quintet<Integer, String, String, Double, Boolean> currData = new Quintet<Integer, String, String, Double, Boolean>
                 (m.getCustomerID(), m.getCustomerName(), m.getNoOfPhone(), m.getPoint(), m.getActive());
-            customers.add(currData);
+            members.add(currData);
         }
-        data.put("Member", customers);
-        customers.clear();
+        data.put("Member", members);
+        ArrayList<Quintet<Integer, String, String, Double, Boolean>> vip = new ArrayList<>();
         for (VIP v : clientManager.getListVIP()) {
             Quintet<Integer, String, String, Double, Boolean> currData = new Quintet<Integer, String, String, Double, Boolean>
                 (v.getCustomerID(), v.getCustomerName(), v.getNoOfPhone(), v.getPoint(), v.getActive());
-            customers.add(currData);
+            vip.add(currData);
         }
-        data.put("VIP", customers);
-        customers.clear();
+        data.put("VIP", vip);
         return data;
     }
 

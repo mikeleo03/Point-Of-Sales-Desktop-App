@@ -113,7 +113,6 @@ public class ItemGrid extends JPanel implements Subscriber {
     }
 
     public void update () {
-        System.out.println("update");
         stockLabel.setText(this.barang.getName());
         stockLabel.setText("Stock: " + this.barang.getStock());
         priceLabel.setText("Price: " + this.barang.getPrice());

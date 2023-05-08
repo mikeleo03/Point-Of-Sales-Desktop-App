@@ -8,11 +8,11 @@ import main.Transaksi.DetailTransaksi;
  */
 
 public class FixedBill extends Recap {
+    public FixedBill() {
+
+    }
+    
     public FixedBill(Integer idCustomer, DetailTransaksi detailTransaksi) {
         super(idCustomer, detailTransaksi);
-    }
-
-    public void save() {
-        
     }
 }
